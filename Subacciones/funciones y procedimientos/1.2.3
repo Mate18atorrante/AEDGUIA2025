@@ -1,0 +1,31 @@
+Diseñe una función que permita ingresar 3 números y devuelva el mínimo valor. El programa principal debe permitir
+que este proceso se repita la cantidad de veces que el usuario desee.
+
+ACCION MinimoValor ES
+    AMBIENTE
+        numero1, numero2, numero3, corte: real
+
+        FUNCION MinimoValor(num1, num2, num3: real):real ES
+            SI (num1 <= num2) y (num2 <= num3) ENTONCES
+                MinimoValor := num1
+            SINO
+                SI (num2 <= num1) y (num2 <= num3) ENTONCES
+                    MinimoValor := num2
+                SINO
+                    MinimoValor := num3
+                FIN_SI
+            FIN_SI
+        FIN_FUNCION
+
+    PROCESO
+        ESC("Este algoritmo pide tres números distintos y devuelve el número menor")
+
+        REPETIR
+            ESC("Ingrese los tres números: ")
+            LEER(numero1, numero2, numero3)
+
+            ESC("El número menor es ",MinimoValor(numero1, numero2, numero3))
+            ESC("¿Desea continuar con otros tres números? S/N: ")
+            LEER(corte)
+        HASTA QUE corte = N
+

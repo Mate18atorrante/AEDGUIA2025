@@ -1,0 +1,29 @@
+Escriba un algoritmo que permita conocer la edad de una persona, con solo ingresar la fecha de nacimiento y la fecha actual, ambas en el formato: DIA, MES, AÑO
+
+Accion EdadNacimiento es
+    Ambiente
+        DiaNac, MesNac, AnioNac, DiaActual, MesActual, AnioActual, 	EdadCumpleaños, EdadNoCumpleaños: entero
+
+    Proceso
+	Escribir("ingrese su fecha de nacimiento en el orden DIA, MES, AÑO")
+	Leer(DiaNac, MesNac, AnioNac)
+	Escribir("Ahora, ingrese la fecha actual en orden DIA, MES, AÑO")
+	Leer(DiaActual, MesActual, AnioActual)
+
+	EdadCumpleaños:= AnioActual - AnioNac
+	EdadNoCumpleaños:= EdadCumpleaños - 1
+
+	Si (MesActual > MesNac) entonces
+	    Escribir("Usted tiene", EdadCumpleaños, "años")
+	Sino
+	    Si (MesActual = MesNac) entonces
+		Si (DiaActual >= DiaNac) entonces
+		    Escribir("Usted tiene", EdadCumpleaños, "años")
+		sino
+	            Escribir("Usted tiene", EdadNoCumpleaños, "años")
+		Fin_Si
+	    Sino
+		Escribir("Usted tiene", EdadNoCumpleaños, "años")
+	    Fin_Si
+	Fin_Si
+Fin_Accion

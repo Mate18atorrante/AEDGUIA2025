@@ -1,0 +1,19 @@
+Escribir un algoritmo que ingrese una variable V y emita el valor de ésta, su cuadrado y su cubo.
+
+Teniendo en cuenta el ejercicio anterior, realizar un incremento de la variable V en forma constante
+y creciente recalculando los demás valores 10 veces.
+
+ACCION v_cuadrado_cubo ES
+    AMBIENTE
+        V, cuadrado, cubo, i, fin: entero
+
+    PROCESO
+        ESC("Ingrese un número y le diré su cuadrado y su cubo"); LEER(V)
+        fin:= V + 10
+
+        PARA V:= V HASTA fin HACER
+            cuadrado:= (V)**2
+            cubo:= (V)**3
+            ESC("El número-> ",V,", Su cuadrado ->",cuadrado,", Su cubo ->",cubo)
+        FIN_PARA
+FIN_ACCION

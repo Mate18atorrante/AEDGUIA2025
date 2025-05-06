@@ -1,0 +1,23 @@
+Escriba un algoritmo que determine si un número es primo.
+
+Accion numero_primo es
+    Ambiente
+        i, num: entero
+        primo: booleano
+
+    Proceso
+        ESC("Ingrese un número entero para determinar si es primo o no: "); LEER(num)
+
+        primo:= Verdadero
+        PARA i:= 2 HASTA num-1 HACER
+            SI num mod i = 0 ENTONCES
+                primo:= Falso
+            FIN_SI
+        FIN_PARA
+
+        Si primo ENTONCES
+            ESC("Su número",num," es primo")
+        SINO
+            ESC("Su número",num," no es primo")
+        FIN_SI
+FIN_ACCION

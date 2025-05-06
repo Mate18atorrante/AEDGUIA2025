@@ -1,0 +1,66 @@
+ Un almacén desea registrar el stock inicial de 10 productos y simular la
+venta diaria de cada uno durante 5 días. Se debe informar cuántos productos
+quedaron sin stock al final de la semana.
+
+ACCION desafio2 ES
+    AMBIENTE
+        prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10,
+        prod1_v, prod2_v, prod3_v, prod4_v, prod5_v, prod6_v, prod7_v, prod8_v, prod9_v, prod10_v,
+        prod_sin_stock: entero
+
+    PROCESO
+        ESC("ingrese stock inicial de los productos 1, 2,..., 10": ");
+        LEER(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10)
+
+        prod_sin_stock := 0
+        PARA i:= 1 HASTA 5 HACER
+            ESC("Stock día ",i,". Ingrese  cantidad de ventas de los productos 1, 2,..., 10": ");
+            LEER(prod1_v, prod2_v, prod3_v, prod4_v, prod5_v, prod6_v, prod7_v, prod8_v, prod9_v, prod10_v)
+
+            prod1 := prod1 - prod1_v
+            prod2 := prod2 - prod2_v
+            prod3 := prod3 - prod3_v
+            prod4 := prod4 - prod4_v
+            prod5 := prod5 - prod5_v
+            prod6 := prod6 - prod6_v
+            prod7 := prod7 - prod7_v
+            prod8 := prod8 - prod8_v
+            prod9 := prod9 - prod9_v
+            prod10 := prod10 - prod10_v
+        FIN_PARA
+
+        SI (prod1 <= 0) ENTONCES
+            prod_sin_stock := prod_sin_stock + 1
+        FIN_SI
+        SI (prod2 <= 0) ENTONCES
+            prod_sin_stock := prod_sin_stock + 1
+        FIN_SI
+        SI (prod3 <= 0) ENTONCES
+            prod_sin_stock := prod_sin_stock + 1
+        FIN_SI
+        SI (prod4 <= 0) ENTONCES
+            prod_sin_stock := prod_sin_stock + 1
+        FIN_SI
+        SI (prod5 <= 0) ENTONCES
+            prod_sin_stock := prod_sin_stock + 1
+        FIN_SI
+        SI (prod6 <= 0) ENTONCES
+            prod_sin_stock := prod_sin_stock + 1
+        FIN_SI
+        SI (prod7 <= 0) ENTONCES
+            prod_sin_stock := prod_sin_stock + 1
+        FIN_SI
+        SI (prod8 <= 0) ENTONCES
+            prod_sin_stock := prod_sin_stock + 1
+        FIN_SI
+        SI (prod9 <= 0) ENTONCES
+            prod_sin_stock := prod_sin_stock + 1
+        FIN_SI
+        SI (prod10 <= 0) ENTONCES
+            prod_sin_stock := prod_sin_stock + 1
+        FIN_SI
+
+        ESC("La cantidad de productos sin stock al final de la semana son: ",prod_sin_stock)
+FIN_ACCION
+
+

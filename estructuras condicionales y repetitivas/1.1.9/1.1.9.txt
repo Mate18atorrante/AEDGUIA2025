@@ -1,0 +1,32 @@
+Una persona decide realizar un viaje a Europa, para lo cual necesita una determinada cantidad de euros. La persona tiene ahorrada una cierta suma en dólares y desea saber si es suficiente y, en caso de haber diferencia (de más o de menos) a cuantos pesos equivale. Realice un algoritmo que solucione el problema, para lo cual deberá prever que se ingresen las equivalencias de monedas que considere necesarias (por ejemplo la cotizacion en pesos de dólar y/o del euro, o a cuantos euros equivale un dólar).
+
+ACCION ViajeEuropa ES
+    AMBIENTE
+	    Ahorrado, MontoViaje, DiferenciaDolar, DiferenciaPesos, EquivDolarAEuro, EquivDolarAPesos: real
+
+    PROCESO
+        ESC("Ingrese el monto del viaje en euros: ")
+        LEER(MontoViaje)
+
+        ESC("Ingrese cuanto tiene ahorrado en dólares: ")
+        LEER(Ahorrado)
+
+        ESC("Ahora, ingrese cuantos dólares equivale a un euro: ")
+        LEER(EquivDolarAEuro)
+
+        ESC("Por ultimo, ingrese cuantos pesos equivale a un dólar: ")
+        LEER(EquivDolarAPesos)
+
+        DiferenciaDolar:= MontoViaje*EquivDolarAEuro - Ahorrado
+        DiferenciaPesos:= ABSO(DiferenciaDolar*EquivDolarAPesos)
+
+        SI DiferenciaDolar > 0 ENTONCES
+            Escribir("le falta", DiferenciaPesos, "pesos para realizar su viaje")
+        SINO
+            SI DiferenciaDolar < 0 ENTONCES
+                Escribir("le sobra", DiferenciaPesos, "pesos después de realizar su viaje")
+            SINO
+                Escribir("no hay diferencia, tiene el monto justo para su viaje")
+            FIN_SI
+        FIN_SI
+FIN_ACCION

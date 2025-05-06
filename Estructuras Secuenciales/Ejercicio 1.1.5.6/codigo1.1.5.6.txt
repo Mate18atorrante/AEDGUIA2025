@@ -1,0 +1,20 @@
+Accion DosComplejos es
+ Ambiente
+  numi1, numi2, numreal1, numreal2, ParteReal, ParteImaginaria: real
+ Proceso
+  Escribir("ingrese la parte real del primer numero complejo")
+  Leer(numreal1)
+  Escribir("ingrese la parte imaginaria")
+  Leer(numi1)
+  Escribir("ingrese la parte real del segundo numero complejo")
+  Leer(numreal2)
+  Escribir("ingrese la parte imaginaria")
+  Leer(numi2)
+
+  ParteReal := (numreal1*numreal2) - (numi1*numi2) 
+  ParteImaginaria := (numreal1*numi2) + (numreal2*numi1)
+  Escribir("El resultado del producto es: (", ParteReal,",",ParteImaginaria,")") 
+
+Fin Accion
+
+(funciona)

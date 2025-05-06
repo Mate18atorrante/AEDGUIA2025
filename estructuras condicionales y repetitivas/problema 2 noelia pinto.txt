@@ -1,0 +1,24 @@
+Pide al usuario que ingrese la hora actual en formato 24 horas (ejemplo: 15 para 3 PM). Luego, muestra un mensaje dependiendo de la franja horaria
+
+Accion HoraActual es
+    Ambiente
+	hora_actual: entero
+
+    Proceso
+	Esc("Ingrese la hora actual en formato 24 horas (no considere los minutos, y la hora 24 o 00 es '0': ")
+	Leer(hora_actual)
+
+    SI (hora_actual < 0 o hora_actual > 23) ENTONCES
+        ESC("debe ingresar un número positivo y debe ser menor que 23")
+    SINO
+        SI (hora_actual >= 0 y hora_actual <= 5) ENTONCES
+            Esc("¡Es de madrugada!")
+        SINO
+            SI (hora_actual >= 6 y hora_actual <= 11) ENTONCES
+                Esc("🌅 ¡Buenos días!")
+            SINO
+                SI (hora_actual >= 12 y hora_actual <= 17) ENTONCES
+                    Esc("🌞 ¡Buenas tardes!")
+                SINO
+                    SI (hora_actual >= 18 y hora_actual <= 23) ENTONCES
+                        Esc("🌙 ¡Buenas noches!")

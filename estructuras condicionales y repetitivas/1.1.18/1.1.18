@@ -1,0 +1,40 @@
+Elabore un algoritmo que calcule el cociente de dos enteros F y G y el Resto de la operación,
+empleando sólo las operaciones suma y diferencia.
+
+Accion cociente_resto_suma_diferencia es
+    Ambiente
+        Dividendo, Divisor, Resto, Cociente: Entero
+
+    Proceso
+        ESC("Este es un algoritmo que calcula y muestra el cociente y el resto de dos números enteros")
+        ESC("Ingrese su primer número entero (distinto de 0): "); LEER(Dividendo)
+        ESC("Ingrese su segundo número entero (distinto de 0): "); LEER(Divisor)
+
+        SI ((Dividendo > 0 y Divisor > 0) o (Dividendo < 0 y Divisor < 0)) ENTONCES
+            Cociente:= 0
+
+            MIENTRAS Dividendo - Divisor >= 0 HACER
+                Dividendo:= Dividendo - Divisor
+                Cociente:= Cociente + 1
+            FIN_MIENTRAS
+
+            Resto:= Dividendo
+        SINO
+            Si ((Dividendo > 0 y Divisor < 0) o (Dividendo < 0 y Divisor > 0)) ENTONCES
+                Cociente:= 0
+
+                Dividendo := ABSO(Dividendo)
+                Divisor := ABSO(Divisor)
+
+                MIENTRAS Dividendo - Divisor >= 0 HACER
+                    Dividendo:= Dividendo - Divisor
+                    Cociente:= Cociente + 1
+                FIN_MIENTRAS
+
+                Cociente:= -1 * Cociente
+                Resto:= Dividendo
+            FIN_SI
+        FIN_SI
+
+        ESC("El Resto de la operación es: ", Resto)
+        ESC("El cociente de la operación es: ", Cociente)

@@ -1,0 +1,21 @@
+Generar un algoritmo para imprimir las coordenadas (X, Y) de una función cuadrática, de
+la forma: Y = aX**2 + bX + c, haciendo variar X en el intervalo [20, -20]
+con un decremento de 2
+
+ACCION cuadrática ES
+    AMBIENTE
+        a, b, c, Y: real
+    PROCESO
+        ESC("Este algoritmo imprime los puntos (X,Y) de una función cuadrática,
+        haciendo variar X en el intervalo [20, -20]")
+        ESC("Ingrese el término cuadrático")
+        LEER(a)
+        ESC("Ingrese el término lineal")
+        LEER(b)
+        ESC("Ingrese el término independiente")
+        LEER(c)
+
+        PARA X:= 20 HASTA -20, -2 HACER
+            Y = a*(X)**2 + b*(X) + c
+            ESC("(",X,", ",Y,")")
+        FIN_PARA

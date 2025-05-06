@@ -1,0 +1,19 @@
+Realice una función que dado un número devuelva su cuadrado.
+
+ACCION funcioncuadrado ES
+    AMBIENTE
+        num: real
+
+        FUNCION cuadrado(n: real): real ES
+            cuadrado:= n ** 2
+        FIN_FUNCION
+
+    PROCESO
+        ESC("Este algoritmo recibe un número y le devuelve su cuadrado")
+        ESC("Ingrese un número cualquiera: ")
+        LEER(num)
+
+        num:= cuadrado(num)
+
+        ESC("Su cuadrado es ",num)
+FIN_ACCION

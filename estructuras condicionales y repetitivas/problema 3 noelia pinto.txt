@@ -1,0 +1,27 @@
+Una montaña rusa tiene dos requisitos de seguridad: La altura mínima para subir es de 1.50 metros;
+La edad mínima es de 12 años.Escribe un programa que reciba la altura y edad de una persona
+y determine si puede subir 🎟️ o si no cumple los requisitos 🚫.
+
+Accion MontañaRusa es
+    Ambiente
+        altura_ingreso: real
+        edad_ingreso: entero
+        altura_minima = 1.50
+        edad_minima = 12
+
+    Proceso
+        ESC("Ingrese la altura que tiene la persona: ")
+        LEER(altura_ingreso)
+        ESC("Bien, ahora ingrese la edad que tiene esta persona: ")
+        LEER(edad_ingreso)
+
+        SI (altura_ingreso >= altura_minima y edad_ingreso >= edad_minima) ENTONCES
+            ESC("puede subir 🎟️")
+        SINO
+            SI (altura_ingreso < altura minima) ENTONCES
+                ESC("no cumple con la altura minima 🚫")
+            FIN_SI
+            SI (edad_ingreso < edad_minima) ENTONCES
+                ESC("no cumple con la edad minima 🚫")
+            FIN_SI
+        FIN_SI

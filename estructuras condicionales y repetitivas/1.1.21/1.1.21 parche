@@ -1,0 +1,29 @@
+Escribir un algoritmo que ingrese una variable V y emita el valor de ésta, su cuadrado y su cubo.
+
+Teniendo en cuenta el ejercicio anterior, realizar un incremento de la variable V en forma constante
+y creciente recalculando los demás valores 10 veces.
+
+Repita el ejercicio anterior con un cálculo de n veces, con n > 1. Por final emitir la suma de los cuadrados de V.
+
+ACCION v_cuadrado_cubo ES
+    AMBIENTE
+        V, cuadrado, cuadrados_suma, cubo, i, n: entero
+
+    PROCESO
+        ESC("Ingrese un número y le diré su cuadrado y su cubo: "); LEER(V)
+        ESC("Ingrese la cantidad de veces que quiere que se haga el cálculo y se expresará la suma de los cuadrados: ")
+        LEER(n)
+
+        cuadrado_suma:= 0
+        PARA i:= 1 HASTA n HACER
+            cuadrado:= (V)**2
+            cubo:= (V)**3
+            cuadrados_suma:= cuadrados_suma + cuadrado
+
+            ESC("El número: ",V + i)
+            ESC("Su cuadrado: ",cuadrado)
+            ESC("Su cubo: ",cubo)
+        FIN_PARA
+
+        ESC("La suma de los cuadrados es: ",cuadrados_suma)
+FIN_ACCION

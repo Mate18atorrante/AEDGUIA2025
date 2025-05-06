@@ -1,0 +1,44 @@
+Escribir una función que lea desde el teclado las unidades y el precio de un producto que se quiere comprar, y
+en función de las unidades introducidas calcule un descuento o no, según corresponda: cuando las unidades excedan
+media docena se aplicará 4% y el 10% cuando excedan la docena. La función debe devolver como resultado el valor
+del descuento o cero, en caso de que no corresponda.
+
+ACCION Descuentos ES
+    AMBIENTE
+        descuent_exc_mediadoc = 0,04
+        descuent_exc_doc = 0,10
+        units: entero
+        precio, precio_final: real
+        precio_descuento: real
+        opcion:("s","n")
+
+        FUNCION calc_descuento (p: real, u: entero): real
+            SEGUN units HACER
+                > 12:
+                    desc:= p * descuent_exc_doc * units
+                > 6:
+                    desc:= p * descuent_exc_mediadoc * units
+                OTROS:
+                    desc:= 0
+            FIN_SEGUN
+            calc_descuento:= p * u * desc
+        FIN_FUNCION
+    PROCESO
+        ESC("¿Desea iniciar? s/n")
+        LEER(opcion)
+        MIENTRAS opcion = s HACER
+            ESC("Ingrese el precio del producto")
+            LEER(precio)
+            ESC("Ingrese las unidades del producto")
+            LEER(units)
+
+            precio_final:= precio * units - calc_descuento(precio,units)
+            ESC("El descuento es ",calc_descuento(precio, units)," y el precio final es: ",precio)
+            ESC("Desea seguir? s/n: ")
+            LEER(opcion)
+        FIN_MIENTRAS
+
+
+
+
+

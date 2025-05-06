@@ -1,0 +1,31 @@
+1.Diseñe un algoritmo que obtenga el porcentaje de alumnos de ISI, IQ e IEM, sobre el total de egresados de
+la UTN-FRRe de un año.
+
+2.Modifique el algoritmo del punto 1. para que permita obtener e informar los mismos porcentajes pero para
+varias Facultades y al final emitir el total de alumnos por carrera y total general.
+
+ACCION PorcentajeAlumnosEgresadosUTN ES
+    AMBIENTE
+        alumnos_isi, alumnos_iq, alumnos_iem, total_egresados: entero
+        porcentaje_egresados_isi, porcentaje_egresados_iq, porcentaje_egresados_iem: real
+
+    PROCESO
+        ESC("Ingrese la cantidad de alumnos egresados de ISI: "); LEER(alumnos_isi)
+        ESC("Ingrese la cantidad de alumnos egresados de IQ: "); LEER(alumnos_iq)
+        ESC("Ingrese la cantidad de alumnos egresados de IEM: "); LEER(alumnos_iem)
+
+        total_egresados := alumnos_isi + alumnos_iq + alumnos_iem
+
+        SI total_egresados > 0 ENTONCES
+            porcentaje_egresados_isi := alumnos_isi * 100 / total_egresados
+            porcentaje_egresados_iq := alumnos_iq * 100 / total_egresados
+            porcentaje_egresados_iem := alumnos_iem * 100 / total_egresados
+
+            ESC("El porcentaje de egresados de cada carrera sobre el total de egresados en un año son: ")
+            ESC(porcentaje_egresados_isi,"% ISI")
+            ESC(porcentaje_egresados_iq,"% IQ")
+            ESC(porcentaje_egresados_iem,"% IEM")
+        SINO
+            ESC("Hubo un error en le ingreso de los datos, el total de egresados es 0")
+        FIN_SI
+FIN_ACCION                                                 

@@ -1,0 +1,27 @@
+Diseñe una función que devuelva la suma de los dígitos del
+ número natural suministrado como parámetro.
+
+ACCION funcion_suma_numeros_naturales ES
+    AMBIENTE
+        numero, resultado_suma: entero
+
+        FUNCION sum_natural_digitos(num: entero): entero ES
+            AMBIENTE
+                suma: entero
+
+            suma:= 0
+            REPETIR
+                suma:= num mod 10 + suma
+                num:= num div 10
+            HASTA QUE num = 0
+            sum_natural_digitos:= suma
+        FIN_FUNCION
+
+    PROCESO
+        ESC("Este algoritmo recibe un número (natural) y entrega el resultado de la suma de sus digitos")
+        ESC("Ingrese el número: ")
+        LEER(numero)
+
+        resultado_suma := sum_naturales_digitos(numero)
+        ESC("La suma de los dígitos del número ",numero," es ",resultado_suma)
+FIN_ACCION

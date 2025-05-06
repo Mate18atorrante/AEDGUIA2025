@@ -1,0 +1,31 @@
+Escriba un algoritmo para calcular cada renglón de una factura (valor unitario * cantidad vendida) y
+el total de la misma, suponiendo que el número de renglones es variable. Emitir un mensaje de error
+si el valor unitario es <= 0.
+Realizar la prueba de escritorio con los siguientes valores: Cantidad de renglones: 4
+
+ACCION Factura ES
+    AMBIENTE
+        val_unit, total, calc_reng: real
+        cant_vend, fin: entero
+    PROCESO
+        total:= 0
+
+        REPETIR
+            REPETIR
+                ESC("ingrese valor unitario del producto (mayor que 0): "); LEER(val_unit)
+                SI val_unit <= 0 ENTONCES
+                    ESC("Error: el valor unitario no puede ser 0 o un número negativo")
+                FIN_SI
+            HASTA val_unit > 0
+
+            ESC("ingrese la cantidad vendida del producto: "); LEER(cant_vend)
+            calc_reng:= val_unit * cant_vend
+            ESC("El resultado es: $",calc_reng)
+
+            total:= total + calc_reng
+            ESC("¿Desea ingresar otro producto? Ingrese 0 para FINALIZAR o un número distinto para CONTINUAR"); LEER(fin)
+        HASTA fin = 0
+
+        ESC("El total de la factura es: $",total)
+FIN_ACCION
+

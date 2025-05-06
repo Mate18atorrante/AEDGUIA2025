@@ -1,0 +1,53 @@
+Una empresa de transportes desea conocer
+el sueldo de sus 100 choferes. Estos se calculan teniendo en cuenta
+la categoría (1 o 2) y la asistencia
+(perfecta: si o no). El sueldo se obtiene sumando el sueldo básico,
+ más el 2% de antigüedad por cada año
+trabajado y $200 de premio por asistencia. El sueldo básico
+es de $700 para
+choferes de categoría 1 y de $500.- para los de categoría 2.
+
+ACCION empresa_transportes ES
+    AMBIENTE
+        monto_asistencia_perfecta = 200
+        monto_antiguedad_año = 0,02
+        sueldo_basic_cat1 = 700
+        sueldo_basic_cat2 = 500
+        cont, categoria: entero
+        asistencia_perfecta: alfanumérico
+        sueldo_final: real
+    PROCESO
+        ESC("Este algoritmo calcula el sueldo de 100 choferes")
+
+        PARA cont:= 1 HASTA 100 HACER
+            ESC("¿Qué categoría tiene este chofer? (1 o 2): ")
+            LEER(categoria)
+            ESC("La asistencia es perfecta? responda con SI o NO: ")
+            LEER(asistencia)
+            ESC("Y cuántos años de antigüedad tiene?: ")
+            LEER(antiguedad)
+
+            sueldo_final_cat1:= sueldo_basic_cat1 + (monto_antiguedad_año * antiguedad)
+            sueldo_final_cat2:= sueldo_basic_cat2 + (monto_antiguedad_año * antiguedad)
+
+            SI categoria = 1 ENTONCES
+                SI asistencia_perfecta = SI ENTONCES
+                    sueldo_final_cat1:= sueldo_final_cat1 + monto_asistencia_perfecta
+                    ESC("El sueldo es: ",sueldo_final_cat1," pesos.")
+                SINO
+                    ESC("El sueldo es: ",sueldo_final_cat1," pesos.")
+                FIN_SI
+            SINO
+                SI asistencia_perfecta = SI ENTONCES
+                    sueldo_final_cat2:= sueldo_final_cat2 + monto_asistencia_perfecta
+                    ESC("El sueldo es: ",sueldo_final_cat2," pesos.")
+                SINO
+                    ESC("El sueldo es: ",sueldo_final_cat2," pesos.")
+                FIN_SI
+            FIN_SI
+        FIN_PARA
+FIN_ACCION
+
+
+
+

@@ -1,0 +1,20 @@
+Una academia necesita llevar el control de asistencia de estudiantes durante una semana. Cada día se registra cuántos
+estudiantes asistieron y al final se quiere saber el promedio de asistencia semanal.
+
+ACCION desafio1 ES
+    AMBIENTE
+        i, estudiantes_asistidos, promedio: entero
+
+    PROCESO
+        suma:= 0
+
+        PARA i:= 1 HASTA 5 HACER
+            ESC("Ingrese la cantidad de estudiantes asistidos del día", i,": "); LEER(estudiantes_asistidos)
+
+            suma := suma + estudiantes_asistidos
+        FIN_PARA
+
+        promedio := suma div 5
+
+        ESC("El promedio de asistencia semanal es: ",promedio, "estudiantes")
+FIN_ACCION

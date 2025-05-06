@@ -1,0 +1,39 @@
+Escribir un algoritmo que ingrese una variable V y emita el valor de ésta, su cuadrado y su cubo.
+
+ACCION v_cuadrado_cubo ES
+    AMBIENTE
+        V, cuadrado, cubo, cont1, cont2: entero
+
+    PROCESO
+        ESC("Ingrese un número y le diré su cuadrado y su cubo"); LEER(V)
+
+        cuadrado:= 0
+        cubo:=0
+
+        SI V >= 0 ENTONCES
+            PARA cont1:= 1 HASTA V HACER
+                cuadrado:= cuadrado + V
+            FIN_PARA
+
+            PARA cont2:= 1 HASTA V HACER
+                cubo:= cubo + cuadrado
+            FIN_PARA
+        SINO
+            V:= ABSO(V)
+
+            PARA cont1:= 1 HASTA V HACER
+                cuadrado:= cuadrado + V
+            FIN_PARA
+
+            PARA cont2:= 1 HASTA V HACER
+                cubo:= cubo + cuadrado
+            FIN_PARA
+
+            cubo:= -1 * cubo
+            V:= -1 * V
+        FIN_SI
+
+        ESC("Su número es: ",V)
+        ESC("Su cuadrado: ",cuadrado)
+        ESC("Su cubo: ",cubo)
+FIN_PROCESO

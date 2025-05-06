@@ -1,0 +1,58 @@
+Un sistema de lotería permite ingresar hasta 5 números elegidos por el usuario,
+entre 1 y 45, sin repetir. Se debe validar cada número, almacenarlos, y luego mostrar los
+elegidos.
+
+ACCION desafio3 ES
+    AMBIENTE
+        num1, num2, num3, num4, num5: entero
+
+    PROCESO
+        ESC("ingrese cinco números (entre 1 y 45, y distintos entre sí): ");
+
+        ESC("ingrese su primer número (entre 1 y 45): ");
+        LEER(num1)
+        REPETIR
+            SI (num1 < 1 o num1 > 45) ENTONCES
+                ESC("Su número, num1, "debe estar entre 1 y 45. Ingreselo denuevo")
+                LEER(num1)
+            FIN_SI
+        HASTA num1 > 1 y num1 < 45
+
+        ESC("ingrese el segundo número (entre 1 y 45): ");
+        LEER(num2)
+        REPETIR
+            SI (num2 < 1 o num2 > 45) o ((num2 = num1) ENTONCES
+                ESC("Su número, num2, "debe estar entre 1 y 45 y no repetirlo. Ingreselo de nuevo: ")
+                LEER(num2)
+            FIN_SI
+        HASTA num2 > 1 y num2 < 45 y num2 <> num1
+
+        ESC("ingrese el tercer número (entre 1 y 45): ");
+        LEER(num3)
+        REPETIR
+            SI (num3 < 1 o num3 > 45) o ((num3 = num1) o (num3 = num2) ENTONCES
+                ESC("Su número, num3, "debe estar entre 1 y 45 y no repetirlo. Ingréselo de nuevo: ")
+                LEER(num3)
+            FIN_SI
+        HASTA num3 > 1 y num3 < 45 y num3 <> num1 y num3 <> num2
+
+        ESC("ingrese el cuarto número (entre 1 y 45): ");
+        LEER(num4)
+        REPETIR
+            SI (num4 < 1 o num4 > 45) o ((num4 = num1) o (num4 = num2) o (num4 = num3) o (num4 = num5)) ENTONCES
+                ESC("Su número, num4, "debe estar entre 1 y 45 y no repetirlo. Ingreselo de nuevo: ")
+                LEER(num4)
+            FIN_SI
+        HASTA num4 > 1 y num4 < 45 y num4 <> num1 y num4 <> num2 y num4 <> num3
+
+        ESC("ingrese el quinto y último número (entre 1 y 45): ");
+        LEER(num5)
+        REPETIR
+            SI (num5 < 1 o num5 > 45) o ((num5 = num1) o (num5 = num2) o (num5 = num3) o (num5 = num4)) ENTONCES
+                ESC("Su número, num5, "debe estar entre 1 y 45 y no repetirlo. ingrese de nuevo: ")
+                LEER(num5)
+            FIN_SI
+        HASTA num5 > 1 y num5 < 45 y num5 <> num1 y num5 <> num2 y num5 <> num3 y num5 <> num4
+
+        ESC("Los números elegidos son: ",num1, num2, num3, num4, num5)
+FIN_ACCION

@@ -1,0 +1,20 @@
+Dado un año ingresado por el usuario, emitir el mensaje 'ACTUAL' si corresponde al año en curso,
+'PASADO' si es menor y 'FUTURO' si es mayor.
+
+Accion AñoIngresado es
+    Ambiente
+        año_actual = 2025
+        año_ingresado: entero
+    Proceso
+        ESC("Ingrese un año: ")
+        LEER(año_ingresado)
+
+        SI año_ingresado = año_actual ENTONCES
+            ESC("ACTUAL")
+        SINO
+            SI año_ingresado > año_actual ENTONCES
+                ESC("FUTURO")
+            SINO
+                ESC("PASADO")
+            FIN_SI
+        FIN_SI

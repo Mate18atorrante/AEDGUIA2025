@@ -1,0 +1,23 @@
+Elabore un algoritmo para calcular los primeros 50 números de FIBONACCI
+
+ACCION Fibonacci ES
+    AMBIENTE
+        n, sucesion_siguiente, sucesion_anterior2, sucesion_anterior1: entero
+
+    PROCESO
+        ESC("Este algoritmo calcula los primeros 50 números de la sucesión de FIBONACCI")
+
+        sucesion_anterior1 = 1
+        sucesion_anterior2 = 1
+        PARA n:= 1 HASTA 50 HACER
+
+            SI (n = 1) o (n = 2) ENTONCES
+                ESC("X(",n,)"" = 1")
+            SINO
+                sucesion_siguiente = sucesion_anterior1 + sucesion_anterior2
+                sucesion_anterior1 = sucesion_anterior2
+                sucesion_anterior2 = sucesion_siguiente
+                ESC("X(",n,)"" = ,sucesion_siguiente,")
+            FIN_SI
+        FIN_PARA
+FIN_ACCION

@@ -1,0 +1,19 @@
+Un restaurante permite pagar con tarjeta solo si el monto total de la cuenta supera $2000. Si es menor, solo acepta efectivo.
+Escribe un programa que reciba el monto de la cuenta y muestre si se puede pagar con tarjeta o solo en efectivo.
+
+Accion RestaurantePagar es
+    Ambiente
+        monto_total_cuenta: real
+        pago_con_tarjeta = 2000
+
+    Proceso
+        ESC("Ingrese el monto de la cuenta: ")
+        LEER(monto_total_cuenta)
+
+        monto_total_cuenta := ABSO(monto_total_cuenta)
+
+        SI (monto_total_cuenta > pago_con_tarjeta) ENTONCES
+            ESC("Puede pagar con tarjeta")
+        SINO
+            ESC("Solo puede pagar en efectivo")
+        FIN_SI

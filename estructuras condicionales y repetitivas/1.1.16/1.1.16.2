@@ -1,0 +1,64 @@
+1.Diseñe un algoritmo que obtenga el porcentaje de alumnos de ISI, IQ e IEM, sobre el total de egresados de
+la UTN-FRRe de un año.
+
+2.Modifique el algoritmo del punto 1. para que permita obtener e informar los mismos porcentajes pero para
+varias Facultades y al final emitir el total de alumnos por carrera y total general.
+
+Accion PorcentajeAlumnosEgresadosUTN es
+    Ambiente
+        salir, nro_facultad, total_egresados_facultad, total_egresados_general, total_isi, total_iq, total_iem,
+        egresados_isi, egresados_iq, egresados_iem: entero
+        porcentaje_egresados_isi, porcentaje_egresados_iq, porcentaje_egresados_iem: N(3,2)
+
+    Proceso
+        nro_facultad:= 0
+        total_egresados_general:= 0
+        total_isi := 0
+        total_iq := 0
+        total_iem := 0
+
+        REPETIR
+            nro_facultad := nro_facultad + 1
+            ESC("Esta es la facultad nro: ", nro_facultad)
+
+            ESC("Ingrese la cantidad de alumnos egresados de cada carrera...")
+            ESC("El algoritmo transformará en positivo en caso de que ingrese un número negativo...")
+
+            ESC("Ingrese la cantidad de alumnos egresados de ISI: "); LEER(egresados_isi)
+            ESC("Ingrese la cantidad de alumnos egresados de IQ: "); LEER(egresados_iq)
+            ESC("Ingrese la cantidad de alumnos egresados de IEM: "); LEER(egresados_iem)
+            egresados_isi := ABSO(egresados_isi)
+            egresados_iq := ABSO(egresados_iq)
+            egresados_iem := ABSO(egresados_iem)
+
+            total_egresados_facultad := egresados_isi + egresados_iq + egresados_iem
+
+            SI total_egresados_facultad > 0 ENTONCES
+                total_egresados_general := total_egresados_general + total_egresados_facultad
+                total_isi:= total_isi + egresados_isi
+                total_iq := total_iq + egresados_iq
+                total_iem := total_iem + egresados_iem
+
+                porcentaje_egresados_isi := egresados_isi * 100 / total_egresados_facultad
+                porcentaje_egresados_iq := egresados_iq * 100 / total_egresados_facultad
+                porcentaje_egresados_iem := egresados_iem * 100 / total_egresados_facultad
+
+                ESC("El porcentaje de egresados de cada carrera sobre el total de egresados en un año son: ")
+                ESC(porcentaje_egresados_isi,"% ISI")
+                ESC(porcentaje_egresados_iq,"% IQ")
+                ESC(porcentaje_egresados_iem,"% IEM")
+            SINO
+                ESC("Error: el total de egresados en la facultad es 0")
+            FIN_SI
+
+            ESC("Ingrese 0 o NEGATIVO para TERMINAR, número POSITIVO para CONTINUAR con otra facultad: )");
+            LEER(salir)
+        HASTA QUE salir <= 0
+
+        ESC("Fin de la carga de datos.")
+        ESC("Cantidad total de facultades procesadas: ", nro_facultad)
+        ESC("Total de alumnos egresados de ISI es: ",total_isi," alumnos")
+        ESC("Total de alumnos egresados de IQ es: ",total_iq," alumnos")
+        ESC("Total de alumnos egresados de IEM es: ",total_iem," alumnos")
+        ESC("Total de alumnos egresados general es: ",total_egresados_general," alumnos")
+FIN_ACCION

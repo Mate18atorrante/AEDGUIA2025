@@ -1,0 +1,35 @@
+Escriba un algoritmo que permita ingresar 3 valores númericos y determine cuál es el mayor, el medio y el menor.
+Accion 3valores es 
+  Ambiente
+   a, b, c: real
+
+  Proceso
+   Escribir("Ingrese el primer valor:")
+   Leer(a)
+   Escribir("Ingrese el segundo valor:")
+   Leer(b)
+   Escribir("Ingrese el último valor:")
+   Leer(c)
+
+   Si (a < b y b < c) entonces
+      Escribir("El menor es:", a, "El medio es:", b, "El mayor es:", c)
+   Sino 
+      Si (a < c y c < b) entonces
+         Escribir("El menor es:", a, "El medio es:", c, "El mayor es:", b)
+      Sino
+         Si (b < a y a < c) entonces
+            Escribir("El menor es:", b, "El medio es:", a, "El mayor es:", c)
+         Sino
+            Si (b < c y c < a) entonces
+               Escribir("El menor es:", b, "El medio es:", c, "El mayor es:", a)
+            Sino
+               Si (c < a y a < b) entonces
+                  Escribir("El menor es:", c, "El medio es:", a, "El mayor es:", b)
+               Sino
+                  Escribir("El menor es:", c, "El medio es:", b, "El mayor es:", a)
+               Fin_si
+            Fin_si
+         Fin_si
+      Fin_si
+   Fin_si
+Fin_accion

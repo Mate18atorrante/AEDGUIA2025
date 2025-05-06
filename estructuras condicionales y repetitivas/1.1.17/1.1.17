@@ -1,0 +1,38 @@
+Elabore un algoritmo que calcule el producto de dos enteros A y B empleando sólo la operación suma.
+
+Accion producto_con_suma es
+    Ambiente
+        NumA, NumB, suma, cont: entero
+
+    Proceso
+        ESC("Ingrese el primer número para la multiplicación: "); LEER(NumA)
+        ESC("Ingrese el segundo número: "); LEER(NumB)
+
+
+        SI (NumA = 0 or NumB = 0) ENTONCES
+                suma:= 0
+        SINO
+            SI (NumA > 0 y NumB > 0) o (NumA < 0 y NumB < 0) ENTONCES
+                NumA:= ABSO(NumA)
+                NumB:= ABSO(NumB)
+                suma:= 0
+
+                PARA cont:= 1 hasta numB HACER
+                    suma:= suma + numA
+                FIN_PARA
+            SINO
+                SI (NumA < 0 y NumB > 0) or (NumA > 0 y NumB < 0) ENTONCES
+                    NumA:= ABSO(NumA)
+                    NumB:= ABSO(NumB)
+                    suma:= 0
+
+                    PARA cont:= 1 hasta numB HACER
+                        suma:= suma + numA
+                    FIN_PARA
+                    suma:= -1 * suma
+                FIN_SI
+            FIN_SI
+        FIN_SI
+
+        ESC("Resultado de la multiplicación: ",suma)
+FIN_ACCION

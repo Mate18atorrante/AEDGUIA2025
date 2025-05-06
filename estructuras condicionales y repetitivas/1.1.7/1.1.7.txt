@@ -1,0 +1,34 @@
+Escriba un algoritmo que acepte dos números, calcule la suma e imprima el mensaje de acuerdo al resultado obtenido.
+
+Suma <= 50
+Suma > 50 y <= 100
+Suma > 100 y <= 200
+Suma > 200
+
+Accion SumaMensaje es
+    Ambiente
+        num1, num2, suma: real
+
+    Proceso
+        Escribir("ingrese un número")
+	Leer(num1)
+	Escribir("ingrese otro número")
+	Leer(num2)
+		
+	Suma:= num1 + num2
+
+	si suma <= 50 entonces
+	   Escribir("la suma es menor o igual a 50")
+	sino
+	    si suma <= 100 entonces
+	        Escribir("la suma es mayor a 50 y menor o igual a 100")
+	    sino
+		si suma <= 200 entonces
+		    Escribir("la suma es mayor a 100 y menor o igual 200")
+		sino
+		    Escribir("la suma es mayor a 200")
+		fin_si
+	    fin_si
+        fin_si
+
+Fin_Accion

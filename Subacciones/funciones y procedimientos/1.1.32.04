@@ -1,0 +1,25 @@
+ACCION suma_cifras ES
+    AMBIENTE
+        n, cont, clave: entero
+        salida: ("S","N")
+    PROCESO
+        REPETIR
+            ESC("Ingrese un número entero distinto de 0: ")
+            LEER(n)
+
+            SI n < 0 ENTONCES
+                ESC("Su clave es -1")
+            SINO
+                clave:= 0
+                MIENTRAS n > 0 ENTONCES
+                    clave:= n mod 10 + clave
+                    n := n div 10
+                FIN_MIENTRAS
+                clave:= clave mod 7
+                ESC("Su clave es: ",clave)
+
+                ESC("Si desea salir o seguir S/N: ")
+                LEER(salida)
+            FIN_SI
+        HASTA salida = S
+FIN_ACCION
