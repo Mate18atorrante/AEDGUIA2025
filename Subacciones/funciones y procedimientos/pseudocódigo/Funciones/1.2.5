@@ -1,0 +1,32 @@
+Escribir una función que verifique si un caracter introducido es un dígito o no.
+
+ACCION caracter ES
+    AMBIENTE
+        caract: caracter
+
+        FUNCION verif_digit_en_caract(l: caracter): booleano ES
+            SEGUN l HACER
+             = "0": verif_digit_en_caract := VERDADERO
+             = "1": verif_digit_en_caract := VERDADERO
+             = "2": verif_digit_en_caract := VERDADERO
+             = "3": verif_digit_en_caract := VERDADERO
+             = "4": verif_digit_en_caract := VERDADERO
+             = "5": verif_digit_en_caract := VERDADERO
+             = "6": verif_digit_en_caract := VERDADERO
+             = "7": verif_digit_en_caract := VERDADERO
+             = "8": verif_digit_en_caract := VERDADERO
+             = "9": verif_digit_en_caract := VERDADERO
+             OTROS: verif_digit_en_caract := FALSO
+        FIN_FUNCION
+
+    PROCESO
+        ESC("Este algoritmo recibe un caracter y evalua si es un digito o no (0 ... 9)")
+        ESC("Ingrese su caracter: ")
+        LEER(caract)
+
+        SI verif_digit_en_caract(caract) ENTONCES
+            ESC(caract," Es un digito.")
+        SINO
+            ESC(caract," No es un digito.")
+        FIN_SI
+FIN_ACCION
