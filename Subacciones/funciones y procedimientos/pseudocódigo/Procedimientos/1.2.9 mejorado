@@ -1,0 +1,121 @@
+Desarrollar los procedimientos mostrar_0, mostrar_1, mostrar_9 que visualicen por pantalla, respectivamente,
+los números 0,1,...,9 en tamaño grande, tal y como se muestra a continuación:
+*****        *   *****   *****   *   *   *****   *****   *****   *****   *****
+*   *        *       *       *   *   *   *       *           *   *   *   *   *
+*   *        *   *****   *****   *****   *****   *****       *   *****   *****
+*   *        *   *           *       *       *   *   *       *   *   *       *
+*****        *   *****   *****       *   *****   *****       *   *****   *****
+
+
+ACCION visualizacion ES
+    AMBIENTE
+        numero: entero
+
+        PROCEDIMIENTO mostrar_0() ES
+            ESC("*****")
+            ESC("*   *")
+            ESC("*   *")
+            ESC("*   *")
+            ESC("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO mostrar_1() ES
+            ESC("  *  ")
+            ESC("  *  ")
+            ESC("  *  ")
+            ESC("  *  ")
+            ESC("  *  ")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO mostrar_2() ES
+            ESC("*****")
+            ESC("    *")
+            ESC("*****")
+            ESC("*    ")
+            ESC("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO mostrar_3() ES
+            ESC("*****")
+            ESC("    *")
+            ESC("*****")
+            ESC("    *")
+            ESC("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO mostrar_4() ES
+            ESC("*   *")
+            ESC("*   *")
+            ESC("*****")
+            ESC("    *")
+            ESC("    *")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO mostrar_5() ES
+            ESC("*****")
+            ESC("*    ")
+            ESC("*****")
+            ESC("    *")
+            ESC("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO mostrar_6() ES
+            ESC("*****")
+            ESC("*    ")
+            ESC("*****")
+            ESC("*   *")
+            ESC("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO mostrar_7() ES
+            ESC("*****")
+            ESC("    *")
+            ESC("    *")
+            ESC("    *")
+            ESC("    *")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO mostrar_8() ES
+            ESC("*****")
+            ESC("*   *")
+            ESC("*****")
+            ESC("*   *")
+            ESC("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO mostrar_9() ES
+            ESC("*****")
+            ESC("*   *")
+            ESC("*****")
+            ESC("    *")
+            ESC("    *")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO mostrar_numeros(n:entero): ES
+            REPETIR
+                ESC("Ingrese el número: ")
+                LEER(numero)
+                SI n >= 0 y n <= 9 ENTONCES
+                    SEGUN n HACER
+                        = 0: mostrar_0()
+                        = 1: mostrar_1()
+                        = 2: mostrar_2()
+                        = 3: mostrar_3()
+                        = 4: mostrar_4()
+                        = 5: mostrar_5()
+                        = 6: mostrar_6()
+                        = 7: mostrar_7()
+                        = 8: mostrar_8()
+                        = 9: mostrar_9()
+                    FIN_SEGUN
+                SINO
+                    ESC("Debe ingresar un número válido entre 0 y 9")
+                FIN_SI
+            HASTA QUE n >= 0 y n <= 9
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ESC("Este algoritmo recibe un número del 0 al 9 y lo imprime en grande")
+
+        mostrar_numeros(numero)
+FIN_ACCION

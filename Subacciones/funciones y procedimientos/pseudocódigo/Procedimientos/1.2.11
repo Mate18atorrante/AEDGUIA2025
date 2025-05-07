@@ -1,0 +1,70 @@
+Diseñe un algoritmo que muestre un menú con las opciones sumar, restar, multiplicar y dividir, el algoritmo
+solicitará una opción y realizará la tarea elegida, se debe usar un procedimiento para mostrar el menú, pedir
+los datos en el algoritmo principal y después usar funciones para realizar los cálculos.
+
+ACCION calculadora_simple ES
+    AMBIENTE
+        decision: caracter
+        opcion: entero
+        numero1, numero2: real
+
+        FUNCION sumar(n1, n2:real): real ES
+            sumar := n1 + n2
+        FIN_FUNCION
+
+        FUNCION restar(n1, n2:real): real ES
+            restar := n1 - n2
+        FIN_FUNCION
+
+        FUNCION multiplicar(n1, n2:real): real ES
+            multiplicar := n1 * n2
+        FIN_FUNCION
+
+        FUNCION dividir(n1, n2:real): real ES
+            dividir := n1 / n2
+        FIN_FUNCION
+
+        PROCEDIMIENTO menu() ES
+            ESC("Seleccione una opción (1 - 4)")
+            ESC("| suma(1) |")
+            ESC("| resta(2) |")
+            ESC("| multiplicación(3) |")
+            ESC("| división(4) |")
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ESC("Este algoritmo pide al usuario dos números y pregunta si quiere sumarlos o restarlos, multiplicarlos o dividirlos")
+
+        REPETIR
+            menu()
+
+            REPETIR
+                LEER(opcion)
+                SI (opcion < 1) o (opcion > 4) ENTONCES
+                    ESC("Debe ingresar un número entre 1 y 4")
+            HASTA QUE opcion >= 1 y opcion <= 4
+
+            ESC("Ingrese el primer número: ")
+            LEER(numero1)
+            ESC("Ingrese el segundo número (distinto de 0 si decide división): ")
+
+            SI opcion = 4 ENTONCES
+                REPETIR
+                    LEER(numero2)
+                    SI numero2 = 0 ENTONCES
+                        ESC("Debe ingresar un número distinto de 0")
+                    FIN_SI
+                HASTA QUE numero2 <> 0
+            SINO
+                LEER(numero2)
+
+            SEGUN opcion HACER
+                = 1: ESC("Eligió suma. El resultado es: ",sumar(numero1, numero2))
+                = 2: ESC("Eligió resta. El resultado es: ",restar(numero1, numero2))
+                = 3: ESC("Eligió multiplicación. El resultado es: ",multiplicar(numero1, numero2))
+                = 4: ESC("Eligió división. El resultado es: ",dividir(numero1, numero2))
+            FIN_SEGUN
+
+            ESC("Desea terminar o hacer otro cálculo? S/N")
+            LEER(decision)
+        HASTA QUE decision = "N"

@@ -1,0 +1,90 @@
+Desarrollar los procedimientos mostrar_0, mostrar_1, mostrar_9 que visualicen por pantalla, respectivamente,
+los números 0,1,...,9 en tamaño grande, tal y como se muestra a continuación:
+*****        *   *****   *****   *   *   *****   *****   *****   *****   *****
+*   *        *       *       *   *   *   *       *           *   *   *   *   *
+*   *        *   *****   *****   *****   *****   *****       *   *****   *****
+*   *        *   *           *       *       *   *   *       *   *   *       *
+*****        *   *****   *****       *   *****   *****       *   *****   *****
+
+Escribir un único procedimiento mostrar_nro que reciba como parámetro un dígito y lo muestre por pantalla de la misma
+forma que se indica en el ejercicio 9.
+
+ACCION visualizacion ES
+    AMBIENTE
+        numero: entero
+
+        PROCEDIMIENTO mostrar_nro(n:entero): ES
+            REPETIR
+                ESC("Ingrese el número: ")
+                LEER(n)
+                SEGUN n HACER
+                    = 0:
+                        ESC("*****")
+                        ESC("*   *")
+                        ESC("*   *")
+                        ESC("*   *")
+                        ESC("*****")
+                    = 1:
+                        ESC("  *  ")
+                        ESC("  *  ")
+                        ESC("  *  ")
+                        ESC("  *  ")
+                        ESC("  *  ")
+                    = 2:
+                        ESC("*****")
+                        ESC("    *")
+                        ESC("*****")
+                        ESC("*    ")
+                        ESC("*****")
+                    = 3:
+                        ESC("*****")
+                        ESC("    *")
+                        ESC("*****")
+                        ESC("    *")
+                        ESC("*****")
+                    = 4:
+                        ESC("*   *")
+                        ESC("*   *")
+                        ESC("*****")
+                        ESC("    *")
+                        ESC("    *")
+                    = 5:
+                        ESC("*****")
+                        ESC("*    ")
+                        ESC("*****")
+                        ESC("    *")
+                        ESC("*****")
+                    = 6:
+                        ESC("*****")
+                        ESC("*    ")
+                        ESC("*****")
+                        ESC("*   *")
+                        ESC("*****")
+                    = 7:
+                        ESC("*****")
+                        ESC("    *")
+                        ESC("    *")
+                        ESC("    *")
+                        ESC("    *")
+                    = 8:
+                        ESC("*****")
+                        ESC("*   *")
+                        ESC("*****")
+                        ESC("*   *")
+                        ESC("*****")
+                    = 9:
+                        ESC("*****")
+                        ESC("*   *")
+                        ESC("*****")
+                        ESC("    *")
+                        ESC("    *")
+                    OTROS: ESC("Debe ingresar un número válido entre 0 y 9")
+                FIN_SEGUN
+            HASTA QUE n >= 0 y n <= 9
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ESC("Este algoritmo recibe un número del 0 al 9 y lo imprime en grande")
+
+        mostrar_nro(numero)
+FIN_ACCION
