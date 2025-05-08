@@ -27,23 +27,35 @@ while True:
     menu()
 
     while True:
-        opcion = int(input("Elijo la opción: "))
-        if (opcion < 1) or (opcion > 4):
-            print("!!! Debe ingresar un número entre 1 y 4 !!!")
-        elif (opcion >= 1) and (opcion <= 4):
-            break
-
-    numero1 = float(input("\nIngrese el primer número: "))
-
-    if opcion == 4:
-        while True:
-            numero2 = float(input("Ingrese el segundo número (distinto de 0): "))
-            if numero2 != 0:
+        try:
+            opcion = int(input("Elijo la opción: "))
+            if (opcion < 1) or (opcion > 4):
+                print("!!! Debe ingresar un número entre 1 y 4 !!!")
+            elif (opcion >= 1) and (opcion <= 4):
                 break
-            elif numero2 == 0:
-                print("!!! Debe ingresar un número distinto de 0 !!!")
-    else:
-        numero2 = float(input("Ingrese el segundo número: "))
+        except ValueError:
+            print("Debe ingresar un número válido, no un carácter.")
+
+    while True:
+        try:
+            numero1 = float(input("\nIngrese el primer número: "))
+            break
+        except ValueError:
+            print("Debe ingresar un número, no un carácter.")
+
+    while True:
+        try:
+            if opcion == 4:
+                numero2 = float(input("Ingrese el segundo número (distinto de 0): "))
+                if numero2 != 0:
+                    break
+                elif numero2 == 0:
+                    print("!!! Debe ingresar un número distinto de 0 !!!")
+            else:
+                numero2 = float(input("Ingrese el segundo número: "))
+                break
+        except ValueError:
+            print("Debe ingresar un número, no un carácter.")
 
     if opcion == 1:
         print(f"\nEligió SUMA(1). Resultado: {sumar(numero1, numero2)}")

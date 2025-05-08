@@ -1,4 +1,4 @@
-#Elabore un algoritmo para calcular los primeros 50 números de FIBONACCI
+''#Elabore un algoritmo para calcular los primeros 50 números de FIBONACCI
 
 print("Este algoritmo calcula los primeros 50 números de la sucesión de FIBONACCI")
 

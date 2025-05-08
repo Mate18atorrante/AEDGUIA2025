@@ -1,0 +1,27 @@
+Dada una secuencia de letras del alfabeto que finaliza con una marca '*', contar cuantas letras "A" hay en la secuencia.
+
+ACCION secuencia_letras ES
+    AMBIENTE
+        cont: entero
+        sec_caract: secuencia de caracter
+        s: caracter
+
+    PROCESO
+        ESC("Este algoritmo cuenta las veces que aparece la letra 'A' en una secuencia de caracter")
+
+        ARR(sec_caract)
+        AVZ(sec_caract, s)
+        cont:= 0
+
+        MIENTRAS s <> "*" HACER
+            SI s = "A" ENTONCES
+                cont:= cont + 1
+            FIN_SI
+
+            AVZ(sec_caract, s)
+        FIN_MIENTRAS
+
+        CERRAR(sec_caract)
+
+        ESC("Cantidad de veces que aparece la letra 'A': ",cont)
+FIN_ACCION

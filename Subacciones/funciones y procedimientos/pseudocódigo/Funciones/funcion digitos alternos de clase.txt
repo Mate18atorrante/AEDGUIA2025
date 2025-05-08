@@ -1,0 +1,35 @@
+1. Cuando la suma de los dígitos alternos de un número son iguales, ese numero ese exáctamente divisible por once.
+Por ejemplo 5841: 5+4 = 8+1, por lo tanto, el número 5841 es divisible por once.
+Escriba un algoritmo que encuentre y muestre todos los números de 4 cifras que sean múltiplos de 11 y al final informe
+cuantos multiplos de 11 encontró.
+
+ACCION digitosalternos ES
+    AMBIENTE
+        i, cont: entero
+        FUNCION digitos_alternos(n: entero): lógico ES
+            AMBIENTE
+                unidad, decena, centena, milesima: entero
+
+            PROCESO
+                unidad := n mod 10
+                decena:= (n mod 100) div 10
+                centena:= (decena div 100) mod 10
+                milesima:= n div 1000
+
+                SI (unidad + centena) = (decena + milesima) ENTONCES
+                    digitos_alternos := VERDADERO
+                SINO
+                    digitos_alternos := FALSO
+                FIN_SI
+        FIN_FUNCION
+
+    PROCESO
+        cont:= 0
+        PARA i:= 1000 HASTA 9999 HACER
+            SI digitos_alternos(i) ENTONCES
+                ESC("El número ",i," es divisible por 11")
+                cont:= cont + 1
+            FIN_SI
+        FIN_PARA
+        ESC("Del número 1000 al 9999 hay ",cont," números divisibles por 11.")
+FIN_ACCION

@@ -1,0 +1,23 @@
+Dada una secuencia de letras del alfabeto que finaliza con la letra "Z", contar cuantas consonantes hay en la secuencia.
+
+ACCION secuencia_alfabeto ES
+    AMBIENTE
+        i, cont: entero
+        s: caracter
+        sec_alfabeto: secuencia de caracter
+        vocales = ("A","E","I","O","U")
+    PROCESO
+        ESC("Este algoritmo cuenta la cantidad de consonantes en una secuencia de de caracteres")
+
+        ARR(sec_alfabeto)
+        PARA i:= 1 HASTA 27 HACER
+            AVZ(sec_alfabeto, s)
+            SI s <> vocales ENTONCES:
+                cont:= cont + 1
+            FIN_SI
+        FIN_PARA
+
+        CERRAR(sec_alfabeto)
+
+        ESC("Cantidad de consonantes: ",cont)
+FIN_ACCION
