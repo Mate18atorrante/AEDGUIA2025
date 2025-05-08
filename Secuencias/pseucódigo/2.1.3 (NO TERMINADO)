@@ -1,0 +1,25 @@
+Se dispone de una secuencia de caracteres y se desea obtener una secuencia de salida que resulte de copiar la secuencia
+ de entrada, descartando el caracter "$".
+
+ACCION cre_copia_secuencia ES
+    AMBIENTE
+        s: caracter
+        sec_entrada, sec_salida: secuencia de caracter
+
+    PROCESO
+        ESC("Este algoritmo crea una secuencia de caracteres a partir de otra, omitiendo el caracter '$'")
+
+        ARR(sec_entrada)
+        CREAR(sec_salida)
+
+        REPETIR
+            AVZ(sec_entrada, s)
+
+            SI s1 <> "$" ENTONCES
+                ESCRIBIR(sec_salida, s)
+            FIN_SI
+        HASTA QUE FDS(sec_entrada)
+
+        CERRAR(sec_entrada)
+        CERRAR(sec_salida)
+FIN_ACCION

@@ -1,0 +1,21 @@
+Se dispone de una secuencia de números de socios, y se desea saber la cantidad de socios que están registrados.
+
+ACCION cant_socios ES
+    AMBIENTE
+        s, cont: entero
+        sec: secuencia numérica
+
+    PROCESO
+        ESC("Este algoritmo cuenta la cantidad de socios registrados mediante sus numeros en una secuencia.")
+
+        ARR(sec)
+        cont:= 0
+
+        REPETIR
+            AVZ(sec, s)
+            cont:= cont + 1
+        HASTA QUE FDS(sec)
+
+        CERRAR(sec)
+
+        ESC("Hay ",cont," socios registrados.")
