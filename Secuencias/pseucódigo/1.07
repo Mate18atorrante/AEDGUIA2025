@@ -1,0 +1,53 @@
+1.07. Se tiene una secuencia de enteros que contiene todos los CUIT de los empleados de una empresa, la misma
+termina con el CUIT 0. Para evitar largas esperas en los días de pago, la empresa necesita organizarlos de acuerdo
+al último dígito de su documento, generar una secuencia con los CUIT de las personas que su número de documento
+termine con 0, 1, 2 o 3.
+
+ACCION cuits ES
+    AMBIENTE
+        sec1, sec2: secuencia de entero
+        s, i: entero
+        ultimo_digito = (0,1,2,3)
+
+
+    PROCESO // idea de bruno (no funcional, pero interesante)
+        ARR(sec1)
+        AVZ(sec1, s)
+        CREAR(sec2)
+
+        MIENTRAS s <> 0 HACER
+            PARA i:= 0 HASTA 9 HACER
+                AVZ(sec1,s)
+            FIN_PARA
+
+            SI s EN ultimo_digito ENTONCES
+                ESCRIBIR(sec2, s)
+                AVZ(sec1,s)
+            SINO
+                AVZ(sec1, s)
+            FIN_SI
+        FIN_MIENTRAS
+
+        CERRAR(sec1)
+        CERRAR(sec2)
+
+        // idea mia y del profe (funcional, pero no terminado)
+        ARR(sec1)
+        AVZ(sec1, s)
+        CREAR(sec2)
+
+        MIENTRAS s <> 0 HACER
+            PARA i:= 0 HASTA 9 HACER
+                AVZ(sec1,s)
+            FIN_PARA
+
+            SI s EN ultimo_digito ENTONCES
+                ESCRIBIR(sec2, s)
+                AVZ(sec1,s)
+            SINO
+                AVZ(sec1, s)
+            FIN_SI
+        FIN_MIENTRAS
+
+        CERRAR(sec1)
+        CERRAR(sec2)

@@ -5,19 +5,28 @@ ACCION secuencia_alfabeto ES
         i, cont: entero
         s: caracter
         sec_alfabeto: secuencia de caracter
-        vocales = ("A","E","I","O","U")
+        vocales = ("A","E","I","O","U") // se puede definir entre llaves también, pero siempre tiene que tener el igual =, o sino sería una variable que podría tomar ciertos valores nomás
     PROCESO
         ESC("Este algoritmo cuenta la cantidad de consonantes en una secuencia de de caracteres")
 
         ARR(sec_alfabeto)
-        PARA i:= 1 HASTA 27 HACER
+
+        REPETIR
             AVZ(sec_alfabeto, s)
-            SI s <> vocales ENTONCES:
+            SI s NO EN vocales ENTONCES:
                 cont:= cont + 1
             FIN_SI
-        FIN_PARA
+        HASTA QUE s = "Z"
 
         CERRAR(sec_alfabeto)
-
         ESC("Cantidad de consonantes: ",cont)
 FIN_ACCION
+
+        //otra opcion
+
+        REPETIR
+            AVZ(sec_alfabeto, s)
+            SI (s <> "a") y (s <> "e") y (s <> "i") y (s <> "o") y (s <> "u") ENTONCES:
+                cont:= cont + 1
+            FIN_SI
+        HASTA QUE s = "Z"

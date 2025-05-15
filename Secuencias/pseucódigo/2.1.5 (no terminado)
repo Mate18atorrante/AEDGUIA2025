@@ -5,4 +5,20 @@ correlativos. Se desea generar una secuencia que contenga los números de socios
 
 ACCION cant_socios2 ES
     AMBIENTE
-        sec_
+        sec1, sec2: secuencia de entero
+        s, cont: entero
+
+    PROCESO
+        ESC("Este algoritmo cuenta la cantidad de socios registrados mediante sus numeros en una secuencia.")
+
+        ARR(sec)
+        cont:= 0
+
+        REPETIR
+            AVZ(sec, s)
+            cont:= cont + 1
+        HASTA QUE FDS(sec)
+
+        CERRAR(sec)
+
+        ESC("Hay ",cont," socios registrados.")

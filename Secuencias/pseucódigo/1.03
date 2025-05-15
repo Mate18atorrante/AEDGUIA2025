@@ -1,0 +1,23 @@
+1.03. Se dispone de una secuencia de caracteres y se desea obtener una secuencia de salida que resulte de copiar la
+secuencia de entrada, descartando el caracter "$".
+
+ACCION sec_copia_sin_$ ES
+    AMBIENTE
+        sec1, sec2: secuencia de caracter
+        s: caracter
+
+    PROCESO
+        ARR(sec1)
+        AVZ(sec1, s)
+
+        MIENTRAS NFDS(sec1) HACER
+            SI s <> "$" ENTONCES
+                ESC(sec2, s)
+            FIN_SI
+
+            AVZ(sec1, s)
+        FIN_MIENTRAS
+
+        CERRAR(sec1)
+        CERRAR(sec2)
+FIN_ACCION

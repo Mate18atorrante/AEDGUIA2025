@@ -1,0 +1,24 @@
+1.16 Se dispone de una secuencia de números de DNI asignados a un circuito electoral, generar otra secuencia de
+números que contenga los DNI múltiplos de 3.
+
+ACCION dni_multiplos_3 ES
+    AMBIENTE
+        sec1, sec2: secuencia de entero //asumo que la secuencia de entrada es impura porque no se menciona la marca de fin (no sabemos si tenemos que tratar ese elemento"
+        s: entero
+
+    PROCESO
+        ARR(sec1)
+        AVZ(sec1, s)
+        CREAR(sec2)
+
+        MIENTRAS NFDS(sec1) ENTONCES
+            SI s MOD 3 = 0 ENTONCES
+                ESC(sec2, s)
+            FIN_SI
+            AVZ(sec1, s)
+        FIN_MIENTRAS
+
+        CERRAR(sec1)
+        CERRAR(sec2) //super importante cerrar la secuencia de salida
+FIN_ACCION
+
