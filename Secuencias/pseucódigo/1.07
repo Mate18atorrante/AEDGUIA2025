@@ -11,7 +11,7 @@ ACCION cuits ES
 
 
     PROCESO
-        // idea mia y del profe (funcional, pero no terminado)
+        // idea mia y del profe (funcional)
         ARR(sec1)
         AVZ(sec1, s)
         CREAR(sec2)
