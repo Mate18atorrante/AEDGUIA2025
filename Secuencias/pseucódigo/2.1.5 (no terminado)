@@ -9,16 +9,45 @@ ACCION cant_socios2 ES
         s, cont: entero
 
     PROCESO
-        ESC("Este algoritmo cuenta la cantidad de socios registrados mediante sus numeros en una secuencia.")
+        ARR(sec1)
+        CREAR(sec2)
+        AVZ(sec1, s)
+        cont:= s
 
-        ARR(sec)
-        cont:= 0
+        MIENTRAS NFDS(sec1) HACER
+            MIENTRAS cont < s HACER
+                ESC(sec2, cont)
+                cont:= cont + 1
+            FIN_MIENTRAS
 
-        REPETIR
-            AVZ(sec, s)
             cont:= cont + 1
-        HASTA QUE FDS(sec)
 
-        CERRAR(sec)
+            AVZ(sec1, s)
+        FIN_MIENTRAS
 
-        ESC("Hay ",cont," socios registrados.")
+        CERRAR(sec1)
+        CERRAR(sec2)
+FIN_ACCION
+
+        // IDEA DEL PROFE AXEL (mucho más óptima)
+    PROCESO
+        ARR(sec1)
+        CREAR(sec2)
+        AVZ(sec1, s)
+        cont:= s
+
+        MIENTRAS NFDS(sec1) HACER
+            PARA i:= cont HASTA s-1 HACER
+                ESC(sec2, i)
+            FIN_PARA
+
+            cont:= s
+
+            AVZ(sec1,s)
+        FIN_MIENTRAS
+
+        CERRAR(sec1)
+        CERRAR(sec2)
+FIN_ACCION
+        // idea mia
+

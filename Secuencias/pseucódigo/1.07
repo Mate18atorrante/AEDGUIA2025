@@ -10,33 +10,30 @@ ACCION cuits ES
         ultimo_digito = (0,1,2,3)
 
 
-    PROCESO // idea de bruno (no funcional, pero interesante)
-        ARR(sec1)
-        AVZ(sec1, s)
-        CREAR(sec2)
-
-        MIENTRAS s <> 0 HACER
-            PARA i:= 0 HASTA 9 HACER
-                AVZ(sec1,s)
-            FIN_PARA
-
-            SI s EN ultimo_digito ENTONCES
-                ESCRIBIR(sec2, s)
-                AVZ(sec1,s)
-            SINO
-                AVZ(sec1, s)
-            FIN_SI
-        FIN_MIENTRAS
-
-        CERRAR(sec1)
-        CERRAR(sec2)
-
+    PROCESO
         // idea mia y del profe (funcional, pero no terminado)
         ARR(sec1)
         AVZ(sec1, s)
         CREAR(sec2)
 
         MIENTRAS s <> 0 HACER
+            SI ((s DIV 10) MOD 10) EN ultimo_digito ENTONCES
+                ESCRIBIR(sec2, s)
+            FIN_SI
+
+            AVZ(sec1, s)
+        FIN_MIENTRAS
+
+        CERRAR(sec1)
+        CERRAR(sec2)
+FIN_ACCION
+
+    // idea de bruno (no funcional, pero interesante)
+        ARR(sec1)
+        AVZ(sec1, s)
+        CREAR(sec2)
+
+        MIENTRAS s <> 0 HACER
             PARA i:= 0 HASTA 9 HACER
                 AVZ(sec1,s)
             FIN_PARA
@@ -51,3 +48,5 @@ ACCION cuits ES
 
         CERRAR(sec1)
         CERRAR(sec2)
+
+
