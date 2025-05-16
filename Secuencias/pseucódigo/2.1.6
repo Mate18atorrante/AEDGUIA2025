@@ -1,26 +1,54 @@
 Dada una secuencia de enteros que almacena la cantidad de habitantes de las ciudades capitales de las 23 provincias de
- la República Argentina, discriminados 4 categorías: menores de 18 años (varones y mujeres) y mayores de 18 años
- (varones y mujeres). Se pide determinar la población total y los siguientes porcentajes: masculinos, femeninos, mayores
- de 18 y menores de 18.
+la República Argentina, discriminados 4 categorías: menores de 18 años (varones y mujeres) y mayores de 18 años
+(varones y mujeres). Se pide determinar la población total y los siguientes porcentajes: masculinos, femeninos, mayores
+de 18 y menores de 18.
 
 ACCION poblacion_argentina ES
     AMBIENTE
         sec_poblacion: secuencia de enteros
-        persona, cont_pobl_total, cont_menores_muj, cont_menores_hom, cont_mayores_muj, cont_mayores_hom: entero
+        i, s, pobl_total, menores_muj, menores_hom, mayores_muj, mayores_hom: entero
+        porc_muj, porc_hom, porc_menores, por_mayores:= real
 
     PROCESO
         ARR(sec_poblacion)
-        cont_pobl_total:= 0
-        cont_menores_muj:= 0
-        cont_menores_hom:= 0
-        cont_mayores_muj:= 0
-        cont_mayores_hom:= 0
 
-        REPETIR
-            AVZ(sec_poblacion, persona)
-            cont_pobl_total:= cont_pobl_total + 1 //contador para poblacion total (sumo persona por persona)
+        pobl_total:= 0
+        menores_muj:= 0
+        menores_hom:= 0
+        mayores_muj:= 0
+        mayores_hom:= 0
 
-            MIENTRAS s < 18 HACER
-                cont_mayores
-        HASTA QUE FDS(sec_poblacion)
+        PARA i:= 0 HASTA 91 HACER
+            AVZ(sec_poblacion, s)
+            pobl_total:= pobl_total + s
+
+                SEGUN i MOD 4 HACER //Utilizo un i MOD N que es util para manejar acciones que se repiten cada cierta cantidad de pasos
+                    = 0:
+                        menores_muj := menores_muj + s
+                    = 1:
+                        menores_hom := menores_hom + s
+                    = 2:
+                        mayores_muj := mayores_muj + s
+                    = 3:
+                        mayores_hom := mayores_hom + s
+                FIN_SEGUN
+        FIN_PARA
+
+        porc_muj := (menores_muj + mayores_muj) / pobl_total * 100
+        porc_hom := (menores_hom + mayores_hom) / pobl_total * 100
+        porc_menores := (menores_muj + menores_hom) / pobl_total * 100
+        porc_mayores := (mayores_muj + mayores_hom) / pobl_total * 100
+
+        ESC("Población total: ",pobl_total," habitantes.")
+        ESC("Porcentaje mujeres: un %",porc_muj," mujeres.")
+        ESC("Porcentaje hombres: un %",porc_hom," hombres.)
+        ESC("Porcentaje cantidad de menores de 18 años: un %",porc_menores)
+        ESC("Porcentaje cantidad de mayores de 18 años: un %",porc_mayores)
+FIN_ACCION
+
+
+
+
+
+
 

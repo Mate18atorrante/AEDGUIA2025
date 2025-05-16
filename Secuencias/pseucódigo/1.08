@@ -1,0 +1,59 @@
+1.07. Se tiene una secuencia de enteros que contiene todos los CUIT de los empleados de una empresa, la misma
+termina con el CUIT 0. Para evitar largas esperas en los días de pago, la empresa necesita organizarlos de acuerdo
+al último dígito de su documento, generar una secuencia con los CUIT de las personas que su número de documento
+termine con 0, 1, 2 o 3.
+
+1.08. Teniendo en cuenta el ejercicio anterior, se solicita que la secuencia de salida sea una secuencia de caracteres
+y los CUIT se separen unos de otros con el caracter "-".
+
+ACCION cuit2 ES
+    AMBIENTE
+        sec1: secuencia de entero
+        sec2: secuencia de caracter
+        e: entero
+        final_docu = (0, 1, 2, 3)
+        separador, digito: caracter
+
+        FUNCION entero_a_caracter(n: entero): caracter ES
+            SEGUN n HACER
+                = 0: entero_a_caracter := "0"
+                = 1: entero_a_caracter := "1"
+                = 2: entero_a_caracter := "2"
+                = 3: entero_a_caracter := "3"
+                = 4: entero_a_caracter := "4"
+                = 5: entero_a_caracter := "5"
+                = 6: entero_a_caracter := "6"
+                = 7: entero_a_caracter := "7"
+                = 8: entero_a_caracter := "8"
+                = 9: entero_a_caracter := "9"
+            FIN_SEGUN
+        FIN_FUNCION
+
+        FUNCION digitos(n, posicion: entero): entero ES
+            n := n DIV (10**posicion)
+            digitos := n MOD 10
+        FIN_FUNCION
+
+    PROCESO
+        separador := "-"
+        ARR(sec1)
+        AVZ(sec1, e)
+        CREAR(sec2)
+
+        MIENTRAS e <> 0 HACER
+            SI e (DIV 10) MOD 10 EN final_docu ENTONCES
+
+                PARA i:= 10 HASTA 0, -1 HACER
+                    digito:= entero_a_caracter(digitos(e, i))
+                    ESC(sec2, digito)
+                FIN_PARA
+
+                ESC(sec2, separador)
+            FIN_SI
+
+            AVZ(sec1, e)
+        FIN_MIENTRAS
+
+        CERRAR(sec1)
+        CERRAR(sec2)
+FIN_ACCION

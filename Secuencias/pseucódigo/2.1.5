@@ -1,0 +1,82 @@
+Se dispone de una secuencia de números de socios, y se desea saber la cantidad de socios que están registrados.
+
+La secuencia de socios del problema anterior tiene el inconveniente de que los números están ordenados pero no son
+correlativos. Se desea generar una secuencia que contenga los números de socios que no figuran en la secuencia de socios.
+
+ACCION cant_socios2 ES
+    AMBIENTE
+        sec1, sec2: secuencia de entero
+        s, nro_ant, i: entero
+
+/////// BASADO EN UNA IDEA DEL PROFE AXEL (mucho más óptima)
+    PROCESO
+        ARR(sec1)
+        CREAR(sec2)
+        AVZ(sec1, s)
+        nro_ant:= s
+
+        MIENTRAS NFDS(sec1) HACER
+            AVZ(sec1, s)
+            PARA i:= nro_ant+1 HASTA s-1 HACER
+                ESC(sec2, i)
+            FIN_PARA
+
+            nro_ant := s
+        FIN_MIENTRAS
+
+        CERRAR(sec1)
+        CERRAR(sec2)
+FIN_ACCION
+
+    /////////// idea de compañera (no tan optima)
+
+        ARR(sec1)
+        CREAR(sec2)
+        AVZ(sec1, s)
+        cont:= s
+
+        MIENTRAS NFDS(sec1) HACER
+            MIENTRAS cont < s HACER
+                ESC(sec2, cont)
+                cont:= cont + 1
+            FIN_MIENTRAS
+
+            cont:= cont + 1
+
+            AVZ(sec1, s)
+        FIN_MIENTRAS
+
+        CERRAR(sec1)
+        CERRAR(sec2)
+FIN_ACCION
+
+    ///////// idea de gonza novio de zai
+    Proceso
+        ARR(sec)
+        AVZ(sec,v)
+        num_ant:= 0
+        num_act:= 0
+
+        Mientras NFDS(sec) hacer
+            num_ant:= v; AVZ(sec,v)
+            num_act:= v
+
+            Mientras num_ant <> num_act hacer
+                num_ant+=1
+                Si num_ant <> num_act entonces
+                    GRABAR(salida,num_ant)
+                FS
+            FM
+        FM
+        //idea mia loca
+            num_ant:= v; AVZ(sec,v)
+            num_act:= v
+
+            PARA i:= num_ant+1 HASTA num_act-1 hacer
+                    GRABAR(salida,i)
+                    AVZ(sec,v)
+            FIN_PARA
+
+
+            FM
+        FM
