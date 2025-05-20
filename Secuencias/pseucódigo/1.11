@@ -1,0 +1,34 @@
+1.11. Dada una secuencia de caracteres, determinar la cantidad de palabras de 4 caracteres (letras)
+
+ACCION palabras_4_caracts ES
+    AMBIENTE
+        alfabeto = ("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")
+        sec: secuencia de caracter
+        s: caracter
+        cont_palabras, cant_letras: entero
+
+    PROCESO
+        cont_palabras := 0
+        ARR(sec)
+        AVZ(sec, s)
+
+        MIENTRAS NFDS(sec) HACER
+            cant_letras := 0
+            MIENTRAS s <> "" HACER
+                SI s EN alfabeto ENTONCES
+                    cant_letras := cant_letras + 1
+                FIN_SI
+
+                AVZ(sec, s)
+            FIN_MIENTRAS
+
+            SI cant_letras = 4 ENTONCES
+                cont_palabras := cont_palabras + 1
+            FIN_SI
+
+            SI s = "" ENTONCES
+                AVZ(sec, s)
+            FIN_SI
+        FIN_MIENTRAS
+
+        ESC("La cantidad de palabras que tienen 4 letras son ",cont_palabras)

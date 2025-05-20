@@ -1,0 +1,34 @@
+1.09. Se dispone de una secuencia de caracteres. Se desea determinar la cantidad de palabras que comienzan con
+la letra “I”.
+
+ACCION cantidad_palabras_I ES
+    AMBIENTE
+        sec_palabs: secuencia de caracter
+        s: caracter
+        cont: entero
+
+    PROCESO
+        ARR(sec_palabs)
+        AVZ(sec_palabs, s)
+        cont:= 0
+
+        MIENTRAS NFDS(sec_palabs) HACER
+            SI s <> "" ENTONCES
+                SI s = "I" ENTONCES
+                    cont:=cont+1
+                FIN_SI
+
+                MIENTRAS s <> "" HACER
+                    AVZ(sec_palabs, s)
+                FIN_MIENTRAS
+            SINO
+                AVZ(sec_palabs,s)
+            FIN_SI
+        FIN_MIENTRAS
+
+        CERRAR(sec_palabs)
+
+        ESC("La cantidad de palabras que empiezan con I son ",cont)
+FIN_ACCION
+
+

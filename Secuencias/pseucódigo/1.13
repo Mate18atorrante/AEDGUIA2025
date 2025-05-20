@@ -1,0 +1,48 @@
+1.12. Se dispone de una secuencia de caracteres. Se desea listar las palabras que comiencen con "ALG".
+
+1.13. A partir del ejercicio anterior, determinar el porcentaje que representan las palabras que comienzan con “ALG”
+sobre todas las palabras de la secuencia
+
+ACCION lista_palabras_2 ES
+    AMBIENTE
+        sec1, sec2: secuencia de caracter
+        v: caracter
+        total_palabs, total_algo
+
+    PROCESO
+        ARR(sec1)
+        AVZ(sec1, v)
+        CREAR(sec2)
+        cont:= 0
+
+        | LOCO PALULO PALOLO SAKATAKA ALGUNOS|
+
+        MIENTRAS NFDS(sec1) HACER
+            MIENTRAS v <> "" HACER
+                total_palabs := total_palabs + 1 (hay un error acá, puta, no se cuentan bien las palabras totales)
+
+                SI v = "A" ENTONCES
+                    AVZ(sec, v)
+                    SI v = "L" ENTONCES
+                        AVZ(sec, v)
+                        SI v = "G" ENTONCES
+                            ESC(sec2, "A")
+                            ESC(sec2, "L")
+                            ESC(sec2, v)
+
+                            total_algo:= total_algo + 1
+                            AVZ(sec, v)
+
+                            MIENTRAS v <> "" HACER
+                                ESC(sec1, v)
+                                AVZ(sec, v)
+                            FIN_MIENTRAS
+                        FIN_SI
+                    FIN_SI
+                FIN_SI
+
+                AVZ(sec1, v)
+            FIN_MIENTRAS
+
+            AVZ(sec1, v)
+        FIN_MIENTRAS

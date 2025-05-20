@@ -1,0 +1,33 @@
+1.10. Se dispone de una secuencia de caracteres. Se desea permita contar la cantidad de palabras que comienzan
+con una letra dada.
+
+ACCION cant_palabras_n ES
+    AMBIENTE
+        sec_palabs: secuencia de caracter
+        s, letra_dada: caracter
+        cont: entero
+
+    PROCESO
+        ESC("Ingrese la letra con la que deben empezar las palabras que vamos a contar")
+        LEER(letra_dada)
+
+        cont:= 0
+        ARR(sec_palabs)
+        AVZ(sec_palabs, s)
+
+        MIENTRAS NFDS(sec_palabs) HACER
+            SI s <> "" ENTONCES
+                SI s = letra_dada ENTONCES
+                    cont:= cont + 1
+                FIN_SI
+
+                MIENTRAS s <> "" HACER
+                    AVZ(sec_palabs, s)
+                FIN_MIENTRAS
+            SINO
+                AVZ(sec_palabs, s)
+            FIN_SI
+        FIN_MIENTRAS
+
+        ESC("Cantidad de palabras que empiezan con ",letra_dada," son ",cont)
+FIN_ACCION
