@@ -31,5 +31,6 @@ ACCION lista_palabras ES
 
             AVZ(sec, v)
         FIN_MIENTRAS
+FIN_ACCION
 
 
