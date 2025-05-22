@@ -5,8 +5,8 @@ de 18 y menores de 18.
 
 ACCION poblacion_argentina ES
     AMBIENTE
-        sec_poblacion: secuencia de enteros
-        i, s, pobl_total, menores_muj, menores_hom, mayores_muj, mayores_hom: entero
+        sec_poblacion: secuencia de entero
+        i, paso, s, pobl_total, menores_muj, menores_hom, mayores_muj, mayores_hom: entero
         porc_muj, porc_hom, porc_menores, por_mayores:= real
 
     PROCESO
@@ -22,7 +22,8 @@ ACCION poblacion_argentina ES
             AVZ(sec_poblacion, s)
             pobl_total:= pobl_total + s
 
-                SEGUN i MOD 4 HACER //Utilizo un i MOD N que es util para manejar acciones que se repiten cada cierta cantidad de pasos
+            paso := i MOD 4
+                SEGUN paso HACER //Utilizo un i MOD N que es util para manejar acciones que se repiten cada cierta cantidad de pasos
                     = 0:
                         menores_muj := menores_muj + s
                     = 1:

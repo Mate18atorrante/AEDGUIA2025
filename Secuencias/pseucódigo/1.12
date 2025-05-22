@@ -40,5 +40,6 @@ ACCION lista_palabras ES
                 FIN_MIENTRAS
             FIN_MIENTRAS
         FIN_MIENTRAS
+FIN_ACCION
 
 
