@@ -11,25 +11,34 @@ ACCION lista_palabras ES
         CREAR(sec2)
 
         MIENTRAS NFDS(sec) HACER
-            SI v = "A" ENTONCES
+            MIENTRAS v = "" HACER
                 AVZ(sec, v)
-                SI v = "L" ENTONCES
-                    AVZ(sec, v)
-                    SI v = "G" ENTONCES
-                        ESC(sec2, "A")
-                        ESC(sec2, "L")
-                        ESC(sec2, v)
-                        AVZ(sec, v)
+            FIN_MIENTRAS
 
-                        MIENTRAS v <> "" HACER
-                            ESC(sec, v)
-                            AVZ(sec, v)
-                        FIN_MIENTRAS
+            MIENTRAS (v <> "") y (NFDS(sec)) HACER
+                SI v = "A" ENTONCES
+                    AVZ(sec, v)
+                    SI v = "L" ENTONCES
+                        AVZ(sec, v)
+                        SI v = "G" ENTONCES
+                            ESC(sec2, "A")
+                            ESC(sec2, "L")
+                            ESC(sec2, v)
+                            AVZ(sec, v) //avanzo antes del mientras para que v en el mientras sea la letra que le sigue a ALG//
+
+                            MIENTRAS v <> "" HACER
+                                ESC(sec, v)
+                                AVZ(sec, v)
+                            FIN_MIENTRAS
+                            ESC(sec, " ")
+                        FIN_SI
                     FIN_SI
                 FIN_SI
-            FIN_SI
 
-            AVZ(sec, v)
+                MIENTRAS v <> "" y NFDS(sec) HACER
+                    AVZ(sec, v)
+                FIN_MIENTRAS
+            FIN_MIENTRAS
         FIN_MIENTRAS
 
 
