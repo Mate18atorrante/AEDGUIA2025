@@ -22,7 +22,7 @@ ACCION .. ES
                 FIN_MIENTRAS
 
                 total_palabs := total_palabs + 1
-                MIENTRAS (vent <> "") HACER             |   ofigergemrg ijgng hola lola palola seketereket|
+                MIENTRAS (vent <> "") y NFDS (sec1) HACER   |   ofigergemrg ijgng hola lola palola seketereket|
                     cont_carac := cont_carac + 1
                     SEGUN cont_carac HACER
                         = 1: v1 := vent //o

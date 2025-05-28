@@ -51,3 +51,38 @@ ACCION lista_palabras_2 ES
 
         ESC("El porcentaje que la cantidad de palabras que empiezan con 'ALG' sobre la cantidad total de palabras es: ",total_alg/total_palabs*100)
 FIN_ACCION
+
+
+        MIENTRAS NFDS(sec1) HACER                       | LOCO PALULO PALOLO SAKATAKA ALGUNOS |
+            MIENTRAS v = "" HACER
+                AVZ(sec1, v)
+            FIN_MIENTRAS
+
+            MIENTRAS (v <> "") y NFDS(sec1) HACER
+                total_palabs := total_palabs + 1
+
+                SI v = "A" ENTONCES
+                    AVZ(sec1, v)
+                    SI v = "L" ENTONCES
+                        AVZ(sec, v)
+                        SI v = "G" ENTONCES
+                            ESC(sec2, "A")
+                            ESC(sec2, "L")
+                            ESC(sec2, v)
+
+                            total_alg := total_alg + 1
+                            AVZ(sec1, v)
+
+                            MIENTRAS (v <> "") Y NFDS(sec1) HACER
+                                ESC(sec1, v)
+                                AVZ(sec1, v)
+                            FIN_MIENTRAS
+                        FIN_SI
+                    FIN_SI
+                FIN_SI
+
+                MIENTRAS (v <> "") y (NFDS(sec1)) HACER
+                    AVZ(sec1, v)
+                FIN_MIENTRAS
+            FIN_MIENTRAS
+        FIN_MIENTRAS
