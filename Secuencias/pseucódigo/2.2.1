@@ -1,0 +1,99 @@
+
+ACCION Ej 2.2.1 ES
+    AMBIENTE
+        par = ("0", "2", "4", "6", "8")
+        impar = ("1", "3", "5", "7", "9")
+        s, sal: secuencia de caracter "Impura porque no sabemos el ultimo digito de la secuencia => MIENTRAS NFDS"
+        v: caracter
+        contpar, contimpar: entero
+
+    PROCESO
+        ARR(s)
+        AVZ(s, v)
+        CREAR(salida)
+
+        contpar:= 0
+        contimpar:= 0
+
+        MIENTRAS NFDS(s) HACER
+            SI (v EN par) o (v EN impar) ENTONCES
+                SI (v EN impar) ENTONCES
+                    ESCRIBIR(sal, v)
+                    contimpar := contimpar + 1
+                SINO
+                    conpar := contpar + 1
+                FIN_SI
+            FIN_SI
+
+            AVZ(s, v)
+        FIN_MIENTRAS
+
+        CERRAR(s)
+        CERRAR(sal)
+
+        ESCRIBIR("Se encontró ",contimpar+contpar," carácteres numéricos")
+        ESCRIBIR("Se encontró ",contimpar," impares")
+        ESCRIBIR("Se encontró ",contpar," pares")
+        ESCRIBIR("Porcentaje: ",contimpar/(contimpar+contpar)*100," impares")
+        ESCRIBIR("Porcentaje: ",contpar/(contimpar+contpar)*100," pares")
+
+FIN_ACCION
+
+
+//si queremos pasar a una secuencia de enteros...
+
+ACCION Ej 2.2.1 ES
+    AMBIENTE
+        par = ("0", "2", "4", "6", "8")
+        impar = ("1", "3", "5", "7", "9")
+        s, sal1: secuencia de caracter "Impura porque no sabemos el ultimo digito de la secuencia => MIENTRAS NFDS"
+        sal2: secuencia de entero
+        v1: caracter
+        v2: contpar, contimpar: entero
+
+        FUNCION convertir(x: caracter): entero
+            SEGUN x HACER
+                "0": convertir:= 0
+                "1": convertir:= 0
+                "3": convertir:= 0
+                "4": convertir:= 0
+                "5": convertir:= 0
+                "6": convertir:= 0
+                "7": convertir:= 0
+                "8": convertir:= 0
+                "9": convertir:= 0
+            FIN_SEGUN
+        FIN_FUNCION
+
+    PROCESO
+        ARR(s)
+        AVZ(s, v)
+        CREAR(sal1)
+        CREAR(sal2)
+
+        contpar:= 0
+        contimpar:= 0
+
+        MIENTRAS NFDS(s) HACER
+            SI (v EN par) o (v EN impar) ENTONCES
+                SI (v EN impar) ENTONCES
+
+                    ESCRIBIR(sal, v)
+                    contimpar := contimpar + 1
+                SINO
+                    conpar := contpar + 1
+                FIN_SI
+            FIN_SI
+
+            AVZ(s, v)
+        FIN_MIENTRAS
+
+        CERRAR(s)
+        CERRAR(sal)
+
+        ESCRIBIR("Se encontró ",contimpar+contpar," carácteres numéricos")
+        ESCRIBIR("Se encontró ",contimpar," impares")
+        ESCRIBIR("Se encontró ",contpar," pares")
+        ESCRIBIR("Porcentaje: ",contimpar/(contimpar+contpar)*100," impares")
+        ESCRIBIR("Porcentaje: ",contpar/(contimpar+contpar)*100," pares")
+FIN_ACCION

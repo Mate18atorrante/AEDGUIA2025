@@ -1,0 +1,41 @@
+Se desea calcular el costo de un telegrama, que se determina en función del número de palabras (que vale V1 cada una),
+salvo que el promedio de letras por palabra supere las cinco letras, caso en que cada palabra vale V2.
+
+ACCION .. ES
+    AMBIENTE
+        sec: secuencia de caracter
+        v: caracter
+        cont_letras, cont_palabs: entero
+        costo_teleg, V1, V2: real
+
+    PROCESO
+        ESC("Ingrese el valor1 que debe tener el telegrama: ")
+        LEER(V1)
+        ESC("Ingrese el segundo valor: ")
+        LEER(V2)
+
+        ARR(sec)
+        AVZ(sec, v)
+
+        cont_palabs := 0
+        cont_letras := 0
+        MIENTRAS NFDS(sec) HACER
+            MIENTRAS v = "" HACER
+                AVZ(sec, v)
+            FIN_MIENTRAS
+
+            cont_palabs := cont_palabs + 1
+            MIENTRAS v <> "" HACER
+                cont_letras:= cont_letras + 1
+                AVZ(sec, v)
+            FIN_MIENTRAS
+        FIN_MIENTRAS
+
+        SI cont_letras/cont_palabras > 5 ENTONCES
+            costo_teleg := V2*cont_palabs
+        SINO
+            costo_teleg := V1*cont_palabs
+        FIN_SI
+
+        ESC("El valor del telegrama es: $",costo_teleg)
+FIN_ACCION

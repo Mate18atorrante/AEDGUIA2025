@@ -1,0 +1,49 @@
+Dada una secuencia de caracteres, generar otra secuencia con todas las palabras de tres caracteres. Informar el
+porcentaje de las mismas, sobre el total de palabras de la secuencia de entrada. Considerar que puede haber más de un
+blanco entre palabras.
+
+ACCION .. ES
+    AMBIENTE
+        sec1, sec2: secuencia de caracter
+        vent, v1, v2, v3: caracter
+        cont_carac, total_palabs, palabs_3letras: entero
+
+    PROCESO
+        ARR(sec1)
+        AVZ(sec1, vent)
+        CREAR(sec2)
+
+        MIENTRAS NFDS(sec1) HACER
+            MIENTRAS (vent <> ".") HACER
+                cont_carac := 0
+
+                MIENTRAS (vent = "") HACER
+                    AVZ(sec1, vent)
+                FIN_MIENTRAS
+
+                total_palabs := total_palabs + 1
+                MIENTRAS (vent <> "") HACER             |   ofigergemrg ijgng hola lola palola seketereket|
+                    cont_carac := cont_carac + 1
+                    SEGUN cont_carac HACER
+                        = 1: v1 := vent //o
+                        = 2: v2 := vent //
+                        = 3: v3 := vent //
+                    FIN_SEGUN
+                    AVZ(sec1, vent)
+                FIN_MIENTRAS
+
+                SI cont_carac = 3 ENTONCES
+                    palabs_3letras := palabs_3letras + 1
+                    ESC(sec2, v1)
+                    ESC(sec2, v2)
+                    ESC(sec2, v3)
+                    ESC(sec2, "")
+                FIN_SI
+
+                AVZ(sec1, vent)
+            FIN_MIENTRAS
+            AVZ(sec1, vent)
+        FIN_MIENTRAS
+
+        ESC("Porcentaje de palabras que tienen 3 letras sobre el total: ",palabs_3letras/total_palabs*100)
+FIN_PROCESO

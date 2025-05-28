@@ -1,0 +1,33 @@
+Dada una secuencia de caracteres, determinar la cantidad de palabras de 4 caracteres (letras)
+
+ACCION .. ES
+    AMBIENTE
+        sec: secuencia de caracter
+        v: caracter
+        contletras, contpalabs: entero
+
+    PROCESO
+        ARR(sec)
+        AVZ(sec, v)
+        contpalabs:= 0
+
+        MIENTRAS NFDS(sec) HACER
+            contletras:= 0
+            MIENTRAS v = "" HACER
+                AVZ(sec, v)
+            FIN_MIENTRAS
+
+            MIENTRAS v <> "" y NFDS(sec) HACER
+                contletras := contletras + 1
+                AVZ(sec, v)
+            FIN_MIENTRAS
+
+            SI contletras = 4 ENTONCES
+                contpalabs := contpalabs + 1
+            FIN_SI
+        FIN_MIENTRAS
+
+        CERRAR(sec)
+
+        ESC("La cantidad de palabras con 4 letras son: ",contpalabs)
+FIN_PROCESO

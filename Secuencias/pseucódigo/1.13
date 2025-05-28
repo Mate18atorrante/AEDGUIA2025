@@ -15,7 +15,11 @@ ACCION lista_palabras_2 ES
         CREAR(sec2)
         cont:= 0
 
-        MIENTRAS NFDS(sec1) HACER
+        MIENTRAS NFDS(sec1) HACER                       | LOCO PALULO PALOLO SAKATAKA ALGUNOS |
+            MIENTRAS v = "" HACER
+                AVZ(sec1, v)
+            FIN_MIENTRAS
+
             MIENTRAS (v <> "") y NFDS(sec1) HACER
                 total_palabs := total_palabs + 1
 
@@ -42,10 +46,6 @@ ACCION lista_palabras_2 ES
                 MIENTRAS (v <> "") y (NFDS(sec1)) HACER
                     AVZ(sec1, v)
                 FIN_MIENTRAS
-            FIN_MIENTRAS
-
-            MIENTRAS (v = "") y (NFDS(sec1)) HACER
-                AVZ(sec1, v)
             FIN_MIENTRAS
         FIN_MIENTRAS
 

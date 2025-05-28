@@ -1,0 +1,34 @@
+Se dispone de una secuencia de caracteres y se desea saber la cantidad de caracteres (incluidos los espacios) que
+existen entre una coma y la siguiente. Se debe considerar que puede haber más de un par de comas, y que las
+subsecuencias inicial y final deben descartarse por no cumplir la condición enunciada. Supóngase que las comas son
+siempre contiguas al último caracter de la palabra.
+
+ACCION ... ES
+    AMBIENTE
+        sec: secuencia de caracter
+        v: caracter
+        cont: entero
+
+    PROCESO
+        ARR(sec)
+
+        // las comas son el ultimo elemento de cada subsecuencia
+        // las subsecuencias inicial y final no se cuentan
+
+        REPETIR //avanzo el primer bloque de palabras, hasta la primera coma//
+            AVZ(sec, v)
+        HASTA QUE v = ","
+
+        MIENTRAS NFDS(sec) HACER |############   , """""""""" """"""   " , $$$$$$$$$$$$$,           |
+            cont:= 0
+
+            MIENTRAS v <> "," y NFDS(sec) HACER
+                cont:= cont + 1
+                AVZ(sec, v)
+            FIN_MIENTRAS
+
+            SI v = "," ENTONCES
+                ESC("Hay ",cont," caracteres en este bloque)
+                AVZ(sec, v)
+            FIN_SI
+        FIN_MIENTRAS

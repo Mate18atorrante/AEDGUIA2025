@@ -1,0 +1,44 @@
+Escribir un algoritmo que produzca una secuencia de salida que contenga una oración formada por por las palabras en
+posición par de cada oración de una secuencia texto de entrada, que además comienzan con la letra 'M'.
+
+ACCION .. ES
+    AMBIENTE
+        sec1, sec2: secuencia de caracter
+        v: caracter
+        cont: entero
+
+    PROCESO
+        ARR(sec1)
+        CREAR(sec2)
+        AVZ(sec1, v)
+
+
+        MIENTRAS NFDS(sec) HACER |   Escribir un algoritmo. que produzca una secuencia de |
+            cont:= 0
+            MIENTRAS v <> "." HACER
+                MIENTRAS v = "" HACER
+                    AVZ(sec1, v)
+                FIN_MIENTRAS
+
+                cont:= cont + 1
+                SI cont MOD 2 = 0 y v = "M" ENTONCES
+                    MIENTRAS v <> "" HACER
+                        ESCRIBIR(sec2, v)
+                        AVZ(sec1, v)
+                    FIN_MIENTRAS
+
+                    SI NFDS(sec1) ENTONCES //Separar palabras por " " si NFDS o "." si era FDS
+                        ESC(sec2, "")
+                    SINO
+                        ESC(sec2, ".")
+                    FIN_SI
+                SINO
+                    MIENTRAS v <> "" HACER
+                        AVZ(sec1, v)
+                    FIN_MIENTRAS
+                FIN_SI
+            FIN_MIENTRAS
+
+            AVZ(sec1, v)
+        FIN_MIENTRAS
+FIN_PROCESO

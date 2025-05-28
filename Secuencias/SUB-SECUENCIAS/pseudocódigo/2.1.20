@@ -1,0 +1,28 @@
+Se dispone de dos secuencias texto formadas por oraciones bimembres (sujeto y predicado, separados por comas ‘,’).
+Se desea una secuencia de texto de salida formada por oraciones bimembres, de la siguiente forma:
+
+El sujeto, de la secuencia 1, y el predicado, de la secuencia 2.
+
+Al finalizar informar cuantas oraciones tiene cada secuencia.
+
+ACCION ... ES
+    AMBIENTE
+        sec1, sec2, salida: secuencia de caracter
+        v1, v2: caracter
+
+    PROCESO
+        ARR(sec1)
+        ARR(sec2)
+        CREAR(salida)
+
+        AVZ(sec1, v1)
+        AVZ(sec2, v2)
+
+        MIENTRAS NFDS(sec1) y NFDS(sec2) HACER
+            MIENTRAS v1 <> "," HACER
+                MIENTRAS v1 = "" HACER
+                    AVZ(sec1, v1)
+                FIN_MIENTRAS
+
+
+

@@ -1,0 +1,38 @@
+Se desea saber la cantidad promedio de palabras que contienen las oraciones de una secuencia de caracteres. Supóngase
+que los puntos son siempre contiguos al último caracter de la palabra. La secuencia finaliza con una marca.
+
+
+ACCION ... ES
+    AMBIENTE
+        sec: secuencia de caracter
+        v: caracter
+        contpalabs, contorac: entero
+
+    PROCESO
+        ARR(sec)
+        AVZ(sec, v)
+
+        cont_orac := 0
+        cont_palabs := 0
+        MIENTRAS v <> "*" HACER //trato fin de parrafo
+            cont_orac := cont_orac + 1
+
+            MIENTRAS v <> "." //trato fin de oracion
+                MIENTRAS v = "" HACER
+                    AVZ(sec)
+                FIN_MIENTRAS
+
+                MIENTRAS v <> "" HACER
+                    cont_palabs := cont_palabs + 1
+                    AVZ(sec, v)
+                FIN_MIENTRAS
+            FIN_MIENTRAS
+
+            AVZ(sec, v)
+        FIN_MIENTRAS
+
+        CERRAR(sec)
+
+        ESC("El promedio de palabras sobre cantidad de oraciones es: ",conpalabs/contorac," palabras.")
+FIN_PROCESO
+

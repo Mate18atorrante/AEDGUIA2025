@@ -1,0 +1,86 @@
+Se dispone de 2 secuencias de caracteres, una contiene caracteres, incluidos espacios y otra contiene caracteres
+“numéricos”. Se pide crear una nueva secuencia de salida de caracteres donde se copien los caracteres de ambas secuencias
+ en forma alternada, o sea un carácter, un digito, un carácter, un digito, etc.
+
+Ejemplo:
+
+Sec1: Para habilitar la función de Salas para grupos pequeños para su uso*
+
+Sec2: 13481460918460846161334868461086*
+
+Salida: P1a3r4a8 1h4….
+
+Analice y responda: Que pasaría en el caso de que una secuencia de entrada termine antes que la otra? se podría cumplir
+con la consigna?
+Como modificaría el algoritmo en el caso de que solicite contar la cantidad de caracteres de cada secuencia y mostrar por
+ pantalla al final del proceso?
+
+ACCION ej2.2.4 ES
+    AMBIENTE
+        sec1,sec2,sal: secuencia de caracter
+        v1, v2: caracter
+    PROCESO
+        ARR(s1)
+        ARR(s2)
+        AVZ(sec1, v1)
+        AVZ(sec2, v2)
+
+        CREAR(sal)
+
+        MIENTRAS NFDS(sec1) y NFDS(sec2) HACER
+            ESCRIBIR(sal, v1)
+            ESCRIBIR(sal, v2)
+            AVZ(sec1, v1)
+            AVZ(sec2, v2)
+        FIN_MIENTRAS
+
+        CERRAR(sal)
+        CERRAR(sec1)
+        CERRAR(sec2)
+FIN_PROCESO
+
+// Como modificaría el algoritmo en el caso de que solicite contar la cantidad de caracteres de cada secuencia y mostrar por
+ pantalla al final del proceso?
+
+ACCION ej2.2.4 ES
+    AMBIENTE
+        sec1,sec2,sal: secuencia de caracter
+        v1, v2: caracter
+        cont1, cont2: entero
+    PROCESO
+        ARR(s1)
+        ARR(s2)
+        AVZ(sec1, v1)
+        AVZ(sec2, v2)
+
+        CREAR(sal)
+
+        cont:= 0
+        MIENTRAS NFDS(sec1) y NFDS(sec2) HACER
+            cont1:= cont1 + 1
+
+            ESCRIBIR(sal, v1)
+            ESCRIBIR(sal, v2)
+
+            AVZ(sec1, v1)
+            AVZ(sec2, v2)
+        FIN_MIENTRAS
+        cont2:= cont1 // inicializo recien en este punto el cont2 porque al final del anterior mientras ambas tendrían la misma cantidad, por lo tanto, sería innecesario contar ambas
+
+        MIENTRAS NFDS(sec1) HACER
+            cont1:= cont1 + 1
+            AVZ(sec1, v1)
+        FIN_MIENTRAS
+
+        MIENTRAS NFDS(sec2) HACER
+            cont2:= cont2 + 1
+            AVZ(sec2, v2)
+        FIN_MIENTRAS
+
+        ESCRIBIR("cantidad de caracteres de la secuencia(1) de solo caracteres no numéricos: ",cont1)
+        ESCRIBIR("cantidad de caracteres de la secuencia(2) de caracteres numéricos: ",cont2)
+
+        CERRAR(sal)
+        CERRAR(sec1)
+        CERRAR(sec2)
+FIN_PROCESO
