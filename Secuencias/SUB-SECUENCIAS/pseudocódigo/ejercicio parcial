@@ -1,0 +1,57 @@
+ACCION Parcial123 ES
+    AMBIENTE
+        suc: secuencia de caracter
+        s: caracter
+        ticket, sal: secuencia de entero
+        cant, t, i, aux, ticket_mayor, mayor: entero
+
+    PROCESO
+        ARR(suc)
+        AVZ(suc, s)
+
+        ARR(ticket)
+        AVZ(ticket, t)
+
+        CREAR(sal)
+
+        MIENTRAS NFDS(suc) HACER
+            mayor:= 0
+            MIENTRAS s <> "$"
+                ESC(s)
+                AVZ(suc, s)
+            FIN_MIENTRAS
+            AVZ(suc, s)
+
+            cant := convaNum(s) * 100
+            AVZ(suc, s)
+            cant:= cant + ConvaNum(s) * 100
+            AVZ(suc, s)
+            cant := cant + ConvaNum(s)
+            AVZ(sec, s) // con este avz ya estoy en el primer elemento de la segunda sucursal
+
+            PARA i:= 1 HASTA cant HACER
+                AVZ(ticket, t)
+                aux := t
+                AVZ(ticket, t)
+                AVZ(ticket, t)
+
+                SI t > 50000 ENTONCES
+                    ESC(sal, aux)
+                    ESC(sal, t)
+                FIN_SI
+
+                SI t > mayor entonces
+                    mayor:= t
+                    ticket_mayor := aux
+                FIN_SI
+
+                AVZ(ticket, t)
+            FIN_PARA
+            ESC("El ticket de mayor importe es: ",ticket_mayor)
+            ESC("Y su importe es: ",mayor)
+        FIN_MIENTRAS
+
+        CERRAR(sal)
+        CERRAR(ticket)
+        CERRAR(suc)
+FIN_ACCION

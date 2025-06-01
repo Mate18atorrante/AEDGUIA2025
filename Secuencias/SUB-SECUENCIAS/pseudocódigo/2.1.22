@@ -1,0 +1,59 @@
+La empresa Ideas Argentinas S.A. posee datos de sus empleados en dos secuencias de caracteres; la primera secuencia
+(Sec1) formada por los nombres (uno por persona) de los empleados separados por blancos y la segunda secuencia (Sec2)
+posee los números de documento de cada uno de los empleados (palabras de 8 dígitos numéricos). Ambas secuencias poseen
+la misma cantidad de datos, es decir al primer nombre de la primera secuencia le corresponde el primer número de
+documento de la segunda secuencia y así sucesivamente. La secuencia de números de documentos no posee espacios en blanco
+ ni ningún otro tipo de caracter que separe un número de documento de otro.
+
+A la empresa le interesa tener en una nueva secuencia (Sec3) los datos de todas aquellas personas que cumplan la
+condición de que el nombre se encuentre en una posición impar. La nueva secuencia debe generarse de la siguiente manera:
+el número de documento seguido (sin espacios) por una coma y luego (sin espacios) por el nombre y seguido al nombre un #.
+
+45371791,TISIANO#
+
+ACCION ej2.1.22 ES
+    AMBIENTE
+        sec_dni, sec_nombs, sec3: secuencia de caracter
+        v1, v2: caracter
+        cont, i: entero
+
+    PROCESO
+        ARR(sec_dni)
+        ARR(sec_nombs)
+        AVZ(sec_dni, v1)
+        AVZ(sec_nombs, v2)
+        CREAR(sec3)
+
+        cont:= 0
+        MIENTRAS NFDS(sec_dni) HACER
+            MIENTRAS v2 = "" HACER
+                AVZ(sec_nombs, v2)
+            FIN_MIENTRAS
+
+
+            cont:= cont + 1
+            SI cont mod 2 <> 0 ENTONCES
+                PARA i:= 1 HASTA 8 HACER
+                    ESC(sec3, v1)
+                    AVZ(sec_dni, v1)
+                FIN_PARA
+                ESC(sec3, ",")
+                MIENTRAS v2 <> "" y NFDS(sec_nombs) HACER //usamos nfds porque no sabemos cuando termina el nombre, si es el ultimo nombre y cuando termina
+                    ESC(sec3, v2)
+                    AVZ(sec_nombs, v2)
+                FIN_MIENTRAS
+                ESC(sec3, "#")
+            SINO
+                PARA i:= 1 HASTA 8 HACER
+                    AVZ(sec_dni, v1)
+                FIN_PARA
+                MIENTRAS v2 <> "" y NFDS(sec_nombs) HACER
+                    AVZ(sec_nombs, v2)
+                FIN_MIENTRAS
+            FIN_SI
+        FIN_MIENTRAS
+
+        CERRAR(sec3)
+        CERRAR(sec_nombs)
+        CERRAR(sec_dni)
+FIN_ACCION

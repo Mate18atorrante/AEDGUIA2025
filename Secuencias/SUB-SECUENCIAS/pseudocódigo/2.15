@@ -6,7 +6,7 @@ ACCION ... ES
     AMBIENTE
         sec: secuencia de caracter
         v: caracter
-        contpalabs, contorac: entero
+        cont_palabs, cont_orac: entero
 
     PROCESO
         ARR(sec)
@@ -14,7 +14,7 @@ ACCION ... ES
 
         cont_orac := 0
         cont_palabs := 0
-        MIENTRAS v <> "*" HACER //trato fin de parrafo
+        MIENTRAS NFDS(sec) HACER //trato fin de parrafo
             cont_orac := cont_orac + 1
 
             MIENTRAS v <> "." //trato fin de oracion
@@ -22,8 +22,8 @@ ACCION ... ES
                     AVZ(sec)
                 FIN_MIENTRAS
 
+                cont_palabs := cont_palabs + 1
                 MIENTRAS v <> "" HACER
-                    cont_palabs := cont_palabs + 1
                     AVZ(sec, v)
                 FIN_MIENTRAS
             FIN_MIENTRAS
@@ -33,6 +33,6 @@ ACCION ... ES
 
         CERRAR(sec)
 
-        ESC("El promedio de palabras sobre cantidad de oraciones es: ",conpalabs/contorac," palabras.")
+        ESC("El promedio de palabras sobre cantidad de oraciones es: ",cont_palabs/cont_orac," palabras.")
 FIN_PROCESO
 
