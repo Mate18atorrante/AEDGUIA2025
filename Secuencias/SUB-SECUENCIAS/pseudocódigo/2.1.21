@@ -10,7 +10,7 @@ ACCION ... ES
         sec1, sec2, salida: secuencia de caracter
         v1, v2: caracter
         orac_sec1, orac_sec2: entero
-
+,
     PROCESO
         ARR(sec1)
         ARR(sec2)
