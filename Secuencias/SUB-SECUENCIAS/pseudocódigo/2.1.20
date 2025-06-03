@@ -9,6 +9,7 @@ ACCION ... ES
     AMBIENTE
         sec1, sec2, salida: secuencia de caracter
         v1, v2: caracter
+        orac_sec1, orac_sec2: entero
 
     PROCESO
         ARR(sec1)
@@ -30,6 +31,7 @@ ACCION ... ES
                         AVZ(sec1, v1)
                 FIN_MIENTRAS
             FIN_MIENTRAS
+            orac_sec1 := orac_sec1 + 1
             AVZ(sec1, v1)
 
             MIENTRAS v2 <> "." HACER
@@ -47,12 +49,17 @@ ACCION ... ES
                     ESC(salida, ".")
                 FIN_SI
             FIN_MIENTRAS
+            orac_sec2:= orac_sec2 + 1
+
             AVZ(sec2, v2)
         FIN_MIENTRAS
 
         CERRAR(salida)
         CERRAR(sec1)
         CERRAR(sec2)
+
+        ESC("La primera secuencia tiene: ",orac_sec1," oraciones.")
+        ESC("La segunda secuencia tiene: ",orac_sec2," oraciones.")
 FIN_ACCION
 
 

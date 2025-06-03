@@ -11,11 +11,12 @@ ACCION cant_socios ES
         ARR(sec)
         cont:= 0
 
-        REPETIR
+        MIENTRAS NFDS(sec)
             AVZ(sec, s)
             cont:= cont + 1
-        HASTA QUE FDS(sec)
+        FIN_PROCESO
 
         CERRAR(sec)
 
         ESC("Hay ",cont," socios registrados.")
+FIN_ACCION
