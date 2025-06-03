@@ -1,0 +1,58 @@
+La empresa Ideas Argentinas S.A. posee datos de sus empleados en dos secuencias de caracteres; la primera secuencia
+(Sec1) formada por los nombres (uno por persona) de los empleados separados por blancos y la segunda secuencia (Sec2)
+posee los números de documento de cada uno de los empleados (palabras de 8 dígitos numéricos). Ambas secuencias poseen
+la misma cantidad de datos, es decir al primer nombre de la primera secuencia le corresponde el primer número de documento
+ de la segunda secuencia y así sucesivamente. La secuencia de números de documentos no posee espacios en blanco ni ningún
+  otro tipo de caracter que separe un número de documento de otro.
+
+A la empresa le interesa tener en una nueva secuencia (Sec3) los datos de todas aquellas personas que cumplan la condición
+ de que el nombre se encuentre en una posición impar. La nueva secuencia debe generarse de la siguiente manera: el número
+  de documento seguido (sin espacios) por una coma y luego (sin espacios) por el nombre y seguido al nombre un #.
+
+ACCION .. ES
+    AMBIENTE
+        sec_nombr, sec_dni, sal: secuencia de caracter
+        nomb, num: caracter
+        cont, i: entero
+    PROCESO
+        ARR(sec1)
+        AVZ(sec1, nomb)
+        ARR(sec2)
+        AVZ(sec2, num)
+        CREAR(sal)
+
+        cont:= 0
+        MIENTRAS NFDS(sec1) y NFDS(sec2) HACER
+            MIENTRAS nomb = "" HACER
+                    AVZ(sec1, nomb)
+                FIN_MIENTRAS
+            AVZ(sec1, nomb)
+
+            cont:= cont + 1
+            SI cont mod 2 = 1 y NFDS(sec1) ENTONCES
+                PARA i:= 1 HASTA 8 HACER
+                    ESC(sal, num)
+                    AVZ(sec2, num)
+                FIN_PARA
+                ESC(sal, ",")
+
+                MIENTRAS nomb <> "" HACER
+                    ESC(sal, nomb)
+                    AVZ(sec1, nomb)
+                FIN_MIENTRAS
+                ESC(sal, "#")
+            SINO
+                PARA i:= 1 HASTA 8 HACER
+                    AVZ(sec2, num)
+                FIN_PARA
+
+                MIENTRAS nomb <> "" HACER
+                    AVZ(sec1, nomb)
+                FIN_MIENTRAS
+            FIN_SI
+        FIN_MIENTRAS
+
+        CERRAR(sec1)
+        CERRAR(sec2)
+        CERRAR(sal)
+FIN_PROCESO
