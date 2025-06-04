@@ -23,7 +23,7 @@ ACCION .. ES
 
         MIENTRAS NFDS(entrada) HACER
             MIENTRAS v <> "." HACER
-                MIENTRAS v = "" HACER
+                MIENTRAS v = ""  HACER
                     AVZ(entrada, v)
                 FIN_MIENTRAS
 
@@ -34,7 +34,7 @@ ACCION .. ES
                     ESC(sal1, "#")
 
                     AVZ(entrada, v)
-                    MIENTRAS v <> "" HACER
+                    MIENTRAS (v <> "") y (v <> ".") HACER
                         SI v EN vocales ENTONCES
                             cont_vocales := cont_vocales + 1
                             ESC(sal1, "#")
@@ -45,7 +45,7 @@ ACCION .. ES
                         AVZ(entrada, v)
                     FIN_MIENTRAS
                 SINO
-                    MIENTRAS v <> "" HACER
+                    MIENTRAS (v <> "") y (v <> ".") HACER
                         AVZ(entrada, v)
                     FIN_MIENTRAS
                 FIN_SI

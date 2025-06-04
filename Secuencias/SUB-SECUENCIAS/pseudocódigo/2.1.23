@@ -77,9 +77,8 @@ FIN_PROCESO
 // otra versión más corta (sin crear funcion convertidora de caracter a entero)
 
 ACCION .. ES
-    AMBIENTE
+    AMBIENTE //no es necesario definir un conjunto de numeros PARES
         IMPARES = ("1", "3", "5", "7", "9") //funciona sin poner todos los numeros impares infinitos porque solo preguntamos digito por digito no por más de un digito
-        PARES = ("0", "2", "4", "6", "8") //esto es en realidad innecesario porque está puesto por si hay otros caracteres en la secuencia, pero hay solo numeros
         sec1, sec2, sal: secuencia de caracter
         num, nombs: caracter
         cont, i: entero
