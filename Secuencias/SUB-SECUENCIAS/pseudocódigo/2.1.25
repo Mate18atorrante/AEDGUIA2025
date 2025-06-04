@@ -1,0 +1,65 @@
+Dada una secuencia texto de entrada que contiene palabras alfanuméricas, escribir un algoritmo que genere dos secuencias
+de salida. Una de ellas contendrá solo las palabras de la secuencia original que comienzan con vocal, en las cuales se
+reemplazarán todas las vocales por ‘#’, por ejemplo: entrada 'avión1', salida '#v##n1' y la otra será una secuencia
+numérica en la que se almacenarán las cantidades de vocales que se encontraron en cada una de las palabras que
+cumplieron la condición. Por final de proceso se deberá informar el promedio de palabras por oración.
+
+ACCION .. ES
+    AMBIENTE
+        vocales = ("A","E","I","O","U")
+        entrada, sal1: secuencia de caracter
+        sal2: secuencia de entero
+        v: caracter
+        cont_vocales, cont_palabs, cont_orac: entero
+
+    PROCESO
+        ARR(entrada)
+        AVZ(entrada, v)
+        CREAR(sal1)
+        CREAR(sal2)
+
+        cont_orac:= 0
+        cont_palabs:= 0
+
+        MIENTRAS NFDS(entrada) HACER
+            MIENTRAS v <> "." HACER
+                MIENTRAS v = "" HACER
+                    AVZ(entrada, v)
+                FIN_MIENTRAS
+
+                cont_palabs:= cont_palabs + 1
+                cont_vocales := 0
+                SI v EN vocales ENTONCES
+                    cont_vocales := cont_vocales + 1
+                    ESC(sal1, "#")
+
+                    AVZ(entrada, v)
+                    MIENTRAS v <> "" HACER
+                        SI v EN vocales ENTONCES
+                            cont_vocales := cont_vocales + 1
+                            ESC(sal1, "#")
+                        SINO
+                            ESC(sal1, v)
+                        FIN_SI
+
+                        AVZ(entrada, v)
+                    FIN_MIENTRAS
+                SINO
+                    MIENTRAS v <> "" HACER
+                        AVZ(entrada, v)
+                    FIN_MIENTRAS
+                FIN_SI
+
+                ESC(sal2, cont_vocales)
+            FIN_MIENTRAS
+
+            cont_orac:= cont_orac + 1
+            AVZ(entrada, v)
+        FIN_MIENTRAS
+
+        CERRAR(sal1)
+        CERRAR(sal2)
+        CERRAR(entrada)
+
+        ESC("La cantidad promedio de palabras por oración es: ",cont_palabs/cont_orac)
+FIN_PROCESO
