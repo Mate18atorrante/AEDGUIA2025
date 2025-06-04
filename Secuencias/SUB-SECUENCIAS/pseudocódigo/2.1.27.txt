@@ -1,0 +1,75 @@
+Elaborar un procedimiento que dada una secuencia de caracteres como entrada genere otra del mismo tipo
+como salida.
+La secuencia de caracteres que se recibe incluye números de tarjetas de crédito, donde cada número tiene 16
+dígitos. Se desea obtener como resultado una nueva secuencia de salida con los números de tarjetas válidos.
+El algoritmo para la validación de números de tarjetas de crédito es el siguiente:
+Para entender mejor el método usaremos un número correcto: 4073-7001-0977-4812, al que nos referiremos en el
+texto. Nos centramos en los caracteres que ocupan las posiciones 1 y 3
+4 0 7 3 7 0 0 1 0 9 7 7 4 8 1 2
+
+Por cada uno de ellos obtenemos el doble del valor que representan. Si el número resultante es menor que 9, se deja
+tal cual, en caso contrario, se le resta 9. En nuestro ejemplo: 4 * 2 = 8; 7 * 2 = 14, mayor que nueve, se le resta 9. 14
+- 9 = 5. Si el número resultante de la suma de las multiplicaciones y de los dígitos en las posiciones 1 y 3, es múltiplo
+de 2, y a la vez menor o igual a 15, es un número de tarjeta válido.
+Para nuestro ejemplo: 8 + 5 =13; por lo tanto el número es válido.
+
+ACCION .. ES
+    AMBIENTE
+        entr, sal: secuencia de caracter
+        v, v1, v2: caracter
+        i, aux1, aux2: entero
+
+        FUNCION ConvaEntero(x: caracter): entero ES
+            SEGUN x HACER
+            "0": ConvaEntero := 0
+            "1": ConvaEntero := 1
+            "2": ConvaEntero := 2
+            "3": ConvaEntero := 3
+            "4": ConvaEntero := 4
+            "5": ConvaEntero := 5
+            "6": ConvaEntero := 6
+            "7": ConvaEntero := 7
+            "8": ConvaEntero := 8
+            "9": ConvaEntero := 9
+        FIN_FUNCION
+
+    PROCESO
+        ARR(entr)
+        CREAR(sal)
+
+        suma:= 0
+        AVZ(entr, v)
+        MIENTRAS NFDS(entr) HACER
+            v1 := v
+
+            aux1 := ConvaEntero(v) * 2
+            SI aux1 > 9 ENTONCES
+                aux1 := aux - 9
+            FIN_SI
+            AVZ(entr, v)
+
+            v2:= v
+
+            AVZ(entr, v)
+            aux2 := ConvaEntero(v) * 2
+            SI aux2 > 9 ENTONCES
+                aux2 := aux2 - 9
+            FIN_SI
+
+            SI (aux2 + aux1 < 15) y (aux2 + aux1 mod 2 = 0) ENTONCES
+                ESC(sal, v1)
+                ESC(sal, v2)
+                PARA i:= 3 HASTA 16 HACER
+                    ESC(sal, v)
+                    AVZ(entr, v)
+                FIN_PARA
+            SINO
+                PARA i:= 3 HASTA 16 HACER
+                    AVZ(entr, v)
+                FIN_PARA
+            FIN_SI
+        FIN_MIENTRAS
+
+        CERRAR(entr)
+        CERRAR(sal)
+FIN_ACCION

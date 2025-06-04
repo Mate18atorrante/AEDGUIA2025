@@ -12,9 +12,19 @@ ACCION ej1.27 ES
         v, v1, v2: caracter
         i, num1, num2: entero
 
-        FUNCION ConvertirAEntero(x: caracter): entero ES
+        FUNCION ConvaEntero(x: caracter): entero ES
             SEGUN x HACER
-                1
+            "0": ConvaEntero := 0
+            "1": ConvaEntero := 1
+            "2": ConvaEntero := 2
+            "3": ConvaEntero := 3
+            "4": ConvaEntero := 4
+            "5": ConvaEntero := 5
+            "6": ConvaEntero := 6
+            "7": ConvaEntero := 7
+            "8": ConvaEntero := 8
+            "9": ConvaEntero := 9
+        FIN_FUNCION
 
         FIN_FUNCION
 
