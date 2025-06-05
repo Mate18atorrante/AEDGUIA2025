@@ -75,9 +75,13 @@ ACCION PINTA_DE_ARGENTINA ES
                         FIN_MIENTRAS
                     FIN_PARA
 
-                    aux1 := ConvaEntero(v1) * 100
+                    //t amo axel mua
+                    aux1 := 0
+                    MIENTRAS v1 <> "?" HACER
+                        aux1 := aux1 * 10 + ConvaEntero(v1)
+                        AVZ(artistas, v1)
+                    FIN_MIENTRAS
+                    //
+                    PARA i:= 1 HASTA aux1 HACER
 
-                    MIENTRAS v <> "?" HACER
 
-                        ESC(sal, v)
-                        AVZ(sal, v)

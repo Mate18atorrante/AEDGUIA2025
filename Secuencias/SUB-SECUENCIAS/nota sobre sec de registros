@@ -1,0 +1,59 @@
+
+ARR = ABRIR E/(arch)
+AVZ(s, v) = LEER(arch, reg)
+CREAR = ABRIR /s (arch)
+CERRAR = CERRAR
+
+cuando uso el leer(arch, reg) leo todo el contenido de un registro
+para hacer algo con un campo se utiliza el selector de campo que es un punto:
+Por ejemplo: SI REG.Carrera = "ISI" ENTONCES...
+
+campo contenido: es un campo simple
+campo continente: es un campo que dentro de el hay un conjunto de campos simples o contenidos
+
+en los archivos de entrada solo se pueden leer y en los arhivos de salida solo escribir o guardar datos (como las secuencias de datos elementales)
+
+hay diferentes maneras de tratar los archivos
+-secuencialmente (es lo primero que estudiaremos)
+-indexada
+-otra más
+
+ACCION ejemplo ES
+    AMBIENTE
+        Estudiante = Registro
+            DNI: N(8)
+            Legajo: N(5)
+            ApyNom: AN(40)
+            Carrera: ("ISI","IQ","IEM","LAR","TUP")
+        FIN_REGISTRO
+
+        Est: Estudiante
+        EstISI: Estudiante
+        UTN, ISI: Archivo de Estudiante
+    PROCESO
+        ABRIR E/(UTN)
+        ABRIR /S(ISI)
+        LEER(UTN, Est)
+
+        MIENTRAS NFDA(UTN) HACER //ESC(Reg.Campo) para mostrar por pantalla los datos de los campos //ESC(Archivo, registro)
+            SI Est.Carrera = "ISI" ENTONCES
+                EstISI := EST
+                ESC(ISI, EstISI)
+            FIN_SI
+
+            LEER(UTN, Est)
+        FIN_MIENTRAS
+
+        MIENTRAS NFDA(UTN)
+            ESC(Est.ApyNom)
+            ESC(Est.DNI)
+            ESC(Est.Legajo)
+            ESC(Est.Carrera)
+
+            LEER(UTN,EST)
+        FIN_MIENTRAS
+
+        CERRAR(UTN)
+FIN_ACCION
+
+no se puede hacer ESC(ISI, EstISI.carrera)

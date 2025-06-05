@@ -1,0 +1,11 @@
+ACCION .. ES
+    AMBIENTE
+        sec1: secuencia de caracter
+        sec2: secuencia de entero
+        v1: caracter
+        v2, i, ticket: entero
+
+        FUNCION ConvaENTERO ()..
+
+    PROCESO
+        ARR()
