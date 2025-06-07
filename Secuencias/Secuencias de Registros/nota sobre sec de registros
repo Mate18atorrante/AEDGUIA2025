@@ -1,15 +1,14 @@
-
-ARR = ABRIR E/(arch)
-AVZ(s, v) = LEER(arch, reg)
-CREAR = ABRIR /s (arch)
-CERRAR = CERRAR
+ARR = ABRIR E/(archivo)
+CREAR(s) = ABRIR /S(archivo)
+AVZ(s, v) = LEER(archivo, VariableRegistro)
+CERRAR(s) = CERRAR(archivo)
 
 cuando uso el leer(arch, reg) leo todo el contenido de un registro
 para hacer algo con un campo se utiliza el selector de campo que es un punto:
 Por ejemplo: SI REG.Carrera = "ISI" ENTONCES...
 
 campo contenido: es un campo simple
-campo continente: es un campo que dentro de el hay un conjunto de campos simples o contenidos
+campo continente: es un campo que, dentro de él, hay un conjunto de campos simples o contenidos
 
 en los archivos de entrada solo se pueden leer y en los arhivos de salida solo escribir o guardar datos (como las secuencias de datos elementales)
 

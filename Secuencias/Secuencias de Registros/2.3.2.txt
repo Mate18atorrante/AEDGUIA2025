@@ -1,0 +1,51 @@
+Se dispone de una secuencia de facturas con los siguientes datos:
+
+* Nº de Factura
+* Fecha
+* Total
+Se desea un listado de las facturas cuyas fechas sean posteriores a una fecha dada, y cuyos importes totales no alcancen
+los $1000, con el siguiente formato:
+
+Nro. de factura  Fecha  Importe total
+
+ACCION ListadoDeFacturas ES
+    AMBIENTE
+        dia: 1..31
+        mes: 1..12
+        año: N(4)
+
+        Factura = REGISTRO
+            NroFactura: entero
+            Fecha = REGISTRO
+                Dia: 1..31
+                Mes: 1..12
+                Año: N(4)
+            FIN_REGISTRO
+            Total: entero
+        FIN_REGISTRO
+
+        Facturas: Archivo de Factura
+        facts: Factura
+    PROCESO
+        ABRIR E/(Facturas)
+        LEER(Facturas, facts)
+
+        ESC("Ingrese la fecha de las facturas, posteriores a la misma con importes que no alcanzan los $1000, que quiere que se listen: ")
+        ESC("Ingrese el día: ")
+        LEER(dia)
+        ESC("Ahora el mes: ")
+        LEER(mes)
+        ESC("Por último, el año: ")
+        LEER(año)
+
+        ESC("| Nro_Factura |   | Fecha |   | Importe_Total |")
+        MIENTRAS NFDA(Facturas) HACER
+            SI ((facts.Fecha.Año > año) o (facts.Fecha.Año = año y facts.Fecha.Mes > mes) o (facts.Fecha.Año = año y facts.Fecha.Mes = mes y facts.Fecha.Dia > dia)) y facts.Total < 1000 ENTONCES
+                ESC(facts.NroFactura, facts.Fecha.Dia, "/", facts.Fecha.Mes, "/", facts.Fecha.Año, facts.Total)
+            FIN_SI
+
+            LEER(Facturas, facts)
+        FIN_SI
+
+        CERRAR(Facturas)
+FIN_PROCESO
