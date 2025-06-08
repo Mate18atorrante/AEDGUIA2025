@@ -1,0 +1,178 @@
+1.28. La galería de pintura y arte nacional, PINTA DE ARGENTINA, almacena información sobre los ARTISTAS y sus
+OBRAS de arte en secuencias de caracteres. Durante todo el año, las OBRAS de arte son expuestas en eventos de
+subasta y exposición, en los cuales se comercializan al público en general.
+A fin de año la Comisión Directiva de la Galería solicita que, a partir de toda esa información, se generen algunos
+informes.
+
+Se debe tener en cuenta lo siguiente:
+- En la secuencia ARTISTAS, se almacena estilo de arte (“R” – Renacentista, “M” – Arte Moderno, “B” – Barroco,
+“S” – Surrealismo), el nombre de cada artista, lugar de nacimiento, edad, y cantidad de OBRAS por artista.
+Los datos de cada artista están separados entre si por el símbolo “+” y finalizan con el símbolo “?”.
+
+- En la secuencia OBRAS, se almacena el nombre de la obra, el año en que fue hecha, su precio, precedido
+siempre del signo “$” (solo 3 digitos) y su estado (“V” – Vendido, “R” – Reservado, “U” – Obra Única).
+Todos los datos de las OBRAS están separados por el símbolo “,” y finalizan con el símbolo “/”.
+
+El creador de cada obra se determina de acuerdo al dato “cantidad de OBRAS” de la secuencia ARTISTAS, por ej.: el
+autor RENE BARTOL tiene 2 OBRAS, por lo cual las primeras 2 OBRAS de la secuencia OBRAS le pertenecen, las
+siguientes 6, pertenecen a JUAN B JUSTO, etc.
+A continuación, un ejemplo de ambas secuencias:
+SECUENCIA ARTISTAS
+    M+RENE BARTOL+ROSARIO+34+2?R+JUAN B JUSTO+NEUQUEN+61+5?........
+SECUENCIAS OBRAS
+    SOL Y PARANA,1997,$913,V/GRITO DE ESPERANZA,2003,$235,R/PENAS,1997,$781,V/.........
+
+a. Generar una secuencia de salida con información de los ARTISTAS Renacentistas. La secuencia debe contener
+el nombre del artista, seguido de sus OBRAS (nombre y año de creación). Los datos correspondientes al mismo
+artista deben separarse entre sí con el signo “+” y finalizar con el signo “?”.
+
+b. Al final del proceso informar:
+b.1. la mayor cantidad de OBRAS vendidas por un artista.
+b.2. el porcentaje de OBRAS de ARTISTAS "renacentistas" sobre el total de OBRAS.
+
+ACCION PINTA_DE_ARGENTINA ES
+    AMBIENTE
+        ARTISTAS, OBRAS, SALIDA: secuencia de caracter
+        ObraR, ObraNoR, i1, i2, cantObras, CantObrasV, MayObrasV, CantObrasGral, CantObrasRTotal: entero
+        v1, v2: caracter
+
+        FUNCION ConvaEntero(x: caracter): entero ES
+            SEGUN x HACER
+                "0": ConvaEntero := 0
+                "1": ConvaEntero := 1
+                "2": ConvaEntero := 2
+                "3": ConvaEntero := 3
+                "4": ConvaEntero := 4
+                "5": ConvaEntero := 5
+                "6": ConvaEntero := 6
+                "7": ConvaEntero := 7
+                "8": ConvaEntero := 8
+                "9": ConvaEntero := 9
+            FIN_SEGUN
+        FIN_FUNCION
+    PROCESO
+        ARR(ARTISTAS); ARR(OBRAS)
+        AVZ(ARTISTAS, v1); AVZ(OBRAS, v2)
+        CREAR(SALIDA)
+
+        cantObras := 0
+        CantObrasRTotal := 0
+        MayObrasV := 0
+        CantObrasV:= 0
+        CantObrasGral:= 0
+        MIENTRAS NFDS(ARTISTAS) HACER
+            MIENTRAS v1 <> "?" y NFDS(ARTISTAS) HACER
+                SI v1 = "R" ENTONCES       //JUAN B JUSTO+SOL Y PARANA+1997+GRITO DE ESPERANZA+2003? -> así me tiene que quedar la salida
+                    AVZ(ARTISTAS, v1)                             //salgo de R y llego a '+'
+                    AVZ(ARTISTAS, v1)                         //salgo de '+' y llego a primer letra de nombre artista
+
+                    MIENTRAS v <> "+" HACER
+                        ESC(SALIDA, v1)
+                        AVZ(ARTISTAS, v1)
+                    FIN_MIENTRAS
+                    ESC(sal, "+")                           //escribí JUAN B JUSTO+
+                    AVZ(ARTISTAS, v1)                       //salgo de '+'
+
+                    PARA i1:= 1 HASTA 2 HACER
+                        MIENTRAS v <> "+" HACER
+                            AVZ(ARTISTAS, v1)
+                        FIN_MIENTRAS
+                        AVZ(ARTISTAS, v1)
+                    FIN_PARA                                //salteo lugar de nac, '+', edad, '+' y llego a cant obras
+
+                    cantObras := 0
+                    MIENTRAS v1 <> "?" HACER
+                        cantObras := cantObras * 10 + ConvaEntero(v1)
+                        AVZ(ARTISTAS, v1)
+                    FIN_MIENTRAS                                //conseguí cant obras y llegué a '?'
+
+                    CantObrasRTotal := CantObrasRTotal + cantObras
+                    PARA ObraR:= 1 HASTA cantObras HACER
+                        MIENTRAS v2 <> "/" HACER
+                            MIENTRAS v2 <> "," HACER
+                                ESC(sal, v2)
+                                AVZ(OBRAS, v2)
+                            FIN_MIENTRAS                               //guardé el nombre de una obra y llegué a ','
+                            AVZ(OBRAS, v2)                          //año de creación
+                            ESC(sal,"+")                          //separo con '+'
+
+                            MIENTRAS v2 <> "," HACER
+                                ESC(sal, v2)
+                                AVZ(OBRAS, v2)
+                            FIN_MIENTRAS                         //guardé el año de creación y llegué a ',' otra vez
+                            AVZ(OBRAS, v2)                      //salí de ',' y llegué a precio $nnn
+
+
+                            MIENTRAS v2 <> "," HACER
+                                AVZ(OBRAS, v2)
+                            FIN_MIENTRAS                                //salgo de precio
+                            AVZ(OBRAS, v2)                              //salgo de ','
+
+                            SI v2 = "V" ENTONCES
+                                CantObrasV:= CantObrasV + 1
+                            FIN_SI
+
+                            SI ObraR < cantObras ENTONCES
+                                ESC(sal,"+")
+                            FIN_SI
+
+                            AVZ(OBRAS, v2)
+                        FIN_MIENTRAS                            //llegué a '/', fin de una obra
+                        AVZ(OBRAS, v2)                          //salgo de '/' y paso a otra obra
+                    FIN_PARA                                    //salí de tratar todas las obras Renacentistas y llegué a '?'
+                    ESC(SALIDA, "?")                            //separo un artista de otro con '?'
+                SINO
+                    AVZ(ARTISTAS, v1)                           //salgo de tipo de obra
+                    AVZ(ARTISTAS, v1)                           //salgo de '+'
+
+                    PARA i1:= 1 HASTA 3 HACER
+                        MIENTRAS v <> "+" HACER
+                            AVZ(ARTISTAS, v1)
+                        FIN_MIENTRAS
+                        AVZ(ARTISTAS, v1)
+                    FIN_PARA                                         //salí de: nombre, '+', lugar nac, '+', edad, y salgo de '+' nuevamente y llegué a cant bras
+
+                    cantObras := 0
+                    MIENTRAS v1 <> "?" HACER
+                        cantObras := cantObras * 10 + ConvaEntero(v1)
+                        AVZ(ARTISTAS, v1)
+                    FIN_MIENTRAS                                        //conseguí cantObras y llegué a '?'
+                    AVZ(ARTISTAS, v1)                                   //salgo de '?' para tratar otro artista
+
+                    PARA ObraNoR:= 1 HASTA cantObras HACER
+                        MIENTRAS v2 <> "/" HACER
+                            PARA i2 := 1 HASTA 3 HACER
+                                MIENTRAS v2 <> "," HACER
+                                    AVZ(OBRAS, v2)
+                                FIN_MIENTRAS
+                                AVZ(OBRAS, v2)
+                            FIN_PARA                                       //salí de nombre de obra, de ',', de fecha creacion obra, de ',', de precio, y de ',' nuevamente
+
+                            SI v2 = "V" ENTONCES
+                                CantObrasV:= CantObrasV + 1
+                            FIN_SI
+                            AVZ(OBRAS, v2)
+                        FIN_MIENTRAS                                    //llegué a "/", fin de una obra
+                        AVZ(OBRAS, v2)                                  //salí de "/" y pasé a otra obra
+                    FIN_PARA
+                FIN_SI
+
+                SI ContObrasV > MayObrasV ENTONCES
+                    MayObrasV := ContObrasV
+                FIN_SI
+
+                CantObrasGral := CantObrasGral + cantObras
+            FIN_MIENTRAS                                             //llegué a "?", fin de un artista
+            AVZ(ARTISTAS, v1)                                        //salgo de "?" y me muevo a otro artista
+        FIN_MIENTRAS
+
+        ESC("La mayor cantidad de OBRAS vendidas por un artista es: ",MayObrasV)
+        ESC("El porcentaje de OBRAS de ARTISTAS renacentistas sobre el total de ARTISTAS es: %",CantObrasRTotal/CantObrasGral*100)
+
+        CERRAR(SALIDA)
+        CERRAR(ARTISTAS)
+        CERRAR(OBRAS)
+FIN_ACCION
+
+
+

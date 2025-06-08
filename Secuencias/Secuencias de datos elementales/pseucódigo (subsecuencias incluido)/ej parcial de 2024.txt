@@ -1,0 +1,72 @@
+ACCION ej_parcial_2024 ES
+    AMBIENTE
+        sec1, sec2, salida: secuencia de caracteres
+        v1, v2, aux: caracter
+        i1, i2, i3, CantReservasGral, Reservas2Local, Reservas2Total, cantHoteles: entero
+
+        FUNCION ConvertiraNumero(n: caracter): Entero ES...
+        ...
+        FIN_FUNCION
+
+        FUNCION ConvertiraCaract(x: entero): Caracter ES
+            SEGUN x HACER
+                0: ConvertiraCaract := "0"
+                1: ConvertiraCaract := "1"
+                2: ConvertiraCaract := "2"
+                3: ConvertiraCaract := "3"
+                4: ConvertiraCaract := "4"
+                5: ConvertiraCaract := "5"
+                6: ConvertiraCaract := "6"
+                7: ConvertiraCaract := "7"
+                8: ConvertiraCaract := "8"
+                9: ConvertiraCaract := "9"
+            FIN_SEGUN
+        FIN_FUNCION
+
+    PROCESO
+        ARR(sec1); AVZ(sec1, v1)
+        ARR(sec2); AVZ(sec2, v2)
+        CREAR(salida)
+
+        Reservas2Total := 0
+        CantHoteles := 0
+
+        MIENTRAS NFDS(sec1) HACER
+            CantHoteles := CantHoteles + 1
+            MIENTRAS v1 <> "&" HACER
+                ESC(sal, v1)
+                AVZ(sec1, v1)
+            FIN_MIENTRAS
+            AVZ(sec1, v1)
+
+            CantReservasGral := 0
+            PARA i1:= 1 HASTA 3 HACER
+                CantReservasGral := CantReservasGral * 10 + ConvertiraNumero(v1)
+                AVZ(sec1, v1)
+            FIN_PARA
+
+            Reservas2Local := 0
+            PARA i2:= 1 HASTA CantReservasGral HACER
+                AVZ(sec2, v2)
+
+                SI v2 = "2" ENTONCES
+                    Reservas2Local := Reservas2Local + 1
+                FIN_SI
+
+                AVZ(sec2, v2)
+                AVZ(sec2, v2)
+                AVZ(sec2, v2)
+            FIN_PARA
+            Reservas2Total := Reservas2Total + Reservas2Local
+
+            PARA i3:= 0 HASTA 2 HACER
+                aux := ConvACaract(Reservas2Local DIV 10**i3 MOD 10)
+                ESC(salida, aux)
+            FIN_PARA
+        FIN_MIENTRAS
+
+        ESC("La cantidad promedio de reservas de habitaciones dobles por hotel es: "Reservas2Total/CantHoteles)
+FIN_ACCION
+
+
+
