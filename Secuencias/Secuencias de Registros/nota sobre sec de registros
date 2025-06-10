@@ -2,6 +2,7 @@ ARR = ABRIR E/(archivo)
 CREAR(s) = ABRIR /S(archivo)
 AVZ(s, v) = LEER(archivo, VariableRegistro)
 CERRAR(s) = CERRAR(archivo)
+ESC(s, v) = Escribir(Archivo, VariableRegistro) //guardar registros
 
 cuando uso el leer(arch, reg) leo todo el contenido de un registro
 para hacer algo con un campo se utiliza el selector de campo que es un punto:

@@ -1,0 +1,81 @@
+Se cuenta con una secuencia que contiene el Apellido y Nombre y Promedio General de los Graduados de una Facultad, y se
+solicita generar un listado con diversas recomendaciones para cubrir vacantes en una importante Empresa. Las mencionadas
+recomendaciones serán establecidas del siguiente modo: si el promedio es menor que 7, la recomendación será negativa ("NO");
+por el contrario, si el promedio es menor que 8, la recomendación será positiva ("SI"); de lo contrario, si el promedio
+es menor que 9, la recomendación será favorable ("F"); por último, si el promedio supera los 9 puntos, la recomendación
+será muy favorable("MF"). El listado deber respetar el siguiente formato:
+
+    Apellido_Nombre      Promedio     Recomendación
+
+Además, se solicita la impresión del total de graduados que recibieron cada una de las recomendaciones, y el promedio
+global de los mismos.
+
+ACCION listado_recomendación_alumnos ES
+    AMBIENTE
+        contNO, contSI, contF, contMF, contEstudiantes: entero
+        Alumno = REGISTRO
+            ApyNom: AN(40)
+            PromGral: N(2,2)
+        FIN_REGISTRO
+
+        Alum_Recom = REGISTRO
+            Apellido_Nombre: AN(40)
+            Promedio: N(2,2)
+            Recomendación ("NO","SI","F","MF")
+        FIN_REGISTRO
+
+        Facu: Archivo de Alumno
+        Recomendaciones: Archivo de Alum_Recom
+        Recom: Alum_Recom
+        Alum: Alumno
+    PROCESO
+        ABRIR E/(Facu)
+        ABRIR /S(Recomendaciones)
+        LEER(Facu, Alum)
+
+        contNO:= 0
+        contSI:= 0
+        contF:= 0
+        contMF:= 0
+        contEstudiantes:= 0
+
+        MIENTRAS NFDA(Facu) HACER
+            contEstudiantes:= contEstudiantes + 1
+
+            Recom.Apellido_Nombre := Alum.ApyNom
+            Recom.Promedio := Alum.PromGral
+
+            SI Alum.PromGral < 7 ENTONCES
+                Recom.Recomendación := "NO"
+                contNO:= contNO + 1
+            SINO
+                SI Alum.PromGral < 8 ENTONCES
+                    Recom.Recomendación := "SI"
+                    contSI:= contSI + 1
+                SINO
+                    SI Alum.PromGral < 9 ENTONCES
+                        Recom.Recomendación := "F"
+                        contF:= contF + 1
+                    SINO
+                        SI Alum.PromGral > 9 ENTONCES
+                        Recom.Recomendación := "MF"
+                        contMF:= contMF + 1
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            ESC(Recomendaciones, Recom)
+            LEER(Facu, Alum)
+        FIN_MIENTRAS
+
+        CERRAR(Facu)
+        CERRAR(Recomendaciones)
+
+        ESC("Total de graduados con promedio menor que 7: ",contNO)
+        ESC("Total de graduados con promedio menor que 8: ",contSI)
+        ESC("Total de graduados con promedio menor que 9: ",contF)
+        ESC("Total de graduados con promedio mayor que 9: ",contMF)
+        ESC("Promedio Global: ",(contNO+contSI+contF+contMF)/contEstudiantes)
+FIN_ACCION
+
+
