@@ -10,6 +10,63 @@ será muy favorable("MF"). El listado deber respetar el siguiente formato:
 Además, se solicita la impresión del total de graduados que recibieron cada una de las recomendaciones, y el promedio
 global de los mismos.
 
+//versión correcta, donde solo se muestra por pantalla los datos de las recomendaciones
+ACCION listado_recomendación_alumnos ES
+    AMBIENTE
+        contNO, contSI, contF, contMF, contEstudiantes: entero
+        Alumno = REGISTRO
+            ApyNom: AN(40)
+            PromGral: N(2,2)
+        FIN_REGISTRO
+
+        Facu: Archivo de Alumno
+        Alum: Alumno
+    PROCESO
+        ABRIR E/(Facu)
+        LEER(Facu, Alum)
+
+        contNO:= 0
+        contSI:= 0
+        contF:= 0
+        contMF:= 0
+        contEstudiantes:= 0
+
+        ESC("|  Apellido_Nombre  |  Promedio  |  Recomendación  |")
+        MIENTRAS NFDA(Facu) HACER
+            contEstudiantes:= contEstudiantes + 1
+
+            SI Alum.PromGral < 7 ENTONCES
+                ESC(Alum.ApyNom, Alum.PromGral, "NO")
+                contNO:= contNO + 1
+            SINO
+                SI Alum.PromGral < 8 ENTONCES
+                    ESC(Alum.ApyNom, Alum.PromGral, "SI")
+                    contSI:= contSI + 1
+                SINO
+                    SI Alum.PromGral < 9 ENTONCES
+                        ESC(Alum.ApyNom, Alum.PromGral, "F")
+                        contF:= contF + 1
+                    SINO
+                        SI Alum.PromGral > 9 ENTONCES
+                        ESC(Alum.ApyNom, Alum.PromGral, "MF")
+                        contMF:= contMF + 1
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            LEER(Facu, Alum)
+        FIN_MIENTRAS
+
+        CERRAR(Facu)
+
+        ESC("Total de graduados con promedio menor que 7: ",contNO)
+        ESC("Total de graduados con promedio menor que 8: ",contSI)
+        ESC("Total de graduados con promedio menor que 9: ",contF)
+        ESC("Total de graduados con promedio mayor que 9: ",contMF)
+        ESC("Promedio Global: ",(contNO+contSI+contF+contMF)/contEstudiantes)
+FIN_ACCION
+
+//esta es una versión en la que interpreté que tenía que guardar los datos de las recomendaciones en registros
 ACCION listado_recomendación_alumnos ES
     AMBIENTE
         contNO, contSI, contF, contMF, contEstudiantes: entero
