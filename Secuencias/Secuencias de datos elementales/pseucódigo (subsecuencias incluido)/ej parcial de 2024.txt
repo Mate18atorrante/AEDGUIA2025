@@ -1,8 +1,9 @@
 ACCION ej_parcial_2024 ES
     AMBIENTE
-        sec1, sec2, salida: secuencia de caracteres
-        v1, v2, aux: caracter
-        i1, i2, i3, CantReservasGral, Reservas2Local, Reservas2Total, cantHoteles: entero
+        sec1, salida: secuencia de caracteres
+        sec2: secuencia de entero
+        v1, aux: caracter
+        v2, i1, i2, i3, CantReservasGral, Reservas2Local, Reservas2Total, cantHoteles: entero
 
         FUNCION ConvertiraNumero(n: caracter): Entero ES...
         ...

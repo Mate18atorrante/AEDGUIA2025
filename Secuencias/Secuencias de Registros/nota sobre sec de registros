@@ -3,6 +3,11 @@ CREAR(s) = ABRIR /S(archivo)
 AVZ(s, v) = LEER(archivo, VariableRegistro)
 CERRAR(s) = CERRAR(archivo)
 
+// los campos deben tener misma longitud (cuando operamos con más de un registro y hacemos asignaciones y tal)
+//la costumbre de definir campos continentes es definir afuera del registro, por si se llega a necesitar definirlo en otro tipo de registro
+//las fechas se definen en este orden -> año, mes, día, esto se hace para luego poder comparar en condicionales de una forma más sencilla, sin tanta estructura, solo comparandolo completo
+//como yo escribo por pantalla campo por campo, también leo campo por campo, es decir el usuario ingresa datos que se guardan a un registro campo por campo
+
 cuando uso el leer(arch, reg) leo todo el contenido de un registro
 para hacer algo con un campo se utiliza el selector de campo que es un punto:
 Por ejemplo: SI REG.Carrera = "ISI" ENTONCES...

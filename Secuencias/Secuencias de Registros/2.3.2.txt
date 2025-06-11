@@ -10,42 +10,37 @@ Nro. de factura  Fecha  Importe total
 
 ACCION ListadoDeFacturas ES
     AMBIENTE
-        dia: 1..31
-        mes: 1..12
-        año: N(4)
+        Fecha = REGISTRO
+            Año: N(4)
+            Mes: 1..12
+            Dia: 1..31
+        FIN_REGISTRO
 
         Factura = REGISTRO
             NroFactura: entero
-            Fecha = REGISTRO
-                Dia: 1..31
-                Mes: 1..12
-                Año: N(4)
-            FIN_REGISTRO
-            Total: entero
+            NroFecha: Fecha
+            Total: real
         FIN_REGISTRO
 
-        Facturas: Archivo de Factura
-        facts: Factura
+        ArchFacturas: Archivo de Factura
+        RegFacts: Factura
+        fecha_usuario: Fecha
+
     PROCESO
         ABRIR E/(Facturas)
-        LEER(Facturas, facts)
+        LEER(ArchFacturas, RegFacts)
 
-        ESC("Ingrese la fecha de las facturas, posteriores a la misma con importes que no alcanzan los $1000, que quiere que se listen: ")
-        ESC("Ingrese el día: ")
-        LEER(dia)
-        ESC("Ahora el mes: ")
-        LEER(mes)
-        ESC("Por último, el año: ")
-        LEER(año)
+        ESC("Ingrese la fecha de las facturas (año, mes, día), posteriores a la misma con importes que no alcanzan los $1000, que quiere que se listen: ")
+        LEER(fecha_usuario.Año, fecha_usuario.Mes, fecha_usuario.Dia)
 
         ESC("| Nro_Factura |   | Fecha |   | Importe_Total |")
-        MIENTRAS NFDA(Facturas) HACER
-            SI ((facts.Fecha.Año > año) o (facts.Fecha.Año = año y facts.Fecha.Mes > mes) o (facts.Fecha.Año = año y facts.Fecha.Mes = mes y facts.Fecha.Dia > dia)) y facts.Total < 1000 ENTONCES
+        MIENTRAS NFDA(ArchFacturas) HACER
+            SI RegFacts > fecha_usuario y facts.Total < 1000 ENTONCES
                 ESC(facts.NroFactura, facts.Fecha.Dia, "/", facts.Fecha.Mes, "/", facts.Fecha.Año, facts.Total)
             FIN_SI
 
-            LEER(Facturas, facts)
+            LEER(ArchFacturas, RegFacts)
         FIN_SI
 
-        CERRAR(Facturas)
+        CERRAR(ArchFacturas)
 FIN_PROCESO

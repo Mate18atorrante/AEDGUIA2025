@@ -1,0 +1,84 @@
+Dada la siguiente secuencia de datos con el siguiente formato:
+
+Nº de socio
+Nº de teléfono
+Apellido y Nombre
+Carrera (ISI - IEM - IQ - LAR)
+Domicilio
+Cantidad de unidades prestadas
+Correspondiente a los alumnos socios de la Biblioteca, generar la secuencia de los alumnos de “ISI” que tengan prestadas
+más de 4 unidades bibliográficas.
+
+ACCION .. ES
+    AMBIENTE
+        Estudiante = Registro
+            NroSocio: entero
+            NroTelefono: N(10)
+            ApeyNom: AN(40)
+            Carrera: ("ISI","IEM","LAR") //acá estamos definiendo un campo como los posibles valores que puede tomar, no es un conjunto, creo
+            Domicilio: AN(40)
+            UnitsPrestadas: entero
+        FIN_REGISTRO
+
+        Biblio, Salida: Archivo de Estudiante
+        AlumnoSocio, reg_salida: Estudiante
+
+    PROCESO
+        ABRIR E/(Biblio)
+        ABRIR /S(Salida)
+        LEER(Biblio, AlumnoSocio)
+
+        MIENTRAS NFDA(Biblio) HACER
+            SI AlumnoSocio.Carrera = "ISI" y AlumnoSocio.UnitsPrestadas > 4 ENTONCES
+                reg_salida := AlumnoSocio
+                ESC(Salida, reg_salida) //se puede haber puesto ESC(Salida, AlumnoSocio) de igual manera
+            FIN_SI
+            LEER(Biblio, AlumnoSocio)
+        FIN_MIENTRAS
+
+        CERRAR(Biblio)
+        CERRAR(Salida)
+FIN_ACCION
+
+//idea del profe, agregar otro registro si quiero que mi salida tenga registros diferentes
+
+ACCION .. ES
+    AMBIENTE
+        Estudiante = Registro
+            NroSocio: entero
+            NroTelefono: N(10)
+            ApeyNom: AN(40)
+            Carrera: ("ISI","IEM","LAR") //acá estamos definiendo un campo como los posibles valores que puede tomar, no es un conjunto, creo
+            Domicilio: AN(40)
+            UnitsPrestadas: entero
+        FIN_REGISTRO
+
+        Alumno_ISI = Registro
+            socio: entero
+            AyN: AN(40)
+            cant: entero
+        FIN_REGISTRO
+
+        Biblio: Archivo de Estudiante
+        Salida: Archivo de Alumno_ISI
+        AlumnoSocio: Estudiante
+        reg_salida: Alumno_ISI
+
+    PROCESO
+        ABRIR E/(Biblio)
+        ABRIR /S(Salida)
+        LEER(Biblio, AlumnoSocio)
+
+        MIENTRAS NFDA(Biblio) HACER
+            SI AlumnoSocio.Carrera = "ISI" y AlumnoSocio.UnitsPrestadas > 4 ENTONCES
+                reg_salida.socio := AlumnoSocio.nrosocio
+                reg_salida.AyN := AlumnoSocio.ApeyNom
+                reg_salida.cant := AlumnoSocio.UnitsPrestadas
+                ESC(Salida, reg_salida) //acá ya no se podría haber puesto ESC(Salida, AlumnoSocio)
+            FIN_SI
+            LEER(Biblio, AlumnoSocio)
+        FIN_MIENTRAS
+
+        CERRAR(Biblio)
+        CERRAR(Salida)
+FIN_ACCION
