@@ -1,0 +1,62 @@
+Una casa deportiva dispone de un archivo de productos, ordenado por código de producto, que contiene los
+siguientes datos:
+
+| Cod_prod | Tipo | (1,2,3) | Marca |  Modelo | Descripción | Cant_existente | PrecioUnit |
+
+Se ha registrado en el mercado un aumento de precios, el cual no es uniforme para todos los artículos, sino que varía
+según el tipo de los mismos de la siguiente manera: tipo 1- Calzados: 10%, tipo 2 – Indumentaria: 25%, tipo 3 -
+Accesorios (pelotas, raquetas, etc.): 50%. Por este motivo el gerente de la empresa solicitó al Departamento de
+Informática que modifique los precios de acuerdo a los porcentajes antes mencionados.
+Generar un nuevo fichero de productos para cumplir con la solicitud del gerente.
+Al terminar el proceso informar cantidad total de artículos de cada tipo y total general.
+
+ACCION .. ES
+    AMBIENTE
+        contTipo1, contTipo2, contTipo3: entero
+
+        Producto = REGISTRO
+            cod_prod: AN(40)
+            tipo: (1,2,3) // también puede ser 1..3
+            Marca: AN
+            Modelo: AN(10)
+            Descripcion: AN(100)
+            Cant_existente: entero
+            PrecioUnit: N(6,2)
+        FIN_REGISTRO
+
+        arch_prods, arch_salida: Archivo de Producto
+        reg_prod, reg_salida: Producto
+
+    PROCESO
+        ABRIR E/(arch_prods); LEER(arch_prods, reg_prod)
+        ABRIR /S(arch_salida)
+
+        contTipo1 := 0
+        contTipo2 := 0
+        contTipo3 := 0
+        MIENTRAS NFDA(arch_prods) HACER
+            reg_salida := reg_prod //porque tienen la misma estructura y porque todos los campos deben tener valores, o es esto, o es hacerlo campo por campo
+            SEGUN reg_prod.tipo
+                1:
+                    reg_salida.PrecioUnit := reg_prod.PrecioUnit * 1,10
+                    contTipo1:= contTipo1 + reg_prod.Cant_Existente //contando el stock de tipo 1, esto porque ya tenemos el dato cant_existente, si fuera por registro se sumaria por 1 (+ 1)
+                2:
+                    reg_salida.PrecioUnit := reg_prod.PrecioUnit * 1,25
+                    contTipo2 := contTipo2 + reg_prod.Cant_Existente
+                3:
+                    reg_salida.PrecioUnit := reg_prod.PrecioUnit * 1,50
+                    contTipo3 := contTipo3 + reg_prod.Cant_Existente
+            FIN_SEGUN
+
+            ESC(arch_salida, reg_salida)
+            LEER(arch_prods, reg_prod)
+        FIN_MIENTRAS
+
+        ESC("Cant de articulos tipo 1: ",contTipo1)
+        ESC("Cant de articulos tipo 2: ",contTipo2)
+        ESC("Cant de articulos tipo 3: ",contTipo3)
+        ESC("Cant total de articulos: ",contTipo1+contTipo2+contTipo3)
+
+
+
+

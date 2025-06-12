@@ -1,0 +1,61 @@
+2.07. Se dispone de un archivo con los datos de un padrón electoral con la siguiente información:
+- Nombre y apellido - Clase
+- DNI - Dirección
+- No de Mesa - Observaciones
+- No de Circuito - Partido (0= independiente, 1=‘A’, 2=‘B’, 3=‘C’)
+Generar:
+a) Una secuencia de salida con nombre y apellido, DNI, y dirección de todas las personas afiliadas al partido “C”.
+b) Una secuencia de salida con nombre y apellido, DNI, y dirección de todas las personas no afiliadas a ningún
+partido y de clase posterior a 1940.
+
+ACCION .. ES
+    AMBIENTE
+        Personas = REGISTRO
+            ApyNom: AN(50)
+            Clase: N(4)
+            DNI: N(8)
+            Dirección: AN(50)
+            NroMesa: entero
+            Observaciones: AN
+            NroCircuito: entero
+            Partido: 0..3
+        FIN_REGISTRO
+
+        Personas3 = REGISTRO
+            ApyNom: AN(50)
+            DNI: N(8)
+            Dirección: AN(50)
+        FIN_REGISTRO
+
+        Padrón: Archivo de Personas
+        persona: Personas
+
+        PersonasAfiliadas3, NoAfiliadosPost1940: Archivo de Personas3
+        Afiliado3, NoAfiliad: Personas3
+
+    PROCESO
+        ABRIR E/(Padron); LEER(Padron, persona)
+        ABRIR /S(PersonasAfiliadas3); ABRIR /S(NoAfiliadosPost1940)
+
+        MIENTRAS NFDA(Padron) HACER
+            SI persona.Partido = 3 ENTONCES
+                Afiliado3.ApyNom = persona.ApyNom
+                Afiliado3.DNI = persona.DNI
+                Afiliado3.Direccion = persona.Direccion
+                ESC(PersonasAfiliadas3, Afiliado3)
+            SINO
+                SI persona.Partido = 0 y persona.Clase > 1940 ENTONCES
+                    NoAfiliado.ApyNom = persona.ApyNom
+                    NoAfiliado.DNI = persona.DNI
+                    NoAfiliado.Direccion = persona.Direccion
+                    ESC(NoAfiliadosPost1940, NoAfiliado)
+                FIN_SI
+            FIN_SI
+
+            LEER(Padron, persona)
+        FIN_MIENTRAS
+
+        CERRAR(Padron)
+        CERRAR(NoAfiliadosPost1940)
+        CERRAR(PersonasAfiliadas3)
+FIN_ACCION
