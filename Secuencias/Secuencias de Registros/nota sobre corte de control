@@ -1,0 +1,14 @@
+requisitos para poder resolver un ej con corte de control:
+* los registros deben tener campo clave compleja;
+* la información que se requiere obtener del registro debe poder obtenerse a partir del orden de apareción de los campos de la clave compleja:
+-ordenado significa necesitar tratar campo por campo de la clave compleja
+-la info debe de tener que obtenerse tratando todos los campos de la clave compleja (tratando la clave compleja completa)
+
+ej
+archivo de juguetes en stock ordenado por fecha y cantidad
+|*fecha|cantidad*|lugar|...|
+
+se necesita informe de totales de juguetes guardados por *fecha* y *cantidad*
+//no podría pedirse el informe ordenado por cantidad y fecha, el pedido debe poder obtenerse apartir de campos de la
+clave compleja, y en el orden de la clave compleja
+

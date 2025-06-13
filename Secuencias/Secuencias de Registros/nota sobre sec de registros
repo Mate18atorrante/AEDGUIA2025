@@ -22,6 +22,18 @@ hay diferentes maneras de tratar los archivos
 -indexada
 -otra más
 
+TIPOS DE PROCESOS CON ARCHIVOS
+
+Individuales: //cuando trabajamos con solo un archivo de entrada y uno o ningun archivo de salida
+-genérico //generar un archivo de salida consistente
+-emisión //impresión de datos, listados, padrón ordenado por algún campo (cuando los datos están ordenados y hay que emitir totales finales)
+-Corte de control //padrones, pero con totales parciales. REQUISITO OBLIGATORIO: archivo de entrada esté ordenao por clave compleja
+-Procesos estadísticos: //contabilizar datos, utilizando tabla (memoria interna) y emisión de cuadro resumen al final
+
+Múltiple: //
+-Mezcla
+-Actualización
+
 ACCION ejemplo ES
     AMBIENTE
         Estudiante = Registro
