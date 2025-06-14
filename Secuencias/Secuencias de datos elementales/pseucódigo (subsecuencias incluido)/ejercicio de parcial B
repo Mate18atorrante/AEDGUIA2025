@@ -1,11 +1,70 @@
 ACCION .. ES
     AMBIENTE
-        sec1: secuencia de caracter
+        sec1, sal: secuencia de caracter
         sec2: secuencia de entero
-        v1: caracter
-        v2, i, ticket: entero
+        v1, aux: caracter
+        v2, i1, i2, i3, cant_tickets, tot_tickets, vents_efe_local, vents_efe_total: entero
 
-        FUNCION ConvaENTERO ()..
+        FUNCION ConvaEntero()..
+        ...
+        FIN_FUNCION
+
+        FUNCION ConvaCaract(x: entero): caracter ES
+            SEGUN x HACER
+            0: ConvaCaract := "0"
+            1: ConvaCaract := "1"
+            2: ConvaCaract := "2"
+            3: ConvaCaract := "3"
+            4: ConvaCaract := "4"
+            5: ConvaCaract := "5"
+            6: ConvaCaract := "6"
+            7: ConvaCaract := "7"
+            8: ConvaCaract := "8"
+            9: ConvaCaract := "9"
+        FIN_FUNCION
 
     PROCESO
-        ARR()
+        vents_efe_total:= 0
+        tot_tickets := 0
+
+        ARR(sec1); AVZ(sec1, v1)
+        ARR(sec2); AVZ(sec2, v2)
+
+        CREAR(sal)
+        MIENTRAS NFDS(sec1) HACER
+            MIENTRAS v1 <> "&" HACER //copio nombre sucursal
+                ESC(sal, v1)
+                AVZ(sec1, v1)
+            FIN_MIENTRAS
+            AVZ(sec1, v1) //salgo de "&"
+
+            cant_tikets:= 0
+            PARA i:= 1 HASTA 3 HACER
+                cant_tikets:= cant_tikets * 10 + ConvaEntero(v1)
+                AVZ(sec1, v1)
+            FIN_PARA //obtuve cant_tickets
+
+            tot_tickets := tot_tickets + cant_tickets //acumulo cant total de tickets
+
+            vents_efe_local:= 0
+            PARA i2:= 1 HASTA cant_tickets HACER //trato cada ticket de la sucursal
+                SI v2 = 1 ENTONCES
+                    vents_efe_local := vents_efe_local + 1
+                FIN_SI
+
+                PARA i:= 1 HASTA 4
+                    AVZ(sec2, v2)
+                FIN_PARA
+            FIN_PARA
+
+            PARA i3:= 2 HASTA 0, -1 HACER //escribo cant ventas en efectivo
+                aux := convACaract((vents_efe_local DIV 10**i3) MOD 10)
+                ESC(sal, aux)
+            FIN_PARA
+
+            vents_efe_total := vents_efe_total + vents_efe_local //acumulo cant ventas en efectivo
+        FIN_MIENTRAS
+
+        ESC("Porcentaje de ventas en efectivo sobre total de tickets: %",vents_efe_total/tot_tickets*100)
+FIN_PROCESO
+

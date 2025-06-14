@@ -60,7 +60,7 @@ ACCION ej_parcial_2024 ES
             FIN_PARA
             Reservas2Total := Reservas2Total + Reservas2Local
 
-            PARA i3:= 0 HASTA 2 HACER
+            PARA i3:= 2 HASTA 0, -1 HACER
                 aux := ConvACaract(Reservas2Local DIV 10**i3 MOD 10)
                 ESC(salida, aux)
             FIN_PARA
