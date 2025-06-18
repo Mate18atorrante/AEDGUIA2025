@@ -13,7 +13,7 @@ global de los mismos.
 //versión correcta, donde solo se muestra por pantalla los datos de las recomendaciones
 ACCION listado_recomendación_alumnos ES
     AMBIENTE
-        contNO, contSI, contF, contMF, contEstudiantes: entero
+        contNO, contSI, contF, contMF, contEstudiantes, sumpromedio: entero
         Alumno = REGISTRO
             ApyNom: AN(40)
             PromGral: N(2,2)
@@ -29,11 +29,13 @@ ACCION listado_recomendación_alumnos ES
         contSI:= 0
         contF:= 0
         contMF:= 0
+        sumpromedio:= 0
         contEstudiantes:= 0
 
         ESC("|  Apellido_Nombre  |  Promedio  |  Recomendación  |")
         MIENTRAS NFDA(Facu) HACER
             contEstudiantes:= contEstudiantes + 1
+            sumpromedio:= sumpromedio + Alum.PromGral
 
             SI Alum.PromGral < 7 ENTONCES
                 ESC(Alum.ApyNom, Alum.PromGral, "NO")
@@ -63,13 +65,13 @@ ACCION listado_recomendación_alumnos ES
         ESC("Total de graduados con promedio menor que 8: ",contSI)
         ESC("Total de graduados con promedio menor que 9: ",contF)
         ESC("Total de graduados con promedio mayor que 9: ",contMF)
-        ESC("Promedio Global: ",(contNO+contSI+contF+contMF)/contEstudiantes)
+        ESC("Promedio Global: ",sumpromedio/contEstudiantes)
 FIN_ACCION
 
 //esta es una versión en la que interpreté que tenía que guardar los datos de las recomendaciones en registros
 ACCION listado_recomendación_alumnos ES
     AMBIENTE
-        contNO, contSI, contF, contMF, contEstudiantes: entero
+        contNO, contSI, contF, contMF, contEstudiantes, sumpromedio: entero
         Alumno = REGISTRO
             ApyNom: AN(40)
             PromGral: N(2,2)
@@ -94,10 +96,13 @@ ACCION listado_recomendación_alumnos ES
         contSI:= 0
         contF:= 0
         contMF:= 0
+        sumpromedio:= 0
         contEstudiantes:= 0
+
 
         MIENTRAS NFDA(Facu) HACER
             contEstudiantes:= contEstudiantes + 1
+            sumpromedio:= sumpromedio + Alum.PromGral
 
             Recom.Apellido_Nombre := Alum.ApyNom
             Recom.Promedio := Alum.PromGral
@@ -132,7 +137,7 @@ ACCION listado_recomendación_alumnos ES
         ESC("Total de graduados con promedio menor que 8: ",contSI)
         ESC("Total de graduados con promedio menor que 9: ",contF)
         ESC("Total de graduados con promedio mayor que 9: ",contMF)
-        ESC("Promedio Global: ",(contNO+contSI+contF+contMF)/contEstudiantes)
+        ESC("Promedio Global: ",Alum.PromGral/contEstudiantes)
 FIN_ACCION
 
 

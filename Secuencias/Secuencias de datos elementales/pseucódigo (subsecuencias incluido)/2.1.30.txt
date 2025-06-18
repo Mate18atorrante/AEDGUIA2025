@@ -1,0 +1,84 @@
+El siguiente es un ejercicio del primer recuperatorio del primer parcial del año 2017:
+
+La AFIP dispone de dos secuencias de caracteres:
+
+PERSONAS Contiene los siguientes datos de personas físicas o Empresas: nombre completo y fecha (de nacimiento o de creación, respectivamente)
+, agrupadas por provincias. No existe carácter separador entre personas, el fin de cada provincia se indica con el carácter &.
+Ejemplo: María Góm-14021977Carlos Alberto Rodriguez-20061990....&Lionel Messi-24061987....&....{fin} nombre-ddmmaaaanombre-ddmmaa....&
+
+CUIT: contiene la Clave Unica de Identificación Tributaria de las personas de la secuencia PERSONAS (existiendo una correspondencia una a una,
+es decir la primer persona con el primer cuit, la segunda con el segundo y asi sucesivamente) Cada número de CUIT se almacena por medio de 11
+caracteres: los 2 primeros indican el tipo, los 6 siguientes el número de DNI (en caso de personas físicas) o de sociedad (en caso de Empresas)
+y el último es un digito verificador.
+Ejemplo: **20123456786**23134567823**30712434445**
+
+Los tipos pueden ser: 20, 23, 24 y 27 para Personas Físicas y 30, 33 y 34 para Empresas.
+
+Se solicita: Generar una secuencia de salida que contenga DNI, y el nombre completo de todas las personas físicas cuyo nombre comience con vocal.
+Para cada Provincia calcular el total de personas físicas y el porcentaje sobre el total de la provincia
+
+ACCION .. ES
+    AMBIENTE
+        vocales = ("A", "E", "I", "O", "U")
+        PERSONAS, CUIT, SAL: secuencia de caracter
+        v1, v2: caracter
+        i1, i2, fisicas_prov, tot_provincia, nroprov: entero
+
+    PROCESO
+        ARR(PERSONAS)
+        ARR(CUIT)
+        AVZ(PERSONAS, V1)
+        AVZ(CUIT, V2)
+        CREAR(SAL)
+
+        nroprov:= 0
+        MIENTRAS NFDS(PERSONAS) HACER
+            nroprov:= nroprov + 1
+            fisicas_prov:= 0
+            tot_provincia:= 0
+
+            MIENTRAS v1 <> "&" y NDFDS(PERSONAS) HACER
+                tot_provincia:= tot_provincia + 1
+
+                SI v2 = "2" y v1 EN vocales ENTONCES
+                    fisicas_prov:= fisicas_prov + 1
+                    AVZ(CUIT, v2)
+                    AVZ(CUIT, v2)
+
+                    PARA i1:= 1 HASTA 8 HACER
+                        ESC(SAL, v2)
+                        AVZ(CUIT, v2)
+                    FIN_PARA
+                    AVZ(CUIT, v2)                           //paso a otro CUIT
+
+                    MIENTRAS v1 <> "-" HACER
+                        ESC(SAL, v1)
+                        AVZ(PERSONAS, v1)
+                    FIN_MIENTRAS
+                    AVZ(PERSONAS, v1)
+
+                    PARA i2:= 1 HASTA 8 HACER
+                        AVZ(PERSONAS, v1)
+                    FIN_PARA                         //paso a otra persona
+                SINO
+                    PARA i1:= 1 HASTA 11 HACER
+                        AVZ(CUIT, v2)
+                    FIN_PARA                            //paso a otro CUIT
+
+                    MIENTRAS v1 <> "-" HACER //omito empresa
+                        AVZ(PERSONAS, v1)
+                    FIN_MIENTRAS
+                    AVZ(PERSONAS, v1)
+
+                    PARA i2:= 1 HASTA 8 HACER
+                        AVZ(PERSONAS, v1)
+                    FIN_PARA                            //paso a otra persona
+                FIN_SI
+            FIN_MIENTRAS
+
+            ESC("La cantidad total de personas físicas de la provincia nro ,"nroprov", es: ",fisicas_prov)
+            ESC("Porcentaje de personas fisicas sobre total de provincia: %",fisicas_prov/tot_provincia*100)
+
+            AVZ(PERSONAS, v1)
+        FIN_MIENTRAS
+FIN_ACCION

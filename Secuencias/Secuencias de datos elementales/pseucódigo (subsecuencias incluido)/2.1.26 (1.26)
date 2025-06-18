@@ -1,0 +1,54 @@
+1.26. Se posee 2 secuencias (S1 y S2) con las cuales se desea generar una nueva secuencia (SAL) donde se 
+intercalen las palabras de las secuencias de entrada, de la siguiente manera: copiar de S1 aquellas palabras que 
+empiezan con una letra que ingresa el usuario y de S2 aquellas palabras que estén en posición par.
+
+ACCION .. ES
+    AMBIENTE
+        sec1, sec2, sal: secuencia de caracter
+        v1, v2, entrada: caracter
+        contposic: entero
+
+    PROCESO
+        ARR(sec1); ARR(sec2)
+        AVZ(sec1, v1); AVZ(sec2, v2)
+
+        CREAR(sal)
+        contposic:= 0
+
+        ESC("Ingrese letra con la que quiere que empiecen las palabras de la sec2: ")
+        LEER(entrada)
+
+        MIENTRAS NFDS(sec1) o NFDS(sec2) HACER
+            MIENTRAS v1 = "" HACER
+                AVZ(sec1, v1)
+            FIN_MIENTRAS
+
+            SI v1 = entrada ENTONCES
+                MIENTRAS v1 <> "" HACER
+                    ESC(sal, v1)
+                    AVZ(sec1, v1)
+                FIN_MIENTRAS
+            SINO
+                MIENTRAS v1 <> "" HACER
+                    AVZ(sec1, v1)
+                FIN_MIENTRAS
+            FIN_SI
+
+            MIENTRAS v2 = "" HACER
+                AVZ(sec2, v2)
+            FIN_MIENTRAS
+
+            contposic:= contposic + 1
+
+            SI contposic MOD 2 = 0 ENTONCES
+                MIENTRAS v2 <> "" HACER
+                    ESC(sal, v2)
+                    AVZ(sec2, v2)
+                FIN_MIENTRAS
+            SINO
+                MIENTRAS v2 <> "" HACER
+                    AVZ(sec2, v2)
+                FIN_MIENTRAS
+            FIN_SI
+        FIN_MIENTRAS
+FIN_ACCION
