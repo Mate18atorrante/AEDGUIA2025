@@ -1,0 +1,155 @@
+accion autos es
+    AMBIENTE
+        Auto = Registro
+            prov: AN(30)
+            depto: AN(40)
+            diudad: AN(50)
+            Pat: AN(7)
+            modelo: N(4)
+        FIN_REGISTRO
+
+        Arch: Archivo de Auto ordenado por provincia, depto, ciudad y pat
+        Reg: Auto
+        r_ciudad: AN(50)
+        r_depto: AN(40)
+        r_prov: AN(30)
+
+        cont_prov, cont_depto, cont_ciudad, total: N(9999)
+
+        Procedimiento Corte_Ciudad ES
+            ESC("El total de autoes de ",r_ciudad," es ",cont_ciudad)
+            cont_depto:= cont_depto + cont_ciudad
+            cont_ciudad:= 0
+            r_ciudad:= Reg.ciudad
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Corte_Depto ES
+            Corte_Ciudad() //porque también cambia la ciudad
+            ESC("El total de autos de ",r_depto," es ",cont_depto)
+            cont_prov:= cont_prov + cont_depto
+            cont_depto:= 0
+            r_depto:= Reg.depto
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Corte_Prov ES
+            Corte_Depto() //porque tambien cambia el depto
+            Corte_Ciudad() //porque también cambia la ciudad
+            ESC("El total de autos de ",r_prov," es ",cont_prov)
+            total:= total + cont_prov
+            cont_prov:= 0
+            r_prov:= Reg.prov
+        FIN_PROCEDIMIENTO
+    PROCESO
+        ABRIR E/ (Arch); LEER(Arch, Reg)
+        cont_prov:= 0
+        cont_depto:= 0
+        cont_ciudad:= 0
+        total:=0
+
+        r_prov:= Reg.prov
+        r_depto:= Reg.depto
+        r_ciudad:= Reg.ciudad
+
+        MIENTRAS NFDA(Arch) HACER
+            SI r_prov <> Reg.prov ENTONCES
+                Corte_Prov //nivel inferior
+            SINO
+                SI r_depto <> Reg.depto ENTONCES
+                    Corte_Depto //nivel medio
+                SINO
+                    SI r_ciudad <> Reg.ciudad ENTONCES
+                        Corte_Ciudad //nivel superior
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            cont_ciudad:= cont_ciudad + 1 //nivel más bajo //esto vale (0 + 1) después del corte_ciudad
+
+            LEER(Arch, Reg)
+        FIN_MIENTRAS
+
+        Corte_Prov //nivel inferior
+
+        ESC("El total de autoes es :",Total)
+FIN_PROCESO
+
+// SI solo me pidiera contar los autos de modelos desde los 2000:
+
+accion autos es
+    AMBIENTE
+        Auto = Registro
+            prov: AN(30)
+            depto: AN(40)
+            diudad: AN(50)
+            Pat: AN(7)
+            modelo: N(4)
+        FIN_REGISTRO
+
+        Arch: Archivo de Auto ordenado por provincia, depto, ciudad y pat
+        Reg: Auto
+        r_ciudad: AN(50)
+        r_depto: AN(40)
+        r_prov: AN(30)
+
+        cont_prov, cont_depto, cont_ciudad, total: N(9999)
+
+        Procedimiento Corte_Ciudad ES
+            ESC("El total de autoes de ",r_ciudad," es ",cont_ciudad)
+            cont_depto:= cont_depto + cont_ciudad
+            cont_ciudad:= 0
+            r_ciudad:= Reg.ciudad
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Corte_Depto ES
+            Corte_Ciudad() //porque también cambia la ciudad
+            ESC("El total de autos de ",r_depto," es ",cont_depto)
+            cont_prov:= cont_prov + cont_depto
+            cont_depto:= 0
+            r_depto:= Reg.depto
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Corte_Prov ES
+            Corte_Depto() //porque tambien cambia el depto
+            Corte_Ciudad() //porque también cambia la ciudad
+            ESC("El total de autos de ",r_prov," es ",cont_prov)
+            total:= total + cont_prov
+            cont_prov:= 0
+            r_prov:= Reg.prov
+        FIN_PROCEDIMIENTO
+    PROCESO
+        ABRIR E/ (Arch); LEER(Arch, Reg)
+        cont_prov:= 0
+        cont_depto:= 0
+        cont_ciudad:= 0
+        total:=0
+
+        r_prov:= Reg.prov
+        r_depto:= Reg.depto
+        r_ciudad:= Reg.ciudad
+
+        MIENTRAS NFDA(Arch) HACER
+            SI r_prov <> Reg.prov ENTONCES
+                Corte_Prov //nivel inferior
+            SINO
+                SI r_depto <> Reg.depto ENTONCES
+                    Corte_Depto //nivel medio
+                SINO
+                    SI r_ciudad <> Reg.ciudad ENTONCES
+                        Corte_Ciudad //nivel superior
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            SI Reg.modelo >= 2000 ENTONCES
+                cont_ciudad:= cont_ciudad + 1 //nivel más bajo //esto vale (0 + 1) después del corte_ciudad
+            FIN_SI
+
+            LEER(Arch, Reg)
+        FIN_MIENTRAS
+
+        Corte_Prov //nivel inferior
+
+        ESC("El total de autoes es :",Total)
+
+        CERRAR(Arch)
+FIN_PROCESO

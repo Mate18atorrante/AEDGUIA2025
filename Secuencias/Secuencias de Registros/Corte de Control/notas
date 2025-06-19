@@ -1,0 +1,43 @@
+2 cosas nec:
+-1. una clave compuesta (formado por 2 o más campos)
+-2. que este ordenado por los campos que yo necesito sacar los totales (o subtotales)
+
+cuando una clave simple de la clave compuesta cambia, hago un corte
+
+tendré
+
+utilizo variables resguardos para los valores de las claves *que se repiten*
+-tambien acumuladores y/o contadores para los subtotales o totales
+
+nivel 1 es el más bajo
+
+tratar_corte
+tratar_registro
+leer_registro //para avanzar y volver al mientras
+
+cortes:
+
+    //llamo al corte nive inferior, si ya estoy en el nivel inferior, no se hace el corte
+    emito resultados de nivel si la clave cambio
+    acumulo totales al nivel superior
+
+el tratar_registro se hace aparte de tratar_corte, siempre
+
+si corte_3 entonces corte_2 y corte_1 también
+si cort_2 entonces corte_1 ?
+si corte_1, solo corte_1, no?
+
+corte_3 después del mientras nfda() para tratar el fda, que no se trataría si no se hiciera el corte_3
+
+//lo que causa el corte son los resguardos
+
+//siempre lo que cambia es el nivel inferior
+
+//sugerencia del profe:
+genero  carrera legajo  f_ing       Materias_aprobadas
+F       IEM     1       1/1/2000    30
+F       IEM     2       2/2/1993    1
+F       IEM     34
+F       IQ      35
+F       ISI     4
+F       ISI     5

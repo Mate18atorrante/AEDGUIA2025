@@ -1,0 +1,79 @@
+ACCION ej2 ES
+    AMBIENTE
+        Fecha = REGISTRO
+            año:
+            mes:
+            dia:
+        FIN_REGISTRO
+
+        Alumno = REG
+            sexo: ("F","M", "x")
+            carrera: (...)
+            legajo: N(5)
+            ma: N(2)
+            f_ing = Fecha
+        FIN_REGISTRO
+
+        Arch: Archivo de Alumno ordenado por sexo, carrera y legajo
+        Reg: Alumno
+
+        r_sexo: ("F","M","x")
+        r_carrera: (...)
+
+        cont_car_+20, cont_car-20, cont_car-20, cont_car-20, cont_car-20, cont_car-20: entero
+
+        PROCEDIMIENTO corte_carrera() ES
+            ESC("Los alumnos que cumplen las condiciones de la carrera +20",r_carrera," son: ",cont_car+20)
+            ESC("Los alumnos que cumplen las condiciones de la carrera -20",r_carrera," son: ",cont_car-20)
+            cont_sexo+20 := cont_sexo+20 + cont_car+20
+            cont_sexo-20 := cont_sexo-20 + cont_car-20
+            cont_car+20 := 0
+            cont_car-20 := 0
+            r_carrera:= reg.carrera
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO corte_carrera() ES
+            ESC("Los alumnos que cumplen las condiciones del sexo +20",r_sexo," son: ",cont_sexo+20)
+            ESC("Los alumnos que cumplen las condiciones del sexo -20",r_sexo," son: ",cont_sexo-20)
+            cont_total+20 := cont_sexo+20 + cont_total+20
+            cont_total-20 := cont_sexo-20 + cont_total-20
+            cont_sexo+20 := 0
+            cont_sexo-20 := 0
+            r_sexo:= reg.sexo
+        FIN_PROCEDIMIENTO
+    PROCESO
+        ABRIR E/ (Arch); LEER(Arch, Reg)
+
+        cont_car+20:= 0
+        cont_car-20:=0
+        ...
+
+        r_sexo:= Reg.sexo
+        r_carrera:= Reg.carrera
+
+        MIENTRAS NFDA(Arch) HACER
+            SI Reg.sexo <> r_sexo ENTONCES
+                corte_sexo()
+            SINO
+                SI Reg.carrera <> r_carrera ENTONCES
+                    corte_carrera()
+                FIN_SI
+            FIN_SI
+
+            SI Reg.Fecha.año = 2009 ENTONCES
+                SI Reg.ma >= 20 ENTONCES
+                    cont_car+20:= cont_car+20 + 1
+                SINO
+                    cont_car-20:= cont_car-20 + 1
+                FIN_SI
+            FIN_SI
+
+            LEER(Arch, Reg)
+        FIN_MIENTRAS
+
+        corte_sexo()
+        ESC("Los alumnos que cumplen +20 son: ",cont_total+20)
+        ESC("Los alumnos que cumplen -20 son: ",cont_total-20)
+
+        CERRAR(Arch)
+FIN_ACCION
