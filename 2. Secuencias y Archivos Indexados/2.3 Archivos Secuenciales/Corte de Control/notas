@@ -6,7 +6,7 @@ cuando una clave simple de la clave compuesta cambia, hago un corte
 
 tendré
 
-utilizo variables resguardos para los valores de las claves *que se repiten*
+-utilizo variables resguardos para los valores de las claves *que se repiten*
 -tambien acumuladores y/o contadores para los subtotales o totales
 
 nivel 1 es el más bajo
@@ -17,15 +17,15 @@ leer_registro //para avanzar y volver al mientras
 
 cortes:
 
-    //llamo al corte nive inferior, si ya estoy en el nivel inferior, no se hace el corte
-    emito resultados de nivel si la clave cambio
+    //llamo al corte de nivel inferior, si ya estoy en el nivel inferior, no se hace el corte
+    emito resultados de nivel si la clave cambió
     acumulo totales al nivel superior
 
 el tratar_registro se hace aparte de tratar_corte, siempre
 
 si corte_3 entonces corte_2 y corte_1 también
-si cort_2 entonces corte_1 ?
-si corte_1, solo corte_1, no?
+si cort_2 entonces corte_1
+si corte_1, solo corte_1
 
 corte_3 después del mientras nfda() para tratar el fda, que no se trataría si no se hiciera el corte_3
 

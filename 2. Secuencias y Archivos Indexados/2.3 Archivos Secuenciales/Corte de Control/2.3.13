@@ -1,0 +1,134 @@
+2.13. Un Casino de la región ha notado un incremento en los costos de las reparaciones de  tragamonedas en sus
+sucursales. Por ello solicitó un informe con la cantidad de reparaciones y sus costos, discriminados según
+tragamonedas, modelo, marca, sucursal y total general.
+
+Se dispone de un archivo REPARACIONES, con el siguiente formato. Cada registro representa la reparación de un
+tragamonedas, tener en cuenta que puede existir más de una reparación por tragamonedas.
+
+        | Cod Sucursal | Marca | Modelo | Cod tragamonedas | Fecha_reparacion | Costo reparación|
+            346356346   lolo34   12334      456456456       04/10/25            $45566
+
+
+Realice el algoritmo para emitir el informe con los totales solicitados.
+
+ACCION ej.2.3.13 ES
+    AMBIENTE
+        Fecha = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        Reparación = REGISTRO
+            cod_suc: N(10)
+            marca: AN(30)
+            modelo: N(10)
+            cod_traga: N(10)
+            fecha_rep: Fecha
+            costo_rep: real
+        FIN_REGISTRO
+
+        Arch: Archivo de Reparación ordenado por cod_suc, marca, modelo y cod_trag
+        reps: Reparacion
+
+        r_cod_suc: N(10)
+        r_marca: AN(30)
+        r_modelo: N(10)
+        r_cod_trag: N(10)
+
+        reps_tot, reps_suc, reps_marca, reps_modelo, reps_trag: entero
+        costo_tot, costo_suc, costo_marca costo_modelo, costo_trag: real
+
+        PROCEDIMIENTO corte_trag() ES
+            ESC("El tragamonedas ",r_cod_trag," tuvo ",reps_trag," reparaciones con un costo total de ",costo_trag,") //emito resultados del nivel
+
+            costo_modelo:= costo_modelo + costo_trag //acumulo subtotales al nivel superior
+            reps_modelo:= reps_modelo + reps_trag
+
+            reps_trag:= 0 //reinicio los totales de este nivel
+            costo_trag:= 0
+
+            r_cod_trag:= reps.cod_trag //actualizo el resguardo o reguardo la nueva clave
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO corte_modelo() ES
+            corte_trag() //llamada al corte de nivel inferior
+
+            ESC("El modelo ",r_modelo," tuvo ",reps_modelo," reparaciones con un costo total de $",costo_modelo,") //emito resultados del nivel
+
+            costo_marca:= costo_marca + costo_modelo //acumulo subtotales al nivel superior
+            reps_marca:= reps_marca + reps_modelo
+
+            reps_modelo:= 0 //reinicio los totales de este nivel
+            costo_modelo:= 0
+
+            r_modelo:= reps.modelo //actualizo el resguardo o reguardo la nueva clave
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO corte_marca() ES
+            corte_modelo() //llamado al corte de nivel inferior
+
+            ESC("La marca ",r_marca," tuvo ",reps_marca," reparaciones, con un costo total de $",costo_marca) //emito resultados del nivel
+
+            reps_suc:= reps_suc + reps_marca //acumulo subtotales al nivel superior
+            costo_suc:= costo_suc + costo_marca
+
+            costo_marca := 0 //reinicio los totales del nivel
+            reps_marca:= 0
+
+            r_marca:= reps.marca
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO corte_suc() ES
+            corte_marca() //llamado al corte de nivel inferior
+
+            ESC("La sucursal ",r_cod_suc," tuvo ",reps_suc," reparaciones, con un costo total de $",costo_suc) //emito resultados del nivel
+
+            reps_tot:= reps_tot + reps_suc //acumulos los subtotales del nivel a los totales general
+            costo_tot:= costo_tot + costo_suc
+
+            reps_suc:= 0 //reinicio los totales del nivel
+            costo_suc:= 0
+
+            r_cod_suc := reps.cod_suc //actualizo mi resguardo
+        FIN_PROCEDIMIENTO
+    PROCESO
+        ABRIR E/ (Arch); LEER/(Arch, reps)
+
+        reps_suc:= 0; costo_suc:= 0; reps_marca:= 0; costo_marca:= 0; reps_modelo:= 0; costo_modelo:= 0; reps_trag:= 0; costo_trag:= 0; reps_tot:= 0; costo_tot:= 0
+
+        r_cod_suc:= reps.cod_suc
+        r_marca:= reps.marca
+        r_modelo:= reps.modelo
+        r_cod_trag:= reps.cod_trag
+
+        MIENTRAS NFDA(Arch) HACER
+            SI r_cod_suc <> reps.cod_suc ENTONCES
+                corte_suc()
+            SINO
+                SI r_marca <> reps.marca ENTONCES
+                    corte_marca()
+                SINO
+                    SI r_modelo <> reps.modelo ENTONCES
+                        corte_modelo()
+                    SINO
+                        SI r_cod_trag <> reps.cod_trag ENTONCES
+                            corte_trag()
+                        FIN_SI
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            reps_trag:= reps_trag + 1
+            costo_trag:= costo_trag + reps.costo_rep
+
+            LEER(Arch, reps)
+        FIN_MIENTRAS
+
+        corte_suc()
+
+        ESC("Total general de reparaciones: ",reps_tot)
+        ESC("Costo general de reparaciones: ",costo_tot)
+
+        CERRAR(Arch)
+FIN_ACCION

@@ -1,0 +1,77 @@
+Dados el siguiente fichero con datos de un censo de la ciudad de Resistencia:
+
+        | Radio | Manzana | Nº de vivienda | Condición de la vivienda | Cantidad de Habitantes |
+
+Condición puede ser : Muy Buena, Buena o Mala.
+Obtener los siguientes totales de personas que habitan en viviendas cuya condición es muy buena: total en la ciudad
+y totales por Radio y Manzana).
+
+ACCION ej2.3.14 ES
+    AMBIENTE
+        censos = REGISTRO
+            radio: real
+            manzana: entero
+            nro_vivi: entero
+            cond_vivi: ("Muy Buena","Buena","Mala")
+            cant_habs: entero
+        FIN_REGISTRO
+
+        Arch: Archivo de censo, ordenado por radio, manzana y nro_vivi
+        reg: censos
+
+        tot_ciudadMB, tot_radioMB, tot_manzanaMB: entero
+        res_radio: real
+        res_manzana: entero
+
+        PROCEDIMIENTO corte_manzana() ES
+            ESC("Total de habitantes en la manzana ",res_manzana,": ",tot_manzanaMB) //emito resultados del nivel
+
+            tot_radioMB:= tot_radioMB + tot_manzanaMB //acumulo total al nivel superior
+
+            tot_manzanaMB:= 0 //reinicio los totales del nivel
+
+            res_manzana:= reg.manzana //actualizo mi resguardo
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO corte_radio() ES
+            corte_manzana()     //llamado al corte inferior
+
+            ESC("Total de habitantes en el radio ",res_radio,": ",tot_radioMB) //emito resultados del nivel
+
+            tot_ciudadMB:= tot_ciudadMB + tot_radioMB //acumulo total general
+
+            tot_radioMB:= 0 //reinicio los totales del nivel
+
+            res_radio:= reg.radio //actualizo mi resguardo
+        FIN_PROCEDIMIENTO
+    PROCESO
+        ABRIR E/ (Arch); LEER(Arch, reg)
+
+        tot_ciudadMB:= 0; tot_radioMB:= 0; tot_manzanaMB:= 0
+        res_radio:= reg.radio
+        res_manzana:= reg.manzana
+
+        MIENTRAS NFDA(Arch) HACER
+            SI reg.radio <> res_radio ENTONCES
+                corte_radio()
+            SINO
+                SI reg.manzana <> res_manzana ENTONCES
+                    corte_manzana()
+                FIN_SI
+            FIN_SI
+
+            SI reg.cond_vivi = "Muy Buena" ENTONCES
+                tot_manzanaMB:= tot_manzanaMB + reg.cant_habs
+            FIN_SI
+
+            LEER(Arch, reg)
+        FIN_MIENTRAS
+
+        corte_radio()
+
+        ESC("Total habitantes con condición muy buena de la ciudad: ",tot_ciudadMB)
+
+        CERRAR(Arch)
+FIN_ACCION
+
+

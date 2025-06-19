@@ -32,7 +32,7 @@ ACCION ej2 ES
             r_carrera:= reg.carrera
         FIN_PROCEDIMIENTO
 
-        PROCEDIMIENTO corte_carrera() ES
+        PROCEDIMIENTO corte_sexo() ES
             ESC("Los alumnos que cumplen las condiciones del sexo +20",r_sexo," son: ",cont_sexo+20)
             ESC("Los alumnos que cumplen las condiciones del sexo -20",r_sexo," son: ",cont_sexo-20)
             cont_total+20 := cont_sexo+20 + cont_total+20
