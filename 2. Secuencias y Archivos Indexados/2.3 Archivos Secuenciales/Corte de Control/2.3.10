@@ -3,5 +3,21 @@ Del archivo general de alumnos de la U.T.N. - Facultad Regional Resistencia, ord
 
 ACCION ej2.3.10 ES
     AMBIENTE
+        Fecha = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
         Alumno = REGISTRO
-            carrera: ("ISI","IQ","IEM") //esto no es una clave compuesta, por lo tanto, no se puede hacer corte de control acá, eso es lo que creo
+            carrera: ("ISI","IQ","IEM")
+            ApyNom: AN(40)
+            legajo: N(5)
+            FechaNac: Fecha
+            FechaIng: Fecha
+            DNI: N(8)
+            sexo: ("M","F")
+            UltExamAprob: Fecha
+            Nota: N(2,2)
+
+            //sigo sin saber si se puede resolver por corte de control

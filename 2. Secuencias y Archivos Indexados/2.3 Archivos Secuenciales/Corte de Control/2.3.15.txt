@@ -1,0 +1,134 @@
+El organismo del cual dependen las escuelas de un distrito lleva un archivo con los registros para todos los
+alumnos de nivel secundario de ese distrito:
+
+Escuela  Año  División Nombre Cant. Inasist.
+
+*Se introduce como dato el número de distrito y la cantidad de días de clase dictados en el año.
+*El archivo está ordenado por número de escuela, año y división.
+*Los alumnos que superan el 20% de las inasistencias están en situación de LIBRES, de lo contrario son
+REGULARES.
+
+Se desea conocer:
+
+    Para cada división:
+        Cantidad de alumnos
+    Para cada año:
+        Cantidad total de alumnos libres
+        Cantidad de alumnos regulares
+        Cantidad total de alumnos
+    Todas las escuelas:
+        Cantidad total de alumnos
+        Porcentaje de alumnos libres.
+        Promedio de inasistencias por alumnos.
+
+ACCION ej2.3.15 ES
+    AMBIENTE
+        alumno = REGISTRO
+            escuela: entero
+            año: N(4)
+            división: AN(1)
+            nombre: AN(40)
+            cant_inasist: entero
+        FIN_REGISTRO
+
+        Arch: archivo de alumno ordenado por escuela, año y division
+        reg: alumno
+
+        res_escuela: entero
+        res_año: N(4)
+        res_division: AN(1)
+
+        cant_alums_div, cant_alums_año, cant_alums_escuela, alums_regulares_año, alums_libres_año, alums_libres_escuela, suma_inasist: entero
+        nro_distrito, cant_dias_clases: entero
+
+        PROCEDIMIENTO corte_division() ES
+            ESC("cantidad de alumnos de la división ",res_division,": ",cant_alums_div) //emito resultados de nivel
+
+            cant_alums_año:= cant_alums_año + cant_alums_div //acumulo totales a nivel superior
+
+            cant_alums_div:= 0 //reinicio totales de este nivel
+
+            res_division:= reg.division //actualizo resguardo
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO corte_año() ES
+            corte_division() //llamado al corte de nivel inferior
+            ESC("Cantidad total de alumnos del año ",res_año,": ",cant_alums_año) //emito resultados de nivel
+            ESC("Cantidad total de alumnos libres del año ",res_año,": ",alums_libres_año)
+            ESC("Cantidad total de alumnos regulares del año ",res_año,": ",alums_regulares_año)
+
+            cant_alums_escuela:= cant_alums_escuela + cant_alums_año //acumulo totales a nivel superior
+            alums_libres_escuela:= alums_libres_escuela + alums_libres_año
+
+            cant_alums_año:= 0 //reinicio totales de nivel
+            alums_libres_año:= 0
+            alums_regulares_año:= 0
+
+            res_año:= reg.año //actualizo el resguardo
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO corte_escuela() ES
+            corte_año() //llamado al corte de nivel inferior
+            ESC("total de alumnos de la escuela ",res_escuela,": ",cant_alums_escuela) //emito totales de nivel
+            ESC("Porcentaje de alumnos libres: ",alums_libres_escuela/cant_alums_escuela*100,"%")
+            ESC("Promedio de inasistencias por alumnos: ",suma_inasist/cant_alums_escuela)
+
+            cant_alums_escuela:= 0 //reinicio totales de nivel
+            alums_libres_escuela:= 0
+            suma_inasist:= 0
+
+            res_escuela:= reg.escuela //actualizo resguardo
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ABRIR E/(Arch); LEER(Arch, reg)
+
+        cant_alums_div:=0
+        cant_alums_año:=0
+        cant_alums_escuela:=0
+        alums_regulares_año:=0
+        alums_libres_año:=0
+        alums_libres_escuela:= 0
+        suma_inasist:=0
+
+        res_escuela:= reg.escuela
+        res_año:= reg.año
+        res_division:= reg.division
+
+        ESC("Ingrese el nro de distrito: ")
+        LEER(nro_distrito)
+        ESC("Ingrese la cantidad de dias de clases dictadas en el año: ")
+        LEER(cant_dias_clases)
+
+        ESC("|      Nombre      |       Porcent. Inasist       |      Situación       |")
+        MIENTRAS NFDA(Arch) HACER
+            SI res_escuela <> reg.escuela ENTONCES
+                corte_escuela()
+            SINO
+                SI res_año <> reg.año ENTONCES
+                    corte_año()
+                SINO
+                    SI res_division <> reg.division ENTONCES
+                        corte_division()
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            cant_alums_div:= cant_alums_div + 1
+            suma_inasist:= suma_inasist + reg.cant_inasist
+
+            SI reg.cant_inasist/cant_dias_clases * 100 > 20 ENTONCES
+                alums_libres_año:= alums_libres_año + 1
+                ESC(reg.nombre, reg.cant_inasist/cant_dias_clases*100,"%", "Libre")
+            SINO
+                alums_regulares_año:= alums_regulares_año + 1
+                ESC(reg.nombre, reg.cant_inasist/cant_dias_clases*100,"%", "Regular")
+            FIN_SI
+
+            LEER(Arch, reg)
+        FIN_MIENTRAS
+
+        corte_escuela()
+
+        CERRAR(Arch)
+FIN_ACCION
