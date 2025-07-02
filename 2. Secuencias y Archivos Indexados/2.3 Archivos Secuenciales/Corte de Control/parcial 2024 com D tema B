@@ -1,0 +1,95 @@
+ACCION Parcial2024ComDTema ES
+    AMBIENTE
+        RESERVAS = REGISTRO
+            NroHotel: entero
+            TipoHab: ("IND","DOB","SUITE")
+            NroReserva: entero
+            FechaIngreso = REGISTRO
+                año: N(4)
+                mes: 1..12
+                dia: 1..31
+            FIN_REGISTRO
+            CantNoches: entero
+            ImporteReserva: real
+        FIN_REGISTRO
+
+        SALIDA = REGISTRO
+            NroHotel: entero
+            TotHabDobles: real
+            TotHabSuites: real
+        FIN_REGISTRO
+
+        ArchEnt: Archivo de RESERVAS ordenado por NroHotel, TipoHab y NroReserva
+        RegEnt: RESERVAS
+        ArchSal: Archivo de SALIDA ordenado por NroHotel
+        RegSal: SALIDA
+
+        ResgNroHotel: entero
+        ResgTipoHab: ("IND","DOB","SUITE")
+
+        TotHotel, TotTipoHab, TotHabDOB, TotHabSUITS: entero
+
+        PROCEDIMIENTO corte_tipohab() ES
+            ESC("Total de dinero recaudado por tipo de habitación ",ResgTipoHab," : ",TotTipoHab)
+
+            SI TotTipoHab = "DOB" ENTONCES
+                TotHabDOB:= TotTipoHab
+            SINO
+                SI ResgTipoHab = "SUIT" ENTONCES
+                    TotHabSUITES:= TotTipoHab
+                FIN_SI
+            FIN_SI
+
+            TotNroHotel:= TotNroHotel + TotTipoHab
+
+            TotTipoHab:= 0
+
+            ResgTipoHab:= RegEnt.TipoHab
+        FIN_PROCEDIMIENTO
+            corte_tipohab()
+            ESC("Total de dinero recaudado por el hotel ",ResgNroHotel," : ",TotNroHotel)
+
+            SI TotHabDOB > TotHabSUITES ENTONCES
+                ESC("Este hotel recaudó más dinero en habitaciones DOBLES que en SUITES")
+            FIN_SI
+
+            RegSal.NroHotel:= ResgNroHotel
+            RegSal.TotHabDob:= TotHabDOB
+            RegSal.TotSUITES:= TotHabSUITES
+            ESC(ArchSal, RegSal)
+
+            TotNroHotel:= 0
+
+            ResgNroHotel:= RegEnt.NroHotel
+        PROCEDIMIENTO corte_nrohotel() ES
+
+        FIN_PROCEDIMIENTO
+    PROCESO
+        ABRIR E/(ArchEnt); LEER(ArchEnt, RegEnt)
+        ABRIR S/(ArchSal)
+
+        TotHotel:= 0
+        TotTipoHab:= 0
+
+        ResgNroHotel:= RegEnt.NroHotel
+        ResgTipoHab:= RegEnt.TipoHab
+
+        MIENTRAS NFDA(ArchEnt) HACER
+            SI ResgNroHotel <> RegEnt.NroHotel ENTONCES
+                corte_nrohotel()
+            SINO
+                SI ResgTipoHab <> RegEnt.TipoHab ENTONCES
+                    corte_tipohab()
+                FIN_SI
+            FIN_SI
+
+            TotTipoHab:= TotTipoHab + RegEnt.ImporteReserva
+
+            LEER(ArchEnt, RegEnt)
+        FIN_MIENTRAS
+
+        corte_nrohotel()
+
+        CERRAR(ArchEnt)
+        CERRAR(ArchSal)
+FIN_ACCION

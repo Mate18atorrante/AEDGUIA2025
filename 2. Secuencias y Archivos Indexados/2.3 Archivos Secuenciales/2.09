@@ -36,7 +36,7 @@ ACCION .. ES
         contTipo3 := 0
         MIENTRAS NFDA(arch_prods) HACER
             reg_salida := reg_prod //porque tienen la misma estructura y porque todos los campos deben tener valores, o es esto, o es hacerlo campo por campo
-            SEGUN reg_prod.tipo
+            SEGUN reg_prod.tipo HACER
                 1:
                     reg_salida.PrecioUnit := reg_prod.PrecioUnit * 1,10
                     contTipo1:= contTipo1 + reg_prod.Cant_Existente //contando el stock de tipo 1, esto porque ya tenemos el dato cant_existente, si fuera por registro se sumaria por 1 (+ 1)

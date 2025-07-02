@@ -1,0 +1,95 @@
+ACCION parcialcomD ES
+    AMBIENTE
+        RESERVAS = REGISTRO
+            NroHotel: entero
+            TipoHab: ("IND","DOB","SUITE")
+            NroReserva: entero
+            FechaIngreso = REGISTRO
+                Año: N(4)
+                Mes: 1..12
+                Dia: 1..31
+            FIN_REGISTRO
+            Cant_noches: entero
+            ImporteReserva: Real
+        FIN_REGISTRO
+
+        SALIDA = REGISTRO
+            NroHotel: entero
+            TotHabDobles: entero
+            TotHabSuites: entero
+        FIN_REGISTRO
+
+        ArchEnt: Archivo de RESERVAS ordenado por NroHotel, TipoHab y NroReserva
+        RegEnt: RESERVAS
+        ArchSal: Archivo de SALIDA ordenado por NroHotel
+        RegSal: SALIDA
+
+        ResNroHotel: entero
+        ResTipoHab: ("IND","DOB","SUITE")
+        tot_noches_hotel, tot_noches_hab: entero //totales
+        cont_noches_dobles, cont_noches_suites: entero //lo hago en corte superior (2)
+
+        PROCEDIMIENTO corte_tipo_hab() ES
+            ESC("La cantidad de noches reservadas por el Tipo de Habitación ",ResTipoHab," del Hotel ",ResNroHotel," es: "tot_noches_hab)
+            tot_noches_hotel:= tot_noches_hotel + tot_noches_hab
+
+            SI ResTipoHab = "DOB" ENTONCES
+                cont_noches_hotelDOB:= tot_noches_hab
+            SINO
+                SI ResTipoHab = "SUITE" ENTONCES
+                    cont_noches_hotelSUITES:= tot_noches_hab
+                FIN_SI
+            FIN_SI
+
+            tot_noches_hab:= 0
+
+            ResTipoHab:= Reg.TipoHab
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO corte_hotel() ES
+            corte_tipo_hab()
+            ESC("La cantidad de noches reservadas por el Hotel ",ResNroHotel," es: ",tot_noches_hotel)
+            SI cont_noches_hotelDOB > cont_noches_hotelSUITES
+                ESC("Este hotel tiene mayor cantidad de noches reservadas en habitaciones DOBLES que en SUITES")
+            FIN_SI
+
+            RegSalNroHotel:= ResNroHotel
+            RegSal.TotHabDobles:= cont_noches_hotelDOB
+            RegSal.TotHabSuites:= dont_noches_hotelSUITES
+            ESC(ArchSal, RegSal)
+
+            tot_noches_hotel:= 0
+
+            ResNroHotel:= Reg.NroHotel
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ABRIR E/ (ArchEnt); LEER(ArchEnt, RegEnt)
+        ABRIR /S (ArchSal)
+        tot_noches_hotel:= 0
+        tot_noches_hab:= 0
+        cont_noches_dobles:= 0
+        cont_noches_suites:= 0
+
+        ResNroHotel:= RegEnt.NroHotel
+        ResTipoHab:= RegEnt.TipoHab
+
+        MIENTRAS NFDA(ArchEnt) HACER
+            SI ResNroHotel <> RegEnt.NroHotel ENTONCES
+                corte_hotel()
+            SINO
+                SI ResTipoHab <> Reg.TipoHab ENTONCES
+                    corte_tipo_hab()
+                FIN_sI
+            FIN_SI
+
+            tot_noches_hab:= tot_noches_hab + Reg.cant_noches
+
+            LEER(ArchEnt, RegSal)
+        FIN_MIENTRAs
+
+        corte_hotel()
+
+        CERRAR(ArchEnt)
+        CERRAR(ArchSal)
+FIN_ACCION
