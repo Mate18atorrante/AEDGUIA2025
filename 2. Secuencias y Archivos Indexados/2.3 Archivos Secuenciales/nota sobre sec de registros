@@ -2,6 +2,7 @@ ARR = ABRIR E/(archivo)
 CREAR(s) = ABRIR /S(archivo)
 AVZ(s, v) = LEER(archivo, VariableRegistro)
 CERRAR(s) = CERRAR(archivo)
+ESC(salida, v) = ESC(ArchSal, RegSal)
 
 // los campos deben tener misma longitud (cuando operamos con más de un registro y hacemos asignaciones y tal)
 
@@ -56,9 +57,9 @@ ACCION ejemplo ES
         ABRIR /S(ISI)
         LEER(UTN, Est)
 
-        MIENTRAS NFDA(UTN) HACER //ESC(Reg.Campo) para mostrar por pantalla los datos de los campos //ESC(Archivo, registro)
+        MIENTRAS NFDA(UTN) HACER //ESC(Reg.Campo) para mostrar por pantalla los datos de los campos //ESC(Archivo, registro) para guardar un registro de salida en un archivo de salida
             SI Est.Carrera = "ISI" ENTONCES
-                EstISI := EST
+                EstISI := Est
                 ESC(ISI, EstISI)
             FIN_SI
 
@@ -77,4 +78,4 @@ ACCION ejemplo ES
         CERRAR(UTN)
 FIN_ACCION
 
-no se puede hacer ESC(ISI, EstISI.carrera)
+no se puede hacer ESC(ISI, EstISI.carrera) 
