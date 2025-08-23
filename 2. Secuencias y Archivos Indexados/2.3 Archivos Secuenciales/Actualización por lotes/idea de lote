@@ -1,0 +1,75 @@
+
+
+    proceso
+        ABRIR E/(Mae, RegMae); ABRIR E/(Mov, RegMov)
+        ABRIR /S(MaeAct, RegMae)
+
+        LEER_Mov()
+        LEER_Mae()
+        MIENTRAS (RegMae.clave <> HV) o (RegMov.clave <> HV) HACER
+            SI RegMae.clave = RegMov.clave ENTONCES #procesos iguales
+                regMaeAux:= regMae
+                Registro_BAJA:= FALSO
+                MIENTRAS regMaeAux.clave = regMov.clave HACER
+                    SI RegMov.cod_mov = "A" ENTONCES
+                        SI Registro_BAJA ENTONCES
+                            regMaeAux:= RegMov //en realidad, campo por campo
+                        SINO
+                            ESC("Error, no se admite ALTA a un registro que ya existe.")
+                        FIN_SI
+                    SINO
+                        SI RegMov.cod_mov = "B" ENTONCES
+                            Registro_BAJA := VERDADERO //baja física
+                        SINO
+                            SI Registro_BAJA ENTONCES
+                               ESC("ERROR, no se admite MODIFICACIÓN a un registro que no existe.")
+                            SINO
+                                regMaeAux.(un campo en específico):= regMaeAux.(un campo en específico) + RegMov.(un campo en específico) //modifico valor de un campo
+                            FIN_SI
+                        FIN_SI
+                    FIN_SI
+                    LEER_mov()
+                FIN_MIENTRAS
+                SI NO Registro_BAJA ENTONCES
+                    RegMaeAct:= RegMaeAux
+                    ESC(MaeAct, RegMaeAct)
+                FIN_SI
+                LEER_Mae()
+            SINO
+                SI RegMae.clave < RegMov.clave ENTONCES
+                    RegMaeAct:= RegMae
+                    ESC(MaeAct, RegMaeAct)
+                    LEER_Mae()
+                SINO
+                    RegMaeAux.campo1:= RegMov.campo1
+                    RegMaeAux.campo1:= RegMov.campo1
+                    ...
+                    RegMaeAux.campo(n):= RegMov.campo(n)
+
+                    MIENTRAS regMaeAux.clave = regMov.clave HACER
+                        SI RegMov.cod_mov = "A" ENTONCES
+                            SI Registro_BAJA ENTONCES
+                                regMaeAux:= RegMov //en realidad, campo por campo
+                            SINO
+                                ESC("Error, no se admite ALTA a un registro que ya existe.")
+                            FIN_SI
+                        SINO
+                            SI RegMov.cod_mov = "B" ENTONCES
+                                Registro_BAJA := VERDADERO //baja física
+                            SINO
+                                SI Registro_BAJA ENTONCES
+                                   ESC("ERROR, no se admite MODIFICACIÓN a un registro que no existe.")
+                                SINO
+                                    regMaeAux.(un campo en específico):= regMaeAux.(un campo en específico) + RegMov.(un campo en específico) //modifico valor de un campo
+                                FIN_SI
+                            FIN_SI
+                        FIN_SI
+                        LEER_mov()
+                    FIN_MIENTRAS
+                    SI NO Registro_BAJA ENTONCES
+                        RegMaeAct:= RegMaeAux
+                        ESC(MaeAct, RegMaeAct)
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+        FIN_MIENTRAS

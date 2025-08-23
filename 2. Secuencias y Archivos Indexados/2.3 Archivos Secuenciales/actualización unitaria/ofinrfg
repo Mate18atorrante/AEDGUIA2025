@@ -1,0 +1,80 @@
+
+accion 2.2.19
+
+
+
+
+    procedimiento leer_mae;
+        leer(arch_mae,reg_mae);
+        si FDA(arch_mae) entonces
+            reg_mae.clave:=HV
+        finsi
+    finprocedimiento
+
+    procedimiento leer_mov;
+        esc(arch_mov,reg_mov);
+        si FDA(arch_mov) entonces
+            reg_mov.clave:=HV
+        finsi
+    finprocedimiento;
+
+    procedimiento PASAJE_DIRECTO ;
+        reg_sal:=reg_mae
+        esc(arch_sal,reg_sal);
+        leer_mae;
+    finprocedimiento;
+
+    procedimiento IGUALES;
+        si reg_mov.cod_mov="1" entonces
+            esc("ERROR ALTA A REGISTRO EXISTENTE")
+        sino
+            si reg_mov.cod_mov="2" entonces
+                reg_vence.medicamento:=reg_mae.clave.medicamento
+                reg_vence.cant_vence:=reg_mae.cant_recibida
+                esc(vence,reg_vence);
+            sino
+                reg_mae.cant_recibida:=reg_mov.cant_recibida
+                reg_sal:=reg_mae
+                esc(arch_sal,reg_sal);
+            finsi
+        finsi
+        leer_mae;
+        leer_mov;
+    finprocedimiento
+
+    procedimiento DISTINTOS;
+        si reg_mov.cod_mov="1" entonces
+            reg_sal.clave.farmacia:=reg_mov.clave.farmacia
+            reg_sal.clave.medicamento:=reg_mov.clave.medicamento
+            reg_sal.cant_recibida:=reg_mov.cant_recibida
+            reg_sal.fecha_vencimiento:=fecha_sistema()+30
+            esc(arch_sal,reg_sal);
+
+        sino
+            esc("ERROR, BAJA O MODIFICACION QUE NO SE PUEDE HACER PTO");
+        finsi
+        leer_mov;
+    finprocedimiento;
+
+
+    proceso
+
+    abrir e/(arch_mae);abrir e/(arch_mov);
+    leer_mae;leer_mov;
+
+    mientras nfda(arch_mae) y nfda(arch_mov) hacer
+
+        si reg_mae.clave<reg_mov.clavem entonces
+                PASAJE_DIRECTO;
+        sino
+            si reg_mae.clave=reg_mov.clavem entonces
+                   IGUALES;
+            sino
+                si reg_mae>reg_mov.clavem entonces
+                    DISTINTOS;
+                finsi
+            finsi
+
+        finsi
+
+    finmientras
