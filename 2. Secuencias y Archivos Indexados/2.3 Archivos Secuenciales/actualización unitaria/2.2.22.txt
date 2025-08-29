@@ -1,4 +1,4 @@
-En un práctico para la Facultad un grupo de alumnos debe implementar una Red Social llamada UTNBook. Para lo cual debe
+"En un práctico para la Facultad un grupo de alumnos debe implementar una Red Social llamada UTNBook. Para lo cual debe
 utilizar los siguientes archivos:
 
 AMIGOS Ordenado por Cod_Usuario y Cod_Amigo
@@ -15,6 +15,8 @@ En el archivo notificaciones pueden existir tres tipos de acciones: la solicitud
 la eliminación de una amistad (Cod_mov = 'B'); o la información de un mensaje que un amigo ha escrito en el muro del usuario
  (Cod_mov = 'M'). Considerar que la eliminación de una amistad implica la baja física de un registro y que hay un solo
  registro de Notificaciones por cada registro de Amigo.
+
++Al finalizar el proceso se desea conocer: el usuario que posee más amigos
 
 ACCION 2.2.21 ES
     AMBIENTE
@@ -49,6 +51,9 @@ ACCION 2.2.21 ES
         Mov: Archivo de NOTIFICACIONES ordenado por clave y cod_mov
         RegMov: NOTIFICACIONES
 
+        resgCod_usu, UsuMasAmigos: N(5)
+        ContAmigosUsu: entero
+
         PROCEDIMIENTO LEER_mov() ES
             LEER(Mov, RegMov)
             SI FDS(Mov) ENTONCES
@@ -69,7 +74,23 @@ ACCION 2.2.21 ES
 
         LEER_mov()
         LEER_mae()
+
+        resgCod_usu:= RegMaeOld.clave.cod_usu
+        MayCantAmigos:= 0
+        ContAmigosUsu:= 0
+
         MIENTRAS (RegMaeOld.clave <> HV) o (RegMov.clave <> HV) HACER
+            SI resgCod_usu <> RegMaeOld.Cod_usu ENTONCES
+                SI ContAmigosUsu > MayCantAmigos ENTONCES
+                    MayCantAmigos:= ContAmigosUsu
+                    UsuMasAmigos:= resgCod_Usu
+                FIN_SI
+                ContAmigosUsu:= 0
+                resgCod_suc:= RegMaeOld.Cod_usu
+            FIN_SI
+
+            ContAmigosUsu:= ContAmigosUsu + 1
+
             SI RegMaeOld.clave = RegMov.clave ENTONCES //procesos iguales
                 SEGUN RegMov.cod_mov HACER
                     "A":
@@ -105,6 +126,8 @@ ACCION 2.2.21 ES
                 FIN_SI
             FIN_SI
         FIN_MIENTRAS
+
+        ESC("El usuario con más amigos es el nro", UsuMasAmigos)
 
         CERRAR(MaeOld)
         CERRAR(MaeAct)

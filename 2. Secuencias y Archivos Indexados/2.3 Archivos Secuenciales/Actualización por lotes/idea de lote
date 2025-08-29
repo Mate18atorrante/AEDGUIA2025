@@ -1,4 +1,6 @@
-
+Alta: Siempre el primer registro va a ser del tipo alta, y luego modificaciones.
+Modificación: pueden existir varias modificaciones a un maestro.
+Baja: son bajas logicas. Solo el ultimo movimiento puede ser una baja logica.
 
     proceso
         ABRIR E/(Mae, RegMae); ABRIR E/(Mov, RegMov)
@@ -12,39 +14,44 @@
                 Registro_BAJA:= FALSO
                 MIENTRAS regMaeAux.clave = regMov.clave HACER
                     SI RegMov.cod_mov = "A" ENTONCES
-                        SI Registro_BAJA ENTONCES
-                            regMaeAux:= RegMov //en realidad, campo por campo
-                        SINO
-                            ESC("Error, no se admite ALTA a un registro que ya existe.")
-                        FIN_SI
+                        ESC("Error, no se admite ALTA a un registro que ya existe.")
                     SINO
                         SI RegMov.cod_mov = "B" ENTONCES
                             Registro_BAJA := VERDADERO //baja física
                         SINO
-                            SI Registro_BAJA ENTONCES
-                               ESC("ERROR, no se admite MODIFICACIÓN a un registro que no existe.")
-                            SINO
-                                regMaeAux.(un campo en específico):= regMaeAux.(un campo en específico) + RegMov.(un campo en específico) //modifico valor de un campo
-                            FIN_SI
+                            regMaeAux.(un campo en específico):= regMaeAux.(un campo en específico) + RegMov.(un campo en específico) //modifico valor de un campo
                         FIN_SI
                     FIN_SI
                     LEER_mov()
                 FIN_MIENTRAS
-                SI NO Registro_BAJA ENTONCES
+
+                SI NO Registro_BAJA ENTONCES //si no hubo baja, se escribe en salida
                     RegMaeAct:= RegMaeAux
                     ESC(MaeAct, RegMaeAct)
                 FIN_SI
                 LEER_Mae()
             SINO
-                SI RegMae.clave < RegMov.clave ENTONCES
+                SI RegMae.clave < RegMov.clave ENTONCES //registro maestro sin movimientos
                     RegMaeAct:= RegMae
                     ESC(MaeAct, RegMaeAct)
                     LEER_Mae()
-                SINO
-                    RegMaeAux.campo1:= RegMov.campo1
-                    RegMaeAux.campo1:= RegMov.campo1
-                    ...
-                    RegMaeAux.campo(n):= RegMov.campo(n)
+                SINO //procesos distintos
+                    SI RegMov.cod_mov = "A"
+                        RegMaeAux.campo1:= RegMov.campo1
+                        RegMaeAux.campo1:= RegMov.campo1
+                        ...
+                        RegMaeAux.campo(n):= RegMov.campo(n)
+                    SINO
+                        SI RegMov.cod_mov = "B" ENTONCES
+                            ESC("Error, no se admite baja.")
+                        SINO
+                            ESC("Error, no se admite modificación.")
+                        FIN_SI
+                    LEER_Mov()
+                FIN_SI
+            FIN_SI
+        FIN_MIENTRAS
+
 
                     MIENTRAS regMaeAux.clave = regMov.clave HACER
                         SI RegMov.cod_mov = "A" ENTONCES

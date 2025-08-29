@@ -1,0 +1,50 @@
+2.01. Se dispone de una secuencia con los datos de los alumnos de la facultad:
+- Apellido y Nombre - Carrera (ISI - IEM - IQ)
+- No de Legajo - Fecha de Nacimiento
+- Fecha de Ingreso - D.N.I.
+- Sexo (M o F) - Fecha de último examen aprobado
+- Nota
+Se desea un listado de los mismos, con el siguiente formato:
+Nro. Legajo Apellido y Nombre Documento Carrera
+
+* Se desea generar un archivo de salida a partir del archivo del problema 2.01, donde se actualice la fecha de aprobación
+del último exámen, para ello se cuenta con información del último turno de exámen, según el siguiente detalle:
+
+EXAMENES Ordenado por Nro_Legajo
+
+|Nro_Legajo|Carrera|Cod_Materia|Fecha_ExamenNota|
+Se debe considerar que no necesariamente todos los alumnos se presentan en cada turno de exámen, y que un alumno puede
+presentarse a rendir más de una materia en un mismo turno. Supónganse ambos archivos ordenados por Número de Legajo.
+
+ACCION 2.2.20 ES
+    AMBIENTE
+        Fecha = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        alumnos = REGISTRO
+            ApyNom: AN(20)
+            Carrera: ("ISI","IEM","IQ")
+            nro_legajo: N(5)
+            fecha_nacimiento: Fecha
+            FechaIngreso: Fecha
+            DNI: N(8)
+            Sexo: ("M","F")
+            FechaUltExam: Fecha
+            Nota: N(2,2)
+        FIN_REGISTRO
+
+        MaeOld, MaeAct: Archivo de Alumnos ordenado por nro_legajo
+        RegMaeOld, RegMaeAct: alumnos
+
+        examenes = REGISTRO
+            nro_legajo: N(5)
+            carrera: ("ISI","IEM","IQ")
+            cod_materia: N(5)
+            Fecha_ExámenNota: Fecha
+        FIN_REGISTRO
+
+        Mov: Archivo de exámenes ordenado por nro_legajo
+        RegMov: exámenes

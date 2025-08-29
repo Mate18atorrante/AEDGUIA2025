@@ -1,0 +1,130 @@
+En una Empresa Farmacéutica se posee un archivo MAE_REMEDIOS (ordenado por Clave: Farmacia + Medicamento), el que se
+ actualiza semanalmente, a traves de la información que se encuentra cargada en un archivo de MOVIMIENTOS
+ (ordenado por Clavem: Farmacia + Medicamento, y Cod_Mov), de la siguiente forma:
+
+Si Clave (MAE_REMEDIOS) es menor que Clavem (MOVIMIENTOS), simplemente se transfieren los datos del Maestro a la salida
+ y se graban.
+
+Si Clave (MAE_REMEDIOS) es igual a Clavem (MOVIMIENTOS) y el Codmov es 1, se considera error y se lista un mensaje
+indicando el tipo de error; pero si el Codmov es 2, entonces es un remedio que deja de fabricarse y se transfiere el
+ registro al archivo de Remedios vencidos (REM_VENC) ; pero si el Cod_Mov es 3, se modifica la cantidad actual con
+ la cantidad recibida.
+
+Si Clave (MAE_REMEDIOS) es mayor que Clavem (MOVIMIENTOS) y el Codmov es 1, se incorpora el remedio a nuestro Vademecum,
+considerando que la cantidad recibida configura la cantidad actual y la Fecha_Vencimiento es 30 días posterior a la fecha
+ actual; pero si el Codmov es 2 o 3 se considera error y se deben producir los correspondientes mensajes de error.
+
+Se considera que solo existe un registro de movimiento para cada registro del maestro.
+
+MAE_REMEDIOS Ordenado por Farmacia y Medicamento
+    |Farmacia|Medicamento|Cant_Actual|Fecha_Vencimiento|
+
+MOVIMIENTOS Ordenado por Farmacia, Medicamento y Cod_Mov
+    |Farmacia|Medicamento|Cod_Mov|Cant_Recibida|
+
+REM_VENC Ordenado por Medicamento
+    |Medicamento|Cant_Vencida|
+
+ACCION 2.2.19 ES
+    AMBIENTE
+        Fecha = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        remedios = REGISTRO
+            clave = REGISTRO
+                Farm: N(2)
+                Med: N(2)
+            FIN_REGISTRO
+            cant_actual: N(2)
+            fecha_venc: Fecha
+        FIN_REGISTRO
+
+        MaeOld, MaeAct: Archivo de remedios ordenado por clave
+        RegMaeOld, RegMaeAct: remedios
+
+        movimientos = REGISTRO
+            clave = REGISTRO
+                Farm: N(2)
+                Med: N(2)
+            FIN_REGISTRO
+            cod_mov: 1..3
+            cant_recibida: N(2)
+        FIN_REGISTRO
+
+        Mov: Archivo de movimientos ordenado por clave y cod_mov
+        RegMov: movimientos
+
+        remedios_vencidos = REGISTRO
+            Medicamento: N(2)
+            cant_venc: N(2)
+        FIN_REGISTRO
+
+        RemVenc: Archivo de remedios_vencidos ordenado por Medicamento
+        RegRemVenc: remedios_vencidos
+
+        PROCEDIMIENTO LEER_Mae() ES
+            LEER(MaeOld, RegMaeOld)
+
+            SI FDA(MaeOld) ENTONCES
+                RegMaeOld.clave = HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_Mov() ES
+            LEER(MaeOld, RegMaeOld)
+
+            SI FDA(MaeOld) ENTONDES
+                RegMaeOld.clave = HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ABRIR E/(MaeOld); ABRIR E/(Mov)
+        ABRIR /S(MaeAct); ABRIR /S(RemVenc)
+
+        LEER_Mae()
+        LEER_Mov()
+        MIENTRAS (RegMaeOld.clave <> HV) o (RegMov.clave <> HV) HACER
+            SI RegMaeOld.clave = RegMov.clave ENTONCES //procesos iguales
+                SEGUN RegMov.cod_mov HACER
+                    1: ESC("Error, no se admite alta de medicamento.")
+                    2:
+                        RegRemVenc.medicamento:= RegMaeOld.clave.medicamento
+                        RegRemVenc.cant_vencida:= RegMaeOld.cant_actual
+                        ESC(RemVenc, RegRemVenc)
+                    3:
+                        RegMaeAct:= RegMaeOld
+                        RegMaeAct.cant_actual:= RegMov.cant_recibida
+                        ESC(MaeAct, RegMaeAct)
+                FIN_SEGUN
+                LEER_Mov()
+                LEER_Mae()
+            SINO
+                SI RegMaeOld.clave < RegMov.clave ENTONCES //un registro maestro sin movimientos
+                    RegMaeAct:= RegMaeOld
+                    ESC(MaeAct, RegMaeAct)
+                    LEER_Mae()
+                SINO
+                    //movimiento sin maestro -> alta
+                    SEGÚN RegMae.clave HACER
+                        1:
+                            RegMaeAct.clave:= RegMov.clave
+                            RegMaeAct.cant_actual:= RegMov.cant_recibida
+                            RegMaeAct.fecha_venc:= Fecha_actual() + 30
+                            ESC(MaeAct, RegMaeAct)
+                        2: ESC("Error, no se admite baja a un medicamento que aún no existe")
+                        3: ESC("Error. no se admite modificación a un medicamento que aún no existe")
+                    FIN_SEGUN
+                    LEER_Mae()
+                FIN_SI
+            FIN_SI
+        FIN_MIENTRAS
+
+        CERRAR(MaeOld)
+        CERRAR(MaeAct)
+        CERRAR(Mov)
+        CERRAR(RemVenc)
+FIN_ACCION

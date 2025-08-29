@@ -1,0 +1,49 @@
+
+
+
+
+    PROCESO
+        Abrir_Archivos
+        Leer_Maestro
+        Leer_Movimiento
+
+        MIENTRAS (reg_mov.clave <> High_Value) o (reg_mae.clave <> High_Value) HACER
+          SI Creg_mae.clave < Creg_mov.clave ENTONCES
+            //Maestro sin Movimiento
+            Reg_sal : = Reg_mae
+            ESCRIBIR(mae_sal, Reg_sal)
+            Leer_Maestro
+          SINO
+            SI Creg_mae.clave = Creg_mov.clave Movimiento
+              aux : = reg_mae
+              MIENTRAS (Creg_mae.clave = Creg_mov.clave) HACER
+                Proceso_Movim
+                Leer_Movimiento
+              Fin Mientras
+              reg_sal : = Aux
+              ESCRIBIR(mae_sal, reg_sal)
+              Leer_Maestro
+            SINO
+              // Movimiento sin Maestro ~ 1 Alta y 0-1 Modific. y/o Bajas
+              // Asigna campo por campo, porque Aux y Reg_mov tienen distinto formato
+              Aux.clave  := Reg_mov.clave
+              Aux.campo1 := Reg_mov.campo3
+              Aux.campo2 := Reg_mov.campo4
+              ........
+              Aux.campon := Reg_mov.campon
+              Aux.Marca_baja := ""
+              Leer_Movimiento
+              MIENTRAS (Clave_Aux = Clave_Mov) HACER
+                Proceso_Movim
+                Leer_Movimiento
+              FMientras
+              reg_sal : = aux
+              ESCRIBIR(mae_sal, reg_sal)
+            FIN SI
+          FIN SI
+        FIN MIENTRAS
+
+        CERRAR(mae)
+        CERRAR(mae_sal)
+        CERRAR(mov)
+FIN_ACCION
