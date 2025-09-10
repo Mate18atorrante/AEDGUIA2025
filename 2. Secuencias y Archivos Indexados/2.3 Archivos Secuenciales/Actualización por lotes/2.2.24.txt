@@ -1,0 +1,146 @@
+Una obra social lleva el control de los costos que le insume cada afiliado. Considerando como costos, los pagos que la
+misma debe realizar (en conceptos de honorarios, pagos a farmacias, etc) por los distintos servicios que el afiliado utiliza.
+ Para esto la empresa cuenta con un archivo COSTOS_POR_AFILIADO, en el cual se registran la cantidad de atenciones y/o
+  servicios que solicita el empleado y el costo total (en pesos) que la empresa debe pagar por estos. Este archivo está
+   conformado por registros con el siguiente formato, y está ordenado Cod_Afiliado
+
+COSTOS_POR_AFILIADO Ordenado por Cod_Afiliado
+
+|Cod_Afiliado|Fecha_Alta|Fecha_Baja|Cant_Servicios|Costo|
+Cada viernes en la organización, se lleva a cabo un proceso de actualización del archivo COSTOS_POR_AFILIADO. Para poder
+ realizarlo se cuenta con un archivo SERVICIOS_SEMANALES, ordenado por cod_afiliado y fecha_at, en el cual se registran
+  los servicios que solicitaron los afiliados durante cada semana. Cada registro de este archivo presenta el siguiente formato,
+
+SERVICIOS_SEMANALES Ordenado por Cod_Afiliado
+
+|Cod_Afiliado|Fecha_At|Cod_Servicio|Costo|
+En el archivo SERVICIOS_SEMANALES puede existir más de un registro por cada afiliado.
+
+Para realizar el proceso de actualización se deben tener en cuenta las siguientes consideraciones.
+
+Si algún Cod_Afiliado de serviciosSemanales, no se encuentra en ningún registro del archivo COSTOS_POR_AFILIADO, y el primer
+ Cod_Servicio asociado al mismo es igual a 001 entonces se trata de un nuevo afiliado que fue dado de alta.
+
+Si Cod_Afiliado de serviciosSemanales es igual al de COSTOS_POR_AFILIADO y el Cod_Servicio es igual a 000 se trata de un
+ afiliado que fue dado de baja y se considera como fecha de baja el valor que reside en Fecha_At. Si en cambio, el Cod_Servicio tiene algún otro valor este representa un servicio o atención que solicitó el afiliado; por lo tanto deben contabilizarse la cantidad de servicios que solicitó; como así también los costos que estos insumen.
+
+Si algún Cod_Afiliado de COSTOS_POR_AFILIADO no se encuentra en el archivo SERVICIOS_SEMANALES, se trata de un afiliado
+ que no utilizó los servicios en la semana que se realiza la actualización.
+
+Cualquier otro caso distinto a los considerados anteriormente se toma como un error, y deben ser informados por pantalla;
+ indicando claramente el motivo del error
+
+ACCION 2.2.24 ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        COSTOS_AFILIADO = REGISTRO
+            cod_afiliado: N(3)
+            fecha_alta: FECHA
+            fecha_baja: FECHA
+            cant_servicios: N(5)
+            costo: N(5,2)
+        FIN_REGISTRO
+        MaeOld, MaeAct: Archivo de COSTOS_AFILIADO ordenado por cod_afiliado
+        RegMaeOld, RegMaeAct, Aux: COSTOS_AFILIADO
+
+        SERVICIOS_SEMANALES = REGISTRO
+            cod_afiliado: N(3)
+            Fecha_at: FECHA
+            cod_servicio: N(5)
+            costo: N(5,2)
+        FIN_REGISTRO
+        Mov: Archivo de SERVICIOS_SEMANALES ordenado por cod_afiliado
+        RegMov: SERVICIOS_SEMANALES
+
+        PROCEDIMIENTO LEER_Mae() ES
+            LEER(MaeOld, RegMaeOld)
+
+            SI FDA(MaeOld) ENTONCES
+                RegMaeOld.cod_afiliado:= HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_mov() ES
+            LEER(Mov, RegMov)
+
+            SI FDA(mov) ENTONCES
+                RegMov.cod_afiliado:= HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ABRIR E/(MaeOld); ABRIR E/(Mov)
+        ABRIR /S(MaeAct)
+
+        LEER_Mae()
+        LEER_mov()
+        MIENTRAS (RegMaeOld.cod_afiliado <> HV) o (RegMov.cod_afiliado <> HV) HACER
+            SI RegMaeOld.cod_afiliado < RegMov.cod_afiliado ENTONCES
+                RegMaeAct:= RegMaeOld
+                ESC(MaeAct, RegMaeAct)
+                LEER_mae()
+            SINO
+                SI RegMaeOld.cod_afiliado = RegMov.cod_afiliado ENTONCES
+                    Aux:= RegMaeOld
+
+                    MIENTRAS RegMaeOld.cod_afiliado = RegMov.cod_afiliado HACER
+                        SEGUN RegMov.cod_servicio HACER
+                            1:
+                                ESC("Error, no se admite alta a un afiliado que ya existe")
+                            0:
+                                Aux.fecha_baja:= RegMov.fecha_at
+                            Otro:
+                                Aux.cant_servicios:= Aux.cant_servicios + 1
+                                Aux.costo:= Aux.costo + RegMov.costo
+                        FIN_SEGUN
+                        LEER_mov
+                    FIN_MIENTRAS
+
+                    RegMaeAct:= Aux
+                    ESC(MaeAct, RegMaeAct)
+                    LEER_mae()
+                SINO
+                    SI RegMov.cod_servicio = 1 ENTÓNCES
+                        Aux.cod_afiliado = RegMov.cod_afiliado
+                        Aux.fecha_alta = RegMov.fecha_at
+                        Aux.fecha_baja = ""
+                        Aux.cant_servicios = 0
+                        Aux.costo = 0
+
+                        LEER_mov
+                        MIENTRAS Aux.cod_afiliado = RegMov.cod_afiliado HACER
+                            SEGUN RegMov.cod_servicio HACER
+                                001:
+                                    ESC("Error, no se admite alta a un afiliado que ya existe")
+                                000:
+                                    Aux.fecha_baja:= RegMov.fecha_at
+                                Otro:
+                                    Aux.cant_servicios:= Aux.cant_servicios + 1
+                                    Aux.costo:= Aux.costo + RegMov.costo
+                            FIN_SEGUN
+                            LEER_mov
+                        FIN_MIENTRAS
+
+                        RegMaeAct:= Aux
+                        ESC(MaeAct, RegMaeAct)
+                    SINO
+                        SI RegMov.cod_servicio = 0 ENTÓNCES
+                            ESC("Error, no se puede dar de baja a un afiliado que no existe.")
+                        SINO
+                            ESC("Error, no se puede modificar a un afiliado que no existe.")
+                        FIN_SI
+                        LEER_mov()
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+        FIN_MIENTRAS
+
+        CERRAR(MaeOld)
+        CERRAR(MaeAct)
+        CERRAR(Mov)
+FIN_ACCION

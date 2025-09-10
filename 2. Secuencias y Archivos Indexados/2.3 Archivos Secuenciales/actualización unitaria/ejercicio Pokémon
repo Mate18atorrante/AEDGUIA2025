@@ -15,7 +15,7 @@ ACCION pokémon ES
             experiencia: N(7)
         FIN_REGISTRO
         MaeOld, MaeAct: Archivo de usuarios ordenado por clave
-        RegMaeOld, RegMaeAct: usuarios
+        RegMaeOld, RegMaeAct, RegMaeAux: usuarios
 
         capturas = REGISTRO
             clave = REGISTRO
@@ -34,9 +34,9 @@ ACCION pokémon ES
         cont_baja, cont_alta, cont_modif, op_invalidas: entero
 
         PROCEDIMIENTO LEER_mov() ES
-            LEER(Mov, RegMae)
+            LEER(Mov, RegMov)
             SI FDA(Mov) ENTONCES
-                RegMae.clave:= HV
+                RegMov.clave:= HV
             FIN_SI
         FIN_PROCEDIMIENTO
 
