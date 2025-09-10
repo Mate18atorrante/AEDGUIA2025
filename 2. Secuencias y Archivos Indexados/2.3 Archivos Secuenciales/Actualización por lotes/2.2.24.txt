@@ -94,10 +94,12 @@ ACCION 2.2.24 ES
                                 ESC("Error, no se admite alta a un afiliado que ya existe")
                             0:
                                 Aux.fecha_baja:= RegMov.fecha_at
+                                Aux.costo:= Aux.costo + RegMov.costo
                             Otro:
                                 Aux.cant_servicios:= Aux.cant_servicios + 1
                                 Aux.costo:= Aux.costo + RegMov.costo
                         FIN_SEGUN
+
                         LEER_mov
                     FIN_MIENTRAS
 
@@ -106,23 +108,25 @@ ACCION 2.2.24 ES
                     LEER_mae()
                 SINO
                     SI RegMov.cod_servicio = 1 ENTÓNCES
-                        Aux.cod_afiliado = RegMov.cod_afiliado
-                        Aux.fecha_alta = RegMov.fecha_at
-                        Aux.fecha_baja = ""
-                        Aux.cant_servicios = 0
-                        Aux.costo = 0
+                        Aux.cod_afiliado := RegMov.cod_afiliado
+                        Aux.fecha_alta := RegMov.fecha_at
+                        Aux.fecha_baja := null
+                        Aux.cant_servicios := 0
+                        Aux.costo := RegMov.costo
 
                         LEER_mov
                         MIENTRAS Aux.cod_afiliado = RegMov.cod_afiliado HACER
                             SEGUN RegMov.cod_servicio HACER
-                                001:
+                                1:
                                     ESC("Error, no se admite alta a un afiliado que ya existe")
-                                000:
+                                0:
                                     Aux.fecha_baja:= RegMov.fecha_at
+                                    Aux.costo:= Aux.costo + RegMov.costo
                                 Otro:
                                     Aux.cant_servicios:= Aux.cant_servicios + 1
                                     Aux.costo:= Aux.costo + RegMov.costo
                             FIN_SEGUN
+
                             LEER_mov
                         FIN_MIENTRAS
 

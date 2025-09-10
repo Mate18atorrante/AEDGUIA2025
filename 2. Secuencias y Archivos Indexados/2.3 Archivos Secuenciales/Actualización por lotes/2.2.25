@@ -1,0 +1,79 @@
+En un práctico para la Facultad un grupo de alumnos debe implementar una Red Social llamada UTNBook. Para lo cual debe
+ utilizar los siguientes archivos:
+
+AMIGOS Ordenado por Cod_Usuario y Cod_Amigo
+
+|Cod_Usuario| Cod_Amigo| Fecha_Amistad| Mensaje_Muro|
+Cada registro indica la fecha desde que los usuarios son amigos y el último mensaje que un amigo ha escrito en el muro
+ del usuario.
+
+NOTIFICACIONES Ordenado por Cod_Usuario y Cod_Amigo
+
+|Cod_Usuario| Cod_Amigo| Cod_Movimiento| Fecha_Amistad| Mensaje_Muro|
+Periódicamente se debe actualizar el archivo Amigos, con el fin de que refleje las amistades que posee cada usuario.
+En el archivo notificaciones pueden existir tres tipos de acciones: la solicitud de una amistad (Cod_mov = 'A');
+la eliminación de una amistad (Cod_mov = 'B'); o la información de un mensaje que un amigo ha escrito en el muro del usuario
+ (Cod_mov = 'M'). Considerar que la eliminación de una amistad implica la baja física de un registro y que hay un solo
+  registro de Notificaciones por cada registro de Amigo.
+
+*hay mas de un registro de notificaciones por cada registro de amigos.
+
+ACCION 2.2.25 ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        AMIGOS = REGISTRO
+            clave = REGISTRO
+                cod_usu: N(5)
+                cod_amigo: N(5)
+            FIN_REGISTRO
+            fecha_amistad: FECHA
+            mensaje_muro: AN(100)
+        FIN_REGISTRO
+        MaeOld, MaeAct: Archivo de AMIGOS ordenado por clave
+        RegMaeOld, RegMaeAct, Aux: AMIGOS
+
+        NOTIFS = REGISTRO
+            clave = REGISTRO
+                cod_usu: N(5)
+                cod_amigo: N(5)
+            FIN_REGISTRO
+            cod_mov: ("A","M","B")
+            fecha_amistad: FECHA
+            mensaje_muro: AN(100)
+        FIN_REGISTRO
+        Mov: Archivo de NOTIFS ordenado por clave
+        RegMov: NOTIFS
+
+        PROCEDIMIENTO LEER_mae() ES
+            LEER(MaeOld, RegMaeOld)
+            SI FDA(MaeOld) ENTONCES
+                RegMaeOld.clave:= HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+         PROCEDIMIENTO LEER_mov() ES
+            LEER(Mov, RegMov)
+            SI FDA(Mov) ENTONCES
+                RegMov.clave:= HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ABRIR E/(MaeOld); ABRIR E/(Mov)
+        ABRIR /S(MaeAct)
+
+        LEER_mae()
+        LEER_mov()
+        MIENTRAS (RegMaeOld.clave <> HV) O (RegMov.clave <> HV) HACER
+
+        FIN_MIENTRAS
+
+        CERRAR(MaeOld)
+        CERRAR(MaeAct)
+        CERRAR(Mov)
+FIN_ACCION
