@@ -1,6 +1,52 @@
+    Subacción Leer_Movimiento es
+      LEER(mov, Reg_mov)
+      SI FDA(mov) ENTONCES
+        reg_mov.clave := High_value
+      FSI;
+    FAcción
 
+    Subacción Leer_Maestro es
+      LEER(mae, reg_mae)
+      SI FDA(mae) ENTONCES
+        reg_mae.clave : = High_value
+      FSI;
+    FAcción
 
+    Subacción Proceso_Movim es
+      //Comparar la información del Registro de Movimientos y, de acuerdo a los valores que
+      //tengan, y alterar los contenidos del Registro Auxiliar (Aux).
+      SI reg_mov.Cod_Mov = "M" ENTONCES
+        //Modificación
+        Proceso_modif_maestro
+      SINO
+        SI reg_mov.Cod_Mov = "B" ENTONCES
+          //eliminación lógica
+          Marcar_registro
+        Fsi
+      Fsi
+    FAcción
 
+    Subacción Proceso_modif_maestro es
+      Si Reg_Mov.campo1 <> "" entonces
+        // No se actualizan los campos claves.
+        Aux.campo1 := Reg_mov.campo1
+      fsi;
+      Si Reg_Mov.campo2 <> "" entonces
+        Aux.campo2 := Reg_mov.campo2
+      fsi;
+      ..............................
+      //... y así sucesivamente para todos los campos del registro...
+      ..............................
+      Si Reg_Mov.campon <> "" entonces
+        Aux.campon := Reg_mov.campon
+      fsi;
+    FAcción.
+
+    Subacción Marcar_registro es
+      //en vez de asterisco, se puede asignar la fecha del día,
+      //o cualquier otro dato, según el problema
+      Aux.Marca_baja:= "*"
+    FAcción.
 
     PROCESO
         Abrir_Archivos

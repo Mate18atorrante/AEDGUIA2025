@@ -1,0 +1,145 @@
+ACCION pokémon ES
+    AMBIENTE
+        Fecha = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        usuarios = REGISTRO
+            clave = REGISTRO
+                cod_region: N(4)
+                cod_usu: N(10)
+            FIN_REGISTRO
+            correo: AN(50)
+            experiencia: N(7)
+        FIN_REGISTRO
+        MaeOld, MaeAct: Archivo de usuarios ordenado por clave
+        RegMaeOld, RegMaeAct: usuarios
+
+        capturas = REGISTRO
+            clave = REGISTRO
+                cod_region: N(4)
+                cod_usu: N(10)
+            FIN_REGISTRO
+            cod_pok: 1..151
+            ptos_exp: N(5)
+            fecha_captura: Fecha
+            Estado_pok: ("E","I","D") //entrenándose, incubándose, descansando
+            Estado_uso: ("A","S","B") //activo, suspendido, baneado
+        FIN_REGISTRO
+        Mov: Archivo de capturas ordenado por clave y cod_pok
+        RegMov: capturas
+
+        cont_bajas, cont_altas, actualizaciones, op_invalidas: entero
+
+        PROCEDIMIENTO LEER_mov() ES
+            LEER(Mov, RegMae)
+            SI FDA(Mov) ENTONCES
+                RegMae.clave:= HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_mae() ES
+            LEER(MaeOld, RegMaeOld)
+            SI FDA(MaeOld) ENTONCES
+                RegMaeOld.clave:= HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ABRIR E/(MaeOld); ABRIR E/(Mov)
+        ABRIR /S(MaeAct)
+
+        LEER_mov()
+        LEER_mae()
+
+        cont_bajas:= 0
+        cont_altas:= 0
+        actualizaciones:= 0
+        op_invalidas:= 0
+        MIENTRAS (RegMaeOld.clave <> HV) o (RegMov.clave <> HV) HACER
+            SI RegMaeOld.clave = RegMov.clave ENTONCES #procesos iguales -> modif o baja
+                RegMaeAux := RegMaeOld
+                BAJA:= FALSO
+
+                MIENTRAS RegMaeOld.clave = RegMov.clave HACER
+                    SEGUN RegMov.Estado_usu HACER
+                        "A": #actualizar experiencia - modif
+                            SI RegMov.Estado_pok = "E" ENTONCES
+                                RegMaeAux.experiencia := RegMaeAux.experiencia + 2 * RegMov.ptos_exp
+                            SINO
+                                RegMaeAux.experiencia := RegMaeAux.experiencia + RegMov.ptos_exp
+                            FIN_SI
+                            cont_actualización:= cont_actualización + 1
+                        "S":
+                            BAJA:= Verdadero
+                            cont_bajas:= cont_bajas + 1
+                        "B":
+                            op_invalidas:= op_invalidas + 1
+                        FIN_SEGUN
+                    LEER_mov()
+                FIN_MIENTRAS
+                SI NO BAJA ENTONCES
+                    RegMaeAct:= RegMaeAux
+                    ESC(MaeAct, RegMaeAct)
+                FIN_SI
+                LEER_mae()
+            SINO
+                #no se actualiza la experiencia/maestro sin movimientos/paso directo
+                SI RegMaeOld.clave < RegMov.clave ENTONCES
+                    RegMaeAct:= RegMaeOld
+                    ESC(MaeAct, RegMaeAct)
+                    LEER_mae()
+                SINO
+                    #Alta de registro que no existía en archivo maestro
+                    RegMaeAux.clave := RegMov.clave
+
+                    SI RegMov.Estado_pok = "E" ENTONCES
+                            RegMaeAux.experiencia := 2 * RegMov.ptos_exp
+                    SINO
+                        RegMaeAux.experiencia := RegMov.ptos_exp
+                    FIN_SI
+
+                    RegMaeAux.correo := ""
+                    cont_altas:= cont_altas + 1
+
+                    LEER_mov()
+                    BAJA:= FALSO
+                    #Se efectúa posible actualización o baja
+                    MIENTRAS RegMaeAux.clave = RegMov.clave HACER
+                        SEGUN RegMov.Estado_usu HACER
+                            "A": #actualizar experiencia - modifico
+                                SI RegMov.Estado_pok = "E" ENTONCES
+                                    RegMaeAux.experiencia := RegMaeAux.experiencia + 2 * RegMov.ptos_exp
+                                SINO
+                                    RegMaeAux.experiencia := RegMaeAux.experiencia + RegMov.ptos_exp
+                                FIN_SI
+                                actualizaciones:= actualizaciones + 1
+                            "S":
+                                BAJA:= Verdadero
+                                cont_baja:= cont_bajas + 1
+                            "B":
+                                op_invalidas:= op_invalidas + 1
+                        FIN_SEGUN
+                        LEER_Mov()
+                    FIN_MIENTRAS
+
+                    #Si no hubo baja, se escribe en la salida el registro actualizado
+                    SI NO BAJA ENTONCES
+                        RegMaeAct:= RegMaeAux
+                        ESC(MaeAct, RegMaeAct)
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+        FIN_MIENTRAS
+
+        ESC("Total de bajas físicas: ",cont_bajas)
+        ESC("Total de altas: ",cont_altas)
+        ESC("Total de actualizaciones: ",actualizaciones)
+        ESC("Total de operaciones inválidas: ",op_invalidas)
+
+        CERRAR(MaeOld)
+        CERRAR(MaeAct)
+        CERRAR(Mov)
+FIN_ACCION
