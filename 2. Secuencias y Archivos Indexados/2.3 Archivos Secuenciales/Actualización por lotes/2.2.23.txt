@@ -111,7 +111,10 @@ ACCION 2.2.24 ES
                         Aux.id_casa := RegMov.id_casa
                         Aux.fecha_ult_lectura:= RegMov.fecha_medición
                         Aux.cant_lecturas:= 1
+                        cant_lecturas:= 1
                         Aux.Prom_lecturas:= RegMov.consumo
+                        consumo_total:= RegMov.consumo
+
                         SEGUN Aux.Prom_lecturas HACER
                             < 20000: Aux.tipo_consumidor:= "A"
                             < 40000: Aux.tipo_consumidor:= "B"
@@ -119,8 +122,6 @@ ACCION 2.2.24 ES
                         FIN_SEGUN
 
                         LEER_mov()
-                        cant_lecturas:= 0
-                        consumo_total:= 0
                         MIENTRAS Aux.id_casa = RegMov.id_casa HACER
                             consumo_total:= consumo_total + RegMov.consumo
                             cant_lecturas:= cant_lecturas + 1
