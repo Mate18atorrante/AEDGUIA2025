@@ -1,0 +1,9 @@
+verbos
+
+escribir(arch,reg)
+re-escribir(arch,reg)
+eliminar(arch,reg)
+
+#SI DICE ORDENADO ES SECUENCIAL
+
+#se puede estar indexado por una clave compuesta, no siempre es clave simple

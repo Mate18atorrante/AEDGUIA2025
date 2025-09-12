@@ -1,0 +1,68 @@
+Crear un algoritmo que imprima un reporte como el que se indica, incluyendo totales por Obra Social y Clínica de
+liquidaciones a médicos. Los archivos que intervienen son:
+
+LIQUIDACIONES Ordenado por O.S. y Clinica
+
+|O.S.|Clinica|Nro_Leg|Mes|Anio|Bruto|Descuento_AFIP|Descuento_DGR|
+Neto = Bruto – (Desc_AFIP + Desc_DGR)
+
+OBRAS_SOCIALES Indexado por Cod_Os
+
+|Cod_OS|Nombre|
+CLÍNICAS Indexado por Cod_Cli
+
+|Cod_Cli|Nombre|
+MÉDICOS Indexado por Nro_Leg
+
+|Nro_Leg|ApyNom|Especialidad|DNI|
+
+#SE ASUME QUE ES UN REGISTRO POR MEDICO
+#Nro_legajo es unico por cada registro
+ACCION 2.3.7 ES
+    AMBIENTE
+        LIQUI = REGISTRO
+            O.S: AN(20)
+            Clinica: N(5)
+            NroLegajo: N(5)
+            Mes: 1..12
+            Anio: N(4)
+            Bruto: real
+            Descuento_AFIP: real
+            Descuento_DGR: real
+        FIN_REGISTRO
+        ArchLiq: Archivo de LIQUI ordenado por O.S. y Clinica
+        RegLiq: LIQUI
+
+        Obras_sociales = REGISTRO
+            Cod_Os: N(5)
+            Nombre: AN(20)
+        FIN_REGISTRO
+        ArchOs: Archivo de Obras_sociales indexado por Cod_Os
+        RegOs: Obras_sociales
+
+        CLINICAS = REGISTRO
+            cod_cli: N(5)
+            Nombre: AN(20)
+        FIN_REGISTRO
+        ArchClinic: Archivo de CLINICAS indexado por cod_cli
+        RegClinic: CLINICAS
+
+        MEDICOS = REGISTRO
+            nro_leg: N(5)
+            ApyNom: AN(20)
+            Especialidad: AN(20)
+            DNI: N(8)
+        FIN_REGISTRO
+        ArchMed: Archivo de MEDICOS indexado por nro_leg
+        RegMed: MEDICOS
+
+        Tot_OS, Tot_clinica, Neto: real
+
+    PROCESO
+        ABRIR E/(ArchLiq)
+        ABRIR E/(ArchOs)
+        ABRIR E/(ArchClinic)
+        ABRIR E/(ArchMed)
+
+        LEER(ArchLiq, RegLiq)
+
