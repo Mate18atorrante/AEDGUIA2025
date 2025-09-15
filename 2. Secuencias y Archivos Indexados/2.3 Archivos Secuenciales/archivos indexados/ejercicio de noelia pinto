@@ -1,0 +1,62 @@
+ACCION ejtesting ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        proyectos = REGISTRO
+            IDProyecto: N(5)
+            Tipo: ("Web","Mobile")
+            Estado: ("Done","Test")
+            FechaUltTest: FECHA
+        FIN_REGISTRO
+        Mae: Archivo de proyectos indexado por IDProyecto
+        RegMae: proyectos
+
+        Estado: ("Done", "Test")
+        FechaUltTest: FECHA
+        id: N(5)
+        decision: ("SI","NO")
+        tot_proyectos, tot_done: entero
+    PROCESO
+        ABRIR E/S(Mae)
+        tot_proyectos:= 0
+        tot_done:= 0
+
+        ESC("Desea empezar? SI/NO")
+        LEER(decision)
+        MIENTRAS decision = "SI" HACER
+            ESC("Ingrese el id: ")
+            LEER(id)
+            RegMae.IDProyecto:= id
+            LEER(Mae, RegMae)
+
+            SI EXISTE ENTONCES
+                tot_proyectos:= tot_proyectos + 1
+                SI RegMae.Estado <> "Done" ENTONCES
+                    ESC("Ingrese la última fecha de test: ")
+                    LEER(FechaUltTest)
+                    ESC("Ingrese el estado: ")
+                    LEER(Estado)
+                    SI Estado = "Done" ENTONCES
+                        Tot_done:= Tot_done + 1
+                    FIN_SI
+                    RegMae.FechaUltTest:= FechaUltTest
+                    RegMae.Estado:= Estado
+                    RE-ESC(Mae, RegMae)
+                SINO
+                    ESC("Accion innecesaria")
+                FIN_SI
+            SINO
+                ESC("Error, Debe ingresar otro id porque el ingresado no existe.")
+            FIN_SI
+
+            ESC("Desea continuar? SI/NO: ")
+            LEER(decision)
+        FIN_MIENTRAS
+
+        ESC("El porcentaje de proyectos que pasaron a 'Done' sobre el total es:",Tot_proyectos/Tot_done*100,%")
+        CERRAR(Mae)
+FIN_SI
