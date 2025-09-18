@@ -1,0 +1,17 @@
+
+#como defino los arreglos de salida si no sé cuantos elementos tendran?
+#resolución insegura por ahora
+
+ACCION VectoresParalelos ES
+    AMBIENTE
+        v_nombs, v_sexos, v_nombs_m, v_nombs_f: ARREGLO de [1..5] de AN
+        i: entero
+
+    PROCESO
+        PARA i:= 1 HASTA 5 HACER
+            SI v_sexos[i] = "f" ENTONCES
+                v_nombs_f[i]:= v_nombs[i]
+            SINO
+                v_nombs_m[i]:= v_nombs[i]
+            FIN_SI
+        FIN_PARA
