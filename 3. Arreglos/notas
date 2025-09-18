@@ -1,0 +1,21 @@
+leer(Matriz[1,1])
+ESC(Matriz[1,1])
+
+se recorren con Para (manejado por contrador)
+
+se puede:
+actualización
+busqueda
+ordenamiento
+
+se define como:
+
+nombre de variable: arreglo de [tipo indice: 1..n] de (tipo de dato: enteros, reales, alfanumericos, registros)
+
+matriz: arreglo de [1..7] de enteros
+
+si de registros
+    para obtener valor o mostrar por pantalla: nombre del arreglo, indices, selector de campo y campo
+
+si se pide en un enunciado un arreglo de 1 a n elementos
+se puede pero si se define la n como constante, porque si fuera variable, el arreglo dejaría de ser una estructa estática

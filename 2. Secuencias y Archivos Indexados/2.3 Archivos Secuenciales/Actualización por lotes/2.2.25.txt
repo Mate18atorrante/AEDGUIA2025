@@ -49,6 +49,8 @@ ACCION 2.2.25 ES
         Mov: Archivo de NOTIFS ordenado por clave
         RegMov: NOTIFS
 
+        baja_fisica: lógico
+
         PROCEDIMIENTO LEER_mae() ES
             LEER(MaeOld, RegMaeOld)
             SI FDA(MaeOld) ENTONCES
@@ -70,7 +72,58 @@ ACCION 2.2.25 ES
         LEER_mae()
         LEER_mov()
         MIENTRAS (RegMaeOld.clave <> HV) O (RegMov.clave <> HV) HACER
+            SI RegMaeOld.clave < RegMov.clave ENTONCES
+                RegMaeAct:= RegMaeOld
+                ESC(MaeAct, RegMaeAct)
+                LEER_mae()
+            SINO
+                SI RegMaeOld.clave = RegMov.clave ENTONCES
+                    Aux:= RegMaeOld
+                    baja_fisica:= Falso
+                    MIENTRAS RegMaeOld.clave = RegMov.clave HACER
+                        SEGUN RegMov.cod_mov HACER
+                            "A":
+                                ESC("Error. No se admite alta a un usuario que ya existe.")
+                            "B":
+                                baja_fisica:= Verdadero
+                            OTRO:
+                                Aux.mensaje_muro:= RegMov.mensaje_muro
+                        FIN_SEGUN
 
+                        LEER_mov()
+                    FIN_MIENTRAS
+
+                    SI NO baja_fisica ENTONCES
+                        RegMaeAct:= Aux
+                        ESC(MaeAct, RegMaeAct)
+                    FIN_SI
+                    LEER_mae()
+                SINO
+                    Aux.clave:= RegMov.clave
+                    Aux.fecha_amistad:= RegMov.fecha_amistad
+                    Aux.mensaje_muro:= RegMov.mensaje_muro
+
+                    LEER_mov()
+                    baja_fisica:= Falso
+                    MIENTRAS Aux.clave = RegMov.clave HACER
+                        SEGUN RegMov.cod_mov HACER
+                            "A":
+                                ESC("Error. No se admite alta a un usuario que ya existe.")
+                            "B":
+                                baja_fisica:= Verdadero
+                            OTRO:
+                                Aux.mensaje_muro:= RegMov.mensaje_muro
+                        FIN_SEGUN
+
+                        LEER_mov()
+                    FIN_MIENTRAS
+
+                    SI NO baja_fisica ENTONCES
+                        RegMaeAct:= Aux
+                        ESC(MaeAct, RegMaeAct)
+                    FIN_SI
+                FIN_SI
+            FIN_SI
         FIN_MIENTRAS
 
         CERRAR(MaeOld)

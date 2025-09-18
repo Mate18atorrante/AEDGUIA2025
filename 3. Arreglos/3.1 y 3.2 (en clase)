@@ -1,0 +1,87 @@
+Para cada una de las consignas siguientes, genere un algoritmo que permita solucionarla (3 algoritmos) usando un arreglo de 100 números enteros:
+
+Almacenar 100 números.
+Localizar el número de mayor valor y el de menor valor, informar sus valores y sus posiciones.
+Contar y sumar todos los números pares.
+
+*Genere un único algoritmo que resuelva las 3 consignas del ejercicio anterior.
+
+ACCION 3.2 ES
+    AMBIENTE
+        Vector: ARREGLO de [1..100] de enteros
+        i, mayorValor, mayorPosic, menorValor, menorPosic, ContPares, SumaPares: entero
+
+    PROCESO
+        ESC("Ingrese 100 valores")
+        SumaPares:= 0
+        ContPares:= 0
+        mayorValor:= LV
+        menorValor:= HV
+
+        #2, 5, 4
+        PARA i:= 1 HASTA 100 HACER
+            LEER(Vector[i])
+
+            SI mayor < Vector[i] ENTONCES
+                mayor:= Vector[i]
+                mayorPosic:= i
+            FIN_SI
+            SI Vector[i] < menor ENTONCES
+                menor:= Vector[i]
+                mayorPosic:= i
+            FIN_SI
+
+            SI i MOD 2 = 0 ENTONCES
+                ContPares:= ContPares + 1
+                SumaPares:= SumaPares + Vector[i]
+            FIN_SI
+        FIN_PARA
+
+        ESC("Cantidad de números pares: ",ContPares)
+        ESC("Suma de pares: ",SumaPares)
+        ESC("Valor mayor: ",ValorMayor," y su posición: ",MayorPosic)
+        ESC("Valor menor: ",MenorValor," y su posición: ",MenorPosic)
+FIN_ACCION
+
+#otra forma
+
+ACCION 3.2 ES
+    AMBIENTE
+        Vector: ARREGLO de [1..100] de enteros
+        i, mayorValor, mayorPosic, menorValor, menorPosic, ContPares, SumaPares: entero
+
+    PROCESO
+        ESC("Ingrese 100 valores")
+        SumaPares:= 0
+        ContPares:= 0
+
+        LEER(Vector[1])
+        mayorValor:= Vector[1] #2
+        mayorPosic:= 1
+        menorValor:= Vector[1] #2
+        menorPosic:= 1
+
+        PARA i:= 2 HASTA 100 HACER
+            SI mayor < Vector[i] ENTONCES
+                mayor:= Vector[i]
+                mayorPosic:= i
+            FIN_SI
+            SI Vector[i] < menor ENTONCES
+                menor:= Vector[i]
+                mayorPosic:= i
+            FIN_SI
+
+            SI i MOD 2 = 0 ENTONCES
+                ContPares:= ContPares + 1
+                SumaPares:= SumaPares + Vector[i]
+            FIN_SI
+
+            LEER(Vector[i])
+        FIN_PARA
+
+        ESC("Cantidad de números pares: ",ContPares)
+        ESC("Suma de pares: ",SumaPares)
+        ESC("Valor mayor: ",ValorMayor," y su posición: ",MayorPosic)
+        ESC("Valor menor: ",MenorValor," y su posición: ",MenorPosic)
+FIN_ACCION
+

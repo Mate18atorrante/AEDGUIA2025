@@ -33,18 +33,67 @@ ACCION 2.2.20 ES
             DNI: N(8)
             Sexo: ("M","F")
             FechaUltExam: Fecha
-            Nota: N(2,2)
+            Nota: 1..10
         FIN_REGISTRO
 
         MaeOld, MaeAct: Archivo de Alumnos ordenado por nro_legajo
-        RegMaeOld, RegMaeAct: alumnos
+        RegMaeOld, RegMaeAct, Aux: alumnos
 
         examenes = REGISTRO
             nro_legajo: N(5)
             carrera: ("ISI","IEM","IQ")
             cod_materia: N(5)
             Fecha_ExámenNota: Fecha
+            Nota: 1..10
         FIN_REGISTRO
 
         Mov: Archivo de exámenes ordenado por nro_legajo
         RegMov: exámenes
+
+        PROCEDIMIENTO LEER_mae() ES
+            LEER(MaeOld, RegMaeOld)
+            SI FDA(MaeOld) ENTONCES
+                RegMaeOld.nro_legajo:= HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_mov() ES
+            LEER(Mov, RegMov)
+            SI FDA(Mov) ENTONCES
+                RegMov.nro_legajo:= HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ABRIR E/(MaeOld); ABRIR E/(Mov)
+        ABRIR /S(MaeAct)
+
+        LEER_mov()
+        LEER_mae()
+
+        MIENTRAS (RegMov.nro_legajo <> HV) O (RegMaeOld.nro_legajo <> HV) HACER
+            SI RegMaeOld.nro_legajo < RegMov.nro_legajo ENTONCES
+                RegMaeAct:= RegMaeOld
+                ESC(MaeAct, RegMaeAct)
+                LEER_mae()
+            SINO
+                SI RegMaeOld.nro_legajo = RegMov.nro_legajo ENTONCES
+                    Aux:= RegMaeOld
+                    MIENTRAS RegMaeOld.nro_legajo = RegMov.nro_legajo HACER
+                        SI RegMov.Nota >= 6 ENTONCES
+                            Aux.FechaUltExam:= RegMov.Fecha_ExámenNota
+                            Aux.Nota:= RegMov.Nota
+                        FIN_SI
+                        LEER_mov()
+                    FIN_MIENTRAS
+                    RegMaeAct:= Aux
+                    ESC(MaeAct, RegMaeAct)
+                    LEER_mae()
+                FIN_SI
+            FIN_SI
+        FIN_MIENTRAS
+
+        CERRAR(MaeOld)
+        CERRAR(MaeAct)
+        CERRAR(Mov)
+FIN_ACCION

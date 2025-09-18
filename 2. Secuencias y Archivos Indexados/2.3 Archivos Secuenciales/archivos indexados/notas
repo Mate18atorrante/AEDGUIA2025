@@ -7,3 +7,6 @@ eliminar(arch,reg)
 #SI DICE ORDENADO ES SECUENCIAL
 
 #se puede estar indexado por una clave compuesta, no siempre es clave simple
+
+se lee solamente el secuencial, solo se lee cuando se busca
+

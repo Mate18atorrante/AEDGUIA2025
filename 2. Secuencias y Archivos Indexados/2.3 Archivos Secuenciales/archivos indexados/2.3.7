@@ -57,6 +57,7 @@ ACCION 2.3.7 ES
         RegMed: MEDICOS
 
         Tot_OS, Tot_clinica, Neto: real
+        res_cli, res_os:...
 
     PROCESO
         ABRIR E/(ArchLiq)
@@ -65,4 +66,36 @@ ACCION 2.3.7 ES
         ABRIR E/(ArchMed)
 
         LEER(ArchLiq, RegLiq)
+        ESC("Reporte:")
+
+        R2.CodOs:= R1.Os
+        LEER(ObrasSociales, R2)
+
+        R3.Clinica:= R1.clinica
+        LEER(clinicas, r3)
+
+        ESCRIBIR("Obra social:", R2.nombre)
+
+        Mientras NFDA(liquidaciones) HACER
+            si res_os <> r1.os ENTONCES
+                corte_os
+            sino
+                si res_cli <> r1.clinica ENTONCES
+                    corte_clinica
+                fin_si
+            fin_si
+
+            Neto:= R1.Bruto - R1.DescAFIP - R1.DescDGR
+
+            R4.Nro_leg:= R1.Nro_leg
+            LEER(medicos, R4)
+            ESC(R1.Nro_leg, R4.ApyNom, Neto) #también se podría mostrar R1.Nro_leg con R4.Nro_leg
+
+            tot_cli:= tot_cli + neto
+
+            LEER(liquidaciones, R1)
+        FIN_MIENTRAS
+        corte_os()
+        CERRAR
+
 
