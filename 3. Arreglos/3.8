@@ -1,0 +1,27 @@
+ej anterior: Escribir un algoritmo que permita localizar un nombre en un arreglo de N nombres, ordenados alfabéticamente. Cada nombre
+ puede tener, como máximo, 10 caracteres. Escriba por lo menos dos algoritmos que permitan solucionar el problema;
+ especifique cuál de las formas considera más eficiente y por qué.
+
+Repita el ejercicio anterior, pero suponiendo que se precisa localizar todos los nombres que comienzan con una letra dada.
+
+ACCION 3.8 ES
+    AMBIENTE
+        nombs = REGISTRO
+            nomb: AN(10)
+        FIN_REGISTRO
+
+        n = 20
+        nombres: ARREGLO DE [1..n] DE nombs
+        i: entero
+        letra: caracter
+
+    PROCESO
+        ESC("Ingrese la letra con la cual deben empezar los nombres a buscar: ")
+        LEER(letra)
+
+        PARA i:= 1 HASTA n HACER
+            SI letra EN nombres[i] ENTONCES
+                ESC("Se encontró en ",i)
+            FIN_SI
+        FIN_PARA
+FIN_ACCION

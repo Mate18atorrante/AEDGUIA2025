@@ -1,5 +1,18 @@
 Escribir un algoritmo que permita cargar un arreglo de N nombres, considerando que cada nombre debe tener entre 1 y 10
 caracteres.
 
-ACCION 3.5 ES
+ACCION 3.6 ES
     AMBIENTE
+        nombs = registro
+            nomb: AN(10)
+        fin_registro
+
+        n = 50
+        nombres: ARREGLO DE [1..n] DE nombs
+        i: entero
+    PROCESO
+        PARA i:= 1 HASTA n HACER
+            ESC("Escriba el nombre nro ",i,": ")
+            LEER(nombres[i].nomb)
+        FIN_PARA
+FIN_ACCION

@@ -1,0 +1,62 @@
+Escribir un algoritmo que permita localizar un nombre en un arreglo de N nombres, ordenados alfabéticamente. Cada nombre
+ puede tener, como máximo, 10 caracteres. Escriba por lo menos dos algoritmos que permitan solucionar el problema;
+ especifique cuál de las formas considera más eficiente y por qué.
+
+#Con busqueda Lineal por Centinela
+ACCION 3.7Centinela ES
+    AMBIENTE
+        nombs = REGISTRO
+            nomb: AN(10)
+        FIN_REGISTRO
+        nombre: nombs
+
+        n = 20
+        nombres: ARREGLO DE [1..n] de nombs
+        i: entero
+    PROCESO
+        ESC("Ingrese el nombre a buscar: ")
+        LEER(nombre)
+
+        i:= 1
+        MIENTRAS (i < n) y (nombres[i] <> nombre) HACER
+            i:= i + 1
+        FIN_PARA
+
+        SI nombres[i] = nombre ENTONCES
+            ESC("Se encontró el nombre ",nombre,"en la posición ",i)
+        SINO
+            ESC("No se encontró el nombre")
+        FIN_SI
+FIN_ACCION
+
+#con busqueda Lineal
+ACCION 3.7Lineal ES
+    AMBIENTE
+        nombs = REGISTRO
+            nomb: AN(10)
+        FIN_REGISTRO
+        nombre: nombs
+
+        n = 20
+        nombres: ARREGLO DE [1..n] de nombs
+        i: entero
+        encontrado: lógico
+    PROCESO
+        ESC("Ingrese el nombre a buscar: ")
+        LEER(nombre)
+
+        encontrado: FALSO
+        PARA i:= 1 HASTA n HACER
+            SI nombres[i] = nombre ENTONCES
+                encontrado: VERDADERO
+                ESC("Se encontró el nombre ",nombre," en la posición ",i)
+            FIN_SI
+        FIN_PARA
+
+        SI NO encontrado ENTONCES
+            ESC("No se encontró el nombre")
+        FIN_SI
+FIN_ACCION
+
+#Considero más eficiente la busqueda lineal por centinela ya que con solo encontrar una vez el nombre, ya terminá el proceso del arreglo, en cambio
+el de busqueda lineal simple recorre siempre completamente el arreglo, lo que lo hace más lento

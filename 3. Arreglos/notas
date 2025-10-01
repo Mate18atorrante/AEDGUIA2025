@@ -24,7 +24,9 @@ busqueda binaria:
     solo cuando el arreglo está ordenado
 
 busqueda lineal por centinela:
-    conviene cuando el arreglo no está ordenado
+    conviene cuando el arreglo no está ordenado, y cuando no importa hallar los elementos repetidos, y es más veloz que el lineal común
+    es aún más rápido cuando el arreglo está ordenado
 
 busqueda lineal:
     conviene cuando se repiten ciertos elementos o registros
+    único método para búsquedas múltiples
