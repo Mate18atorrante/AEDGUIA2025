@@ -1,0 +1,58 @@
+dado un arreglo de
+
+#cuando el enunciado dice "dado un arreglo..." es porque el arreglo ya está cargado
+accion PromLluvia ES
+    AMBIENTE
+        llu = REGISTRO
+            loc: entero
+            mm: real
+        FIN_REGISTRO
+
+        lluvia: arreglo de [1..50] de llu
+        i: entero
+        total: real
+    PROCESO
+        total:= 0
+        PARA i:= 1 HASTA 50 HACER
+            total:= total + lluvia[i].mm
+        FIN_PARA
+
+        ESC("El promedio de lluvia anual es:", total/50)
+FIN_ACCION
+
+PROCESO
+    ESC("Ingrese codigo de la localidad deseada: ")
+    LEER(cod)
+
+    i:= 1
+    MIENTRAS i <= 50 y cod <> lluvia[i].loc HACER
+        i:= i + 1
+    FIN_MIENTRAS
+
+    SI cod = lluvia[i] ENTONCES
+        ESC("Cantidad de lluvia caida fue: ",lluvia[i].mm)
+    SINO
+        ESC("No se encontró la localidad.")
+    FIN_SI
+
+#
+iz:= 1
+de: 50
+
+cen:= (iz+de) DIV 2
+
+MIENTRAS (iz < de) y (lluvia[cen].loc <> cod) HACER
+    SI (lluvia[cen].loc > x) ENTONCES
+        de:= cen - 1
+    SINO
+        iz:= cen + 1
+    FIN_SI
+
+    cen:= (iz + de) div 2
+FIN_MIENTRAS
+
+SI cod = lluvia[cen].loc ENTONCES
+    ESC("La lluvia caida fue: ",lluvia[cen].mm)
+SINO
+    ESC("No se encontró la localidad")
+FIN_SI

@@ -1,0 +1,21 @@
+ACCION 3.20 ES
+    AMBIENTE
+        A,B,C: ARREGLO de [1..5, 1..5] de enteros
+        i, j: entero
+
+    PROCESO
+        PARA i:= 1 HASTA 5 HACER
+            PARA j:= 1 HASTA 5 HACER
+                SI i = j ENTONCES
+                    C[i,j] := 0
+                SINO
+                    SI i < j ENTONCES
+                        C[i,j] := A[i,j]
+                    SINO
+                        C[i,j] := B[i,j]
+                    FIN_SI
+                FIN_SI
+            FIN_PARA
+        FIN_PARA
+
+FIN_ACCION

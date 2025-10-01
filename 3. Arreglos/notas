@@ -19,3 +19,12 @@ si de registros
 
 si se pide en un enunciado un arreglo de 1 a n elementos
 se puede pero si se define la n como constante, porque si fuera variable, el arreglo dejaría de ser una estructa estática
+
+busqueda binaria:
+    solo cuando el arreglo está ordenado
+
+busqueda lineal por centinela:
+    conviene cuando el arreglo no está ordenado
+
+busqueda lineal:
+    conviene cuando se repiten ciertos elementos o registros

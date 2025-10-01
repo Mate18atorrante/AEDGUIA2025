@@ -11,7 +11,10 @@ ACCION VectoresParalelos ES
         PARA i:= 1 HASTA 5 HACER
             SI v_sexos[i] = "f" ENTONCES
                 v_nombs_f[i]:= v_nombs[i]
+                v_nombs_m[i]:= ""
             SINO
                 v_nombs_m[i]:= v_nombs[i]
+                v_nombs_f[i]:= ""
             FIN_SI
         FIN_PARA
+FIN_ACCION

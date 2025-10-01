@@ -1,0 +1,9 @@
+PROCESO
+    para i:= 1 HASTA 2 HACER
+        PARA j:= 1 HASTA 2 HACER
+            M[i,3]:= M[i,3] + M[i,j]
+            M[3,j]:= M[3,j] + M[i,j]
+            M[3,j]:= M[3,3] + M[i,j]
+        FIN_PARA
+    FIN_PARA
+

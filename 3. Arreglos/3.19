@@ -1,0 +1,28 @@
+Escribir un algoritmo que emita cuál es y dónde está ubicado el mayor elemento de cada fila de una matriz, e imprima
+un mensaje si todos los mayores se encuentran en la misma columna.
+
+ACCION 3.19 ES
+    AMBIENTE
+        matriz: ARREGLO de [1..10, 1..10] de entero
+        i, j, mayor, colum_mayor_ant, misma_colum: entero
+    PROCESO
+        misma_colum:= 0
+        mayor:= LV
+
+        PARA i:= 1 HASTA 4 HACER
+            PARA j:= 1 HASTA 4 HACER
+                SI matriz[i,j] > mayor ENTONCES
+                    ESC(matriz[i,j],"de la posición",i j," es el mayor elemento de la fila ",i)
+                    colum_mayor_ant:= j
+                FIN_SI
+
+                SI j = colum_mayor_ant ENTONCES
+                    misma_colum:= misma_colum + 1
+                FIN_SI
+            FIN_PARA
+        FIN_PARA
+
+        SI misma_colum = 5 ENTONCES
+            ESC("Todos los mayores se encuentran en la misma columna nro", colum_mayor_ant)
+        FIN_SI
+FIN_ACCION

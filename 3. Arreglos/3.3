@@ -1,0 +1,19 @@
+ACCION 3.3 ES
+    AMBIENTE
+        n = 10
+        vector: ARREGLO de [1..n] de REALES
+        i: entero
+        x: real
+        y: real
+
+    PROCESO
+        ESC("Ingrese un número real mayor o igual que 0: ")
+        LEER(x)
+
+        y:= 0
+        PARA i:= 1 HASTA n HACER
+            y:= y + (vector[i] * x**i)
+        FIN_PARA
+
+        ESC("El valor de y: ",y)
+FIN_ACCION
