@@ -24,10 +24,17 @@ ACCION 3.9 ES
 
         PARA i:= 1 HASTA 200 HACER
             SI libreria[i].autor = "Nicklaus Wirth" ENTONCES
-                S
+                SI libreria[i].titulo = "Algoritmos + Estructuras de Datos = Programa" ENTONCES
+                    ESC("El libro 'Algoritmos + Estructuras de Datos = Programa' se encuentra en la posición ",i)
+                FIN_SI
+
+                SI libreria[i].cant_hojas > libroMayorV.cant_hojas ENTONCES
+                    libroMayorV:= libreria[i]
+                FIN_SI
             FIN_SI
         FIN_PARA
 
+        ESC("El libro de mayor volúmen de Nicklaus Wirth es ",libroMayorV.titulo)
 FIN_ACCION
 
 

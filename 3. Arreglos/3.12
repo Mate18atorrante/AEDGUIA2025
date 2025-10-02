@@ -1,0 +1,41 @@
+Ej: Director, Categoría de película, Cantidad de personas que la vieron, Alquilado (si/no); y está ordenado por el Título
+de la película, diseñe un algoritmo que, ingresando una categoría, liste todas las películas que pertenecen a dicha
+categoría.
+
+A partir del arreglo de videos descrito en el ejercicio anterior, diseñe un algoritmo que permita atender un pedido
+de alquiler, para lo cual debe verificar si es posible o no y, cuando corresponda, actualizar la cantidad de personas
+que vieron dicha película.
+
+ACCION 3.12 ES
+    AMBIENTE
+        video = REGISTRO
+            titulo: AN(50)
+            nom_dir: AN(50)
+            categoría: AN(50)
+            cant_per: entero
+            alquilado: ("SI","NO")
+        FIN_REGISTRO
+
+        videos: ARREGLO DE [1..100] DE video ORDENADO POR titulo
+        i: entero
+        peli_pedido: AN(50)
+
+    PROCESO
+        ESC("Ingrese el nombre de la pelicula que desea alquilar: ")
+        LEER(peli_pedido)
+
+        izq:= 1
+        der:= 100
+        med:= (izq + der) div 2
+        MIENTRAS (izq < der) y (videos[med].titulo <> peli_pedido) HACER
+            SI videos[med].titulo < peli_pedido ENTONCES
+                der:= med - 1
+            SINO
+                izq:= med + 1
+            FIN_SI
+
+            med:= (izq + der) div 2
+        FIN_MIENTRAS
+
+        SI videos[med].titulo = peli_pedido ENTONCES
+            ESC("")

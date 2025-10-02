@@ -1,0 +1,33 @@
+
+        R = REGISTRO
+            consumo:entero
+            importe:real
+        FIN_REGISTRO
+
+        M: arreglo de [1..13,1.. 5] de R
+
+        PARA i:= 1 HASTA 13 HACER
+            PARA j:= 1 HASTA 5 HACER
+                M[i,j].consumo:= 0
+                M[i,j].importe:= 0
+            FIN_PARA
+        FIN_PARA
+
+        ABRIR E/(Arch)
+        LEER(Arch,Reg)
+
+        MIENTRAS NFDA(Arch) HACER
+            i:= Reg.fecha.mes
+            j:= Reg.fecha.mes
+
+            M[i,j].consumo := M[i,j].consumo + Reg.consumo
+            M[i,j].importe := M[i,j].importe + (Reg.consumo * valorkw(Reg.zona))
+            M[i,5].consumo := M[i,j].consumo + Reg.consumo
+            M[i,5].importe := M[i,j].importe + (Reg.consumo * valorkw(Reg.zona))
+            M[13,j].consumo := M[i,j].consumo + Reg.consumo
+            M[13,j].importe := M[i,j].importe + (Reg.consumo * valorkw(Reg.zona))
+            M[13,5].consumo := M[i,j].consumo + Reg.consumo
+            M[13,5].importe := M[i,j].importe + (Reg.consumo * valorkw(Reg.zona))
+
+            LEER(Arch, Reg)
+        FIN_MIENTRAS

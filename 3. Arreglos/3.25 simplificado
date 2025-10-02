@@ -1,0 +1,117 @@
+ACCION Ej3.5 ES
+    AMBIENTE
+        R = REGISTRO
+            NFact: entero
+            Proveedor: "A".."C"
+            FFact: Fecha
+            Planta: 1..4
+            Importe: real
+        FIN_REGISTRO
+
+        Facturas: Archivo de R
+        Reg: R
+
+        M: Arreglo de [1..5, "A".."D"] de real
+        i: 1..5
+        j: "A".."D"
+
+    PROCESO
+        PARA i:= 1 HASTA 5 HACER
+            PARA j:= "A" HASTA "D" HACER
+                M[i,j]:= 0
+            FIN_PARA
+        FIN_PARA
+
+        ABRIR E/(Facturas)
+        LEER(Facturas, Reg)
+
+        MIENTRAS NFDA(Facturas) HACER
+            i:= Reg.Planta
+            j:= Reg.Proveedor
+            M[i,j]:= M[i,j] + Reg.Importe
+            M[i,"D"]:= M[i,"D"] + Reg.Importe
+            M[5,j]:= M[5,j] + Reg.Importe
+            M[5,"D"]:= M[5,"D"] + Reg.Importe
+
+            LEER(Facturas, Reg)
+        FIN_MIENTRAS
+
+        ESC("   A   B   C   Totales x Planta")
+
+        PARA i:= 1 HASTA 5 HACER
+            SI i = 5 ENTONCES
+                ESC("Totales x proveedor")
+            SINO
+                ESC(i)
+            FIN_SI
+
+            PARA j:= "A" HASTA "D" HACER
+                ESC(M[i,j])
+            FIN_PARA
+        FIN_PARA
+
+        CERRAR(Facturas)
+FIN_ACCION
+
+#real
+
+ACCION Ej3.5 ES
+    AMBIENTE
+        R = REGISTRO
+            NFact: entero
+            Proveedor: "A".."C"
+            FFact: Fecha
+            Planta: 1..4
+            Importe: real
+        FIN_REGISTRO
+
+        Facturas: Archivo de R
+        Reg: R
+
+        M: Arreglo de [1..5, "A".."D",1..13] de real
+        i: 1..5
+        j: "A".."D"
+        k: 1..13
+
+    PROCESO
+        PARA i:= 1 HASTA 5 HACER
+            PARA j:= "A" HASTA "D" HACER
+                PARA k:= 1 HASTA 13 HACER
+                    M[i,j]:= 0
+            FIN_PARA
+        FIN_PARA
+
+        ABRIR E/(Facturas)
+        LEER(Facturas, Reg)
+
+        MIENTRAS NFDA(Facturas) HACER
+            i:= Reg.Planta
+            j:= Reg.Proveedor
+            k:= Reg.FFact.mes
+            M[i,j,k]:= M[i,j,k] + Reg.Importe
+            M[i,"D",k]:= M[i,"D",k] + Reg.Importe
+            M[5,j,k]:= M[5,j,k] + Reg.Importe
+            M[5,"D",k]:= M[5,"D",k] + Reg.Importe
+            M[i,j,13]:= M[i,j,13] + Reg.Importe
+            M[5,"D",13]:= M[5,"D",13] + Reg.Importe
+
+            LEER(Facturas, Reg)
+        FIN_MIENTRAS
+
+        #como tarea >:(
+        ESC("   A   B   C   Totales x Planta")
+
+        PARA i:= 1 HASTA 5 HACER
+            SI i = 5 ENTONCES
+                ESC("Totales x proveedor")
+            SINO
+                ESC(i)
+            FIN_SI
+
+            PARA j:= "A" HASTA "D" HACER
+                ESC(M[i,j])
+            FIN_PARA
+        FIN_PARA
+
+        CERRAR(Facturas)
+FIN_ACCION

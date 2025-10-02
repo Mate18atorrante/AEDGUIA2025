@@ -1,0 +1,65 @@
+Dado un arreglo de 50 elementos, cada uno de los cuales tiene los siguientes datos: Código de localidad y Lluvia caída
+en un año. Escribir un algoritmo que permita saber dada una localidad, cuanto llovió en el año. Aplicar el método más
+adecuado considerando que el arreglo esta ordenado por Código de localidad.
+
+ACCION 3.10 ES
+    AMBIENTE
+        lluvia = REGISTRO
+            cod_loc: entero
+            mm_anual: real
+        FIN_REGISTRO
+
+        lluvia_localidades: ARREGLO DE [1..50] DE lluvia ordenado por cod_loc
+        i, localidad: entero
+
+    PROCESO
+        ESC("Ingrese el código de la localidad: ")
+        LEER(localidad)
+
+        i:= 1
+        MIENTRAS i <= 50 y lluvia_localidades[i].cod_loc <> localidad HACER
+            i:= i + 1
+        FIN_MIENTRAS
+
+        SI lluvia_localidad[i].cod_loc = localidad ENTONCES
+            ESC("En la localidad ",localidad,"llovió en el último año",lluvia_localidad.mm_anual,"mm")
+        SINO
+            ESC("No se encontró la localidad")
+        FIN_SI
+FIN_ACCION
+
+#con busqueda binaria
+
+ACCION 3.10 ES
+    AMBIENTE
+        lluvia = REGISTRO
+            cod_loc: entero
+            mm_anual: real
+        FIN_REGISTRO
+
+        lluvia_localidades: ARREGLO DE [1..50] DE lluvia ordenado por cod_loc
+        localidad, izq, der, cent: entero
+
+    PROCESO
+        ESC("Ingrese el código de la localidad: ")
+        LEER(localidad)
+
+        iz:= 1
+        der:= 50
+        cen:= (iz + der) div 2
+        MIENTRAS (izq < der) y (lluvia_localidades[cen].cod_loc <> localidad) HACER
+            SI lluvia[cen].loc > cod ENTONCES
+                der:= cen - 1
+            SINO
+                izq:= cen + 1
+            FIN_SI
+
+            cen:= (izq + der) div 2
+        FIN_MIENTRAS
+
+        SI lluvia_localidad[i].cod_loc = localidad ENTONCES
+            ESC("En la localidad ",localidad,"llovió en el último año",lluvia_localidad.mm_anual,"mm")
+        SINO
+            ESC("No se encontró la localidad")
+        FIN_SI
+FIN_ACCION

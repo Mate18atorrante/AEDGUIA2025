@@ -22,10 +22,12 @@ se puede pero si se define la n como constante, porque si fuera variable, el arr
 
 busqueda binaria:
     solo cuando el arreglo está ordenado
+    para arreglos ordenado y con muchos elementos es mejor este método
 
 busqueda lineal por centinela:
     conviene cuando el arreglo no está ordenado, y cuando no importa hallar los elementos repetidos, y es más veloz que el lineal común
     es aún más rápido cuando el arreglo está ordenado
+    para arreglos ordenados y con pocos elementos es mejor este método
 
 busqueda lineal:
     conviene cuando se repiten ciertos elementos o registros
