@@ -3,7 +3,7 @@ un mensaje si todos los mayores se encuentran en la misma columna.
 
 ACCION 3.19 ES
     AMBIENTE
-        matriz: ARREGLO de [1..10, 1..10] de entero
+        matriz: ARREGLO de [1..4, 1..4] de entero
         i, j, mayor, colum_mayor_ant, misma_colum: entero
     PROCESO
         misma_colum:= 0

@@ -1,0 +1,76 @@
+ACCION ejproblemas ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        R = REGISTRO
+            BD: N(2)
+            cod_tabla: N(6)
+            dsc_tabla: AN(30)
+            Owner: AN(30)
+            fch_creación: FECHA
+            cant_reg: N(10)
+            auditada: ("SI","NO")
+            cod_probl: N(2)
+        FIN_REGISTRO
+        Arch: Archivo de R
+        Reg: R
+
+        M: Arreglo de [1..51, 1..31] de entero
+        i: 1..51
+        j: 1..31
+        ProblemaMayor, CodProblemaMayor, BDmenor, CodBDmenor, BDcodigo22, totalproblemas: entero
+
+    PROCESO
+        PARA i:= 1 HASTA 51 HACER
+            PARA j:= 1 HASTA 31 HACER
+                M[i,j]:= 0
+            FIN_PARA
+        FIN_PARA
+
+        ABRIR E/(Arch)
+        LEER(Arch,Reg)
+        MIENTRAS NFDA(Arch) HACER
+            i:= Reg.BD
+            j:= Reg.cod_probl
+
+            M[i,j]:= M[i,j] + 1
+            M[i,31]:= M[i,31] + 1
+            M[51,j]:= M[51,j] + 1
+            M[51,31]:= M[51,31] + 1
+
+            LEER(Arch, Reg)
+        FIN_MIENTRAS
+
+        ProblemaMayor:= 0
+        BDmenor:= HV
+        BDcodigo22:= 0
+
+        PARA i:= 1 HASTA 50 HACER
+            PARA j:= 1 HASTA 30 HACER
+                SI M[51,j] > ProblemaMayor ENTONCES
+                    CodProblemaMayor:= j
+                    ProblemaMayor:= M[51,j]
+                FIN_SI
+
+                SI M[i,31] < BDmenor ENTONCES
+                    CodBDmenor:= i
+                    BDmenor:= M[i,31]
+                FIN_SI
+
+                SI j = 22 ENTONCES
+                    BDcodigo22:= BDcodigo22 + 1
+                FIN_SI
+            FIN_PARA
+        FIN_PARA
+
+        ESC("El problema más reportado fue el Nro ",CodProblemaMayor)
+        ESC("La base de datos con menor cantidad de problemas reportados fue la Nro ",CodBDmenor)
+        ESC("La cantidad de bases de datos que reportaron problemas con el código 22: ",BDcodigo22)
+        ESC("Cantidad de problemas reportados en total: ",M[51,31])
+
+        CERRAR(Arch)
+FIN_ACCION

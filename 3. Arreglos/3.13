@@ -1,0 +1,59 @@
+Se precisa ordenar un arreglo de N alumnos de mayor a menor, de acuerdo a la cantidad de materias aprobadas. Cada elemento
+del arreglo contiene Nro. de Legajo y Cantidad de materias aprobadas. Escriba por lo menos dos algoritmos que permitan
+solucionar el problema; especifique cuál de las formas considera más eficiente y por qué.
+
+#Método de selección
+ACCION 3.13 ES
+    AMBIENTE
+        Alumno = REGISTRO
+            legajo: N(5)
+            materias_aprob: N(2)
+        FIN_REGISTRO
+
+        n = 20
+        Alumnos: ARREGLO DE [1..20] DE Alumno
+        i, j, Max: entero
+        x: Alumno
+
+    PROCESO
+        PARA i:= 1 HASTA n-1 HACER
+            Max:= i
+            x:= Alumnos[i]
+            PARA j:= i+1 HASTA n HACER
+                SI x < Alumnos[j] ENTONCES
+                    x:= Alumnos[j]
+                    Max:= j
+                FIN_SI
+            FIN_PARA
+            A[Max]:= A[i]
+            A[i]:= x
+        FIN_PARA
+FIN_ACCION
+
+#Método de inserción
+ACCION 3.13 ES
+    AMBIENTE
+        Alumno = REGISTRO
+            legajo: N(5)
+            materias_aprob: N(2)
+        FIN_REGISTRO
+
+        n = 20
+        Alumnos: ARREGLO DE [1..n] DE Alumno
+        i, j: entero
+    PROCESO
+        PARA i:= 2 HASTA n HACER
+            j:= i-1
+            x:= Alumnos[i]
+            MIENTRAS (x > A[j]) y (j > 0) HACER
+                Alumnos[j+1]:= A[j]
+                j:= j-1
+            FIN_MIENTRAS
+            A[j+1]:= x
+        FIN_PARA
+FIN_ACCION
+
+
+
+
+

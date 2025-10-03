@@ -1,9 +1,19 @@
-PROCESO
-    para i:= 1 HASTA 2 HACER
-        PARA j:= 1 HASTA 2 HACER
-            M[i,3]:= M[i,3] + M[i,j]
-            M[3,j]:= M[3,j] + M[i,j]
-            M[3,j]:= M[3,3] + M[i,j]
-        FIN_PARA
-    FIN_PARA
+Dada una matriz de 6 x 6 de enteros, cuya última fila y columna contienen ceros, calcular la suma de cada fila y guardar
+en la última celda de la misma; y la suma de cada columna y guardar en la última celda de la misma. Calcular también el
+total general y guardar en la posición (6,6).>
 
+ACCION 3.21 ES
+    AMBIENTE
+        M: ARREGLO DE [1..6, 1..6] DE ENTEROS
+        i,j: 1..6
+        suma: entero
+
+    PROCESO
+        PARA i:= 1 HASTA 5 HACER
+            PARA j:= 1 HASTA 5 HACER
+                M[i,6]:= M[i,6] + M[i,j]
+                M[6,j]:= M[6,j] + M[i,j]
+                M[6,6]:= M[6,6] + M[i,j]
+            FIN_PARA
+        FIN_PARA
+FIN_ACCION
