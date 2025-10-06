@@ -1,11 +1,20 @@
-
+ACCION 3.26 ES
+    AMBIENTE
         R = REGISTRO
+            nro_factura: entero
+            nro_usuario: entero
+            zona: entero
+            fechaFac: FECHA
             consumo:entero
             importe:real
         FIN_REGISTRO
+        Arch: Archivo de R
+        Reg: R
 
         M: arreglo de [1..13,1.. 5] de R
-
+        i: 1..13
+        j: 1..5
+    PROCESO
         PARA i:= 1 HASTA 13 HACER
             PARA j:= 1 HASTA 5 HACER
                 M[i,j].consumo:= 0

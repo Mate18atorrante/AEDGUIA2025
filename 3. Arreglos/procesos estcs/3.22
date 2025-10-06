@@ -1,0 +1,22 @@
+Dada una matriz cuadrada de 5 x 5 de números, sumar filas y columnas y guardar en una matriz de 2 x 5, de modo que la
+fila 1 contenga la suma de cada fila y la fila 2, la suma de cada columna)
+
+ACCION 3.22 ES
+    AMBIENTE
+        Ment: ARREGLO DE [1..5, 1..5] DE REAL
+        Msal: ARREGLO DE [1..2, 1..5] DE REAL
+
+    PROCESO
+        PARA i:= 1 HASTA 2 HACER
+            PARA j:= 1 HASTA 5 HACER
+                Msal[i,j]:= 0
+            FIN_PARA
+        FIN_PARA
+
+        PARA i:= 1 HASTA 5 HACER
+            PARA j:= 1 HASTA 5 HACER
+                Msal[1,i]:= Msal[1,i] + Ment[i,j] //suma de filas
+                Msal[2,j]:= Msal[2,j] + Ment[i,j] //suma de columnas
+            FIN_PARA
+        FIN_PARA
+FIN_ACCION

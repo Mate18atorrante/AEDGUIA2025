@@ -1,0 +1,69 @@
+ACCION ej 2 ES
+    AMBIENTE
+        R = REGISTRO
+            Depto: N(6)
+            Origen: 1..3
+            Nivel: 1..5
+            Valida: ("SI","NO")
+        FIN_REGISTRO
+        Arch: Archivo de R
+        Reg: R
+
+        M: ARREGLO DE [1..6, 1..4] DE ENTERO
+        i: 1..6
+        j: 1..4
+        MenTransc, NivelMenTransc, OrigenMenTransc, MayorTransc, NivelMayorTransc: entero
+
+    PROCESO
+        PARA i:= 1 HASTA 6 HACER
+            PARA j:= 1 HASTA 4 HACER
+                M[i,j]:= 0
+            FIN_PARA
+        FIN_PARA
+
+        ABRIR E/(Arch)
+        LEER(Arch,Reg)
+        MIENTRAS NFDA(Arch) HACER
+            i:= Reg.Nivel
+            j:= Reg.Origen
+
+            SI Reg.Valida = "SI" ENTONCES
+                M[i,j]:= M[i,j] + 1
+                M[i,4]:= M[i,4] + 1
+                M[6,j]:= M[6,j] + 1
+                M[6,4]:= M[6,4] + 1
+            FIN_SI
+
+            LEER(Arch,Reg)
+        FIN_MIENTRAS
+
+        MenTransc:= HV
+        MayorTransc:= LV
+
+        PARA i:= 1 HASTA 5 HACER
+            PARA j:= 1 HASTA 3 HACER
+                SI M[i,j] < MenTransc ENTONCES
+                    MenTransc:= M[i,j]
+                    NivelMenTransc:= i
+                    OrigenMenTransc:= j
+                FIN_SI
+
+                SI M[i,4] > MayorTransc ENTONCES
+                    MayorTransc:= M[i,4]
+                    NivelMayorTransc:= i
+                FIN_SI
+
+                ESC("Porcentaje del nivel ",i," sobre el total: %",M[i,4]/M[6,4]*100)
+            FIN_PARA
+        FIN_PARA
+        ESC("El el nivel ",NivelMenTransc," y origen",OrigenMenTransc," se registró la menor cantidad de transacciones")
+        ESC("El nivel ",i," es el que tuvo mayor cantidad de transacciones")
+
+        PARA i:= 1 HASTA 5 HACER
+            SI ABSO(M[i,4] - MayorTransc) / M[6,4]*100 > 10 ENTONCES
+                ESC("El nivel ",i," tiene un total de transacciones que supera en un 10% al de mayor cantidad de transacciones")
+            FIN_SI
+        FIN_PARA
+
+        CERRAR(Arch)
+FIN_ACCION

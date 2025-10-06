@@ -1,0 +1,68 @@
+ACCION ej1 ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        R = REGISTRO
+            Fecha_transc: FECHA
+            cod_prod: entero
+            cant_vend: entero
+            pcio_unit: real
+        FIN_REGISTRO
+        Arch: Archivo de R
+        Reg: R
+
+        M: ARREGLO DE [1..32, 1..26] DE REAL
+        i: 1..32 //productos
+        j: 1..26 //dias
+        MayorVenta: real
+        ProdMayorVenta: entero
+        diaMayorRecaudo, diaMenProm: 1..31
+
+    PROCESO
+        PARA i:= 1 HASTA 32 HACER
+            PARA j:= 1 HASTA 26 HACER
+                M[i,j]:= 0
+            FIN_PARA
+        FIN_PARA
+
+        ABRIR E/(Arch)
+        LEER(Arch,Reg)
+
+        MIENTRAS NFDA(Arch) HACER
+            i:= Reg.Fecha_transc.dia
+            j:= Reg.cod_prod
+
+            M[i,j]:= M[i,j] + Reg.pcio_unit
+            M[32,j]:= M[32,j] + Reg.pcio_unit
+            M[i,26]:= M[i,26] + Reg.pcio_unit
+            M[32,26]:= M[32,26] + Reg.pcio_unit
+
+            LEER(Arch,Reg)
+        FIN_MIENTRAS
+
+        PARA i:= 1 HASTA 31 HACER
+            PARA j:= 1 HASTA 25 HACER
+                ESC("Total de ventas del producto ",j," : $",M[32,j])
+
+                SI M[i,j] < M[32,26]/31 ENTONCES
+                    diaMenProm:= i
+                FIN_SI
+
+                Si M[i,j] > MayorVenta ENTONCES
+                    MayorVenta:= M[i,j]
+                    diaMayorRecaudo:= i
+                    ProdMayorVenta:= j
+                FIN_SI
+            FIN_MIENTRAS
+        FIN_MIENTRAS
+
+        ESC("La venta más alta fue la del producto ",ProdMayorVenta," en el dia ",diaMayorRecaudo)
+        ESC("El día que se recaudó menos que el promedio de ventas diario: ",diaMenProm)
+        ESC("Total de ventas de Agosto: $",M[32,26])
+
+        CERRAR(Arch)
+FIN_ACCION
