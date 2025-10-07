@@ -33,9 +33,9 @@ ACCION 3.24 ES
             i:= Reg.NroCaja
             SEGUN Reg.HorarioFac HACER
                 <= 10: j:= 1
-                <= 10: j:= 2
-                <= 10: j:= 3
-                <= 10: j:= 4
+                <= 12: j:= 2
+                <= 16: j:= 3
+                <= 18: j:= 4
                 <= 20: j:= 5
             FIN_SEGUN
 

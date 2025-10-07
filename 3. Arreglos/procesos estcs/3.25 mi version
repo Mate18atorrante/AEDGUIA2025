@@ -1,0 +1,74 @@
+Una Fábrica que posee 4 plantas de producción en nuestro país y compra materia prima a 3 proveedores distintos, desea
+realizar un control de los montos totales correspondientes a compras realizadas en cada planta durante el último año,
+discriminados por proveedor y por mes. Para ello dispone de un archivo con los datos de las facturas correspondientes.
+(Aclaración: el archivo no está ordenado por ningún criterio)
+
+COMPRAS
+Nro_FacturaProveedor (A,B,C)Fecha dd/mm/aaaaNro_Planta 1..4Importe
+
+ACCION 3.25 ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        R = REGISTRO
+            nro_factura: entero
+            proveedor: A..C
+            FechaFac: FECHA
+            nro_planta: 1..4
+            Importe: REAL
+        FIN_REGISTRO
+        Arch: ARCHIVO de R
+        Reg: R
+
+        M: ARREGLO de [A..D, 1..13, 1..5] de REAL
+        i: A..D
+        j: 1..13
+        k: 1..5
+
+    PROCESO
+        PARA i:= 1 HASTA 13 HACER
+            PARA j:= "A" HASTA "D" HACER
+                PARA k:= 1 HASTA 5 HACER
+                    M[i,j,k]:= 0
+                FIN_PARA
+            FIN_PARA
+        FIN_PARA
+
+        ABRIR E/(Arch)
+        LEER(Arch,Reg)
+
+        MIENTRAS NFDA(Arch) HACER
+            i:= Reg.proveedor
+            j:= Reg.FechaFac.mes
+            k:= Reg.nro_planta
+
+            M[i,j,k] := M[i,j,k] + Reg.Importe
+            M[13,j,k] := M[D,j,k] + Reg.Importe
+            M[i,"D",k] := M[i,13,k] + Reg.Importe
+            M[i,j,5] := M[i,j,5] + Reg.Importe
+            M[13,"D",5] := M[D,13,5] + Reg.Importe
+
+            LEER(Arch, Reg)
+        FIN_MIENTRAS
+
+        ESC("   A   B   C   Totales x Planta    ")
+        PARA i:= 1 HASTA 13 HACER
+            SI i = 13 ENTONCES
+                ESC("Total x Mes")
+            SINO
+                ESC(i)
+            FIN_SI
+
+            PARA j:= "A" HASTA "D" HACER
+                PARA k:= 1 HASTA 4 HACER
+                    ESC(M[i,j,k]
+                FIN_PARA
+            FIN_PARA
+        FIN_PARA
+
+        CERRAR(Arch)
+FIN_ACCION

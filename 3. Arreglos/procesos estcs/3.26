@@ -1,9 +1,21 @@
+Se dispone de un archivo secuencial de facturas de una empresa de energía eléctrica, correspondientes a un año, con el
+siguiente formato:
+
+|Nro_Factura|Nro_Usuario|Zona|FechaConsumo|
+Se desea obtener un cuadro estadístico que informe los consumos y los importes totales facturados por mes discriminados
+por zona, con el siguiente formato:
+
+Zona A	Zona B	Zona C	Zona D	Total por mes
+
+La ciudad está dividida en 4 Zonas (A,B,C,D), la tarifa por Kw. que cobra la empresa en cada una de ellas es
+Zona A: 0,05; Zona B: 0,07; Zona C: 0,09 y Zona D: 0,13
+
 ACCION 3.26 ES
     AMBIENTE
         R = REGISTRO
             nro_factura: entero
             nro_usuario: entero
-            zona: entero
+            zona: "A".."D"
             fechaFac: FECHA
             consumo:entero
             importe:real
@@ -11,12 +23,20 @@ ACCION 3.26 ES
         Arch: Archivo de R
         Reg: R
 
-        M: arreglo de [1..13,1.. 5] de R
+        M: arreglo de [1..13,"A".."E"] de R
         i: 1..13
-        j: 1..5
+        j: "A".."E"
+
+        FUNCION valorkw(x: AN): REAL ES
+            SEGUN x HACER
+                "A": valorkw := 0,05
+                "B": valorkw := 0,07
+                "C": valorkw := 0,09
+                "D": valorkw := 0,13
+        FIN_FUNCION
     PROCESO
         PARA i:= 1 HASTA 13 HACER
-            PARA j:= 1 HASTA 5 HACER
+            PARA j:= "A" HASTA "E" HACER
                 M[i,j].consumo:= 0
                 M[i,j].importe:= 0
             FIN_PARA
@@ -26,8 +46,8 @@ ACCION 3.26 ES
         LEER(Arch,Reg)
 
         MIENTRAS NFDA(Arch) HACER
-            i:= Reg.fecha.mes
-            j:= Reg.fecha.mes
+            i:= Reg.fechaFac.mes
+            j:= Reg.zona
 
             M[i,j].consumo := M[i,j].consumo + Reg.consumo
             M[i,j].importe := M[i,j].importe + (Reg.consumo * valorkw(Reg.zona))
@@ -40,3 +60,18 @@ ACCION 3.26 ES
 
             LEER(Arch, Reg)
         FIN_MIENTRAS
+
+        ESC("   Zona A  Zona B 	Zona C 	Zona D 	Total x mes")
+        PARA i:= 1 HASTA 13 HACER
+            SI i = 13 ENTONCES
+                ESC("Total por Zona")
+            SINO
+                ESC(i)
+            FIN_SI
+            PARA j:= "A" HASTA "E" HACER
+                ESC(M[i,j])
+            FIN_PARA
+        FIN_PARA
+
+        CERRAR(Arch)
+FIN_ACCION
