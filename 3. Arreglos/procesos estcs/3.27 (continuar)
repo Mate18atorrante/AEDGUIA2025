@@ -1,0 +1,72 @@
+Se desea efectuar una estadística de ventas. Se cuenta para ello con una secuencia de las facturas emitidas, las cuales
+son identificadas por un Número; dicha secuencia contiene información relativa al cliente: su Número y Zona a la cual
+pertenece, como así también el Tipo de mercadería entregada, la Cantidad de unidades, el total gravado, el total exento
+de IVA y el valor del IVA. Construya un algoritmo que emita por zona, y dentro de la zona por tipo de mercadería
+total de unidades vendidas, el total gravado, el total exento y el total de IVA, y además un total general con la
+misma información. Hay 9 zonas y 4 tipos de mercadería.
+
+ACCION 3.27 ES
+    AMBIENTE
+        R = REGISTRO
+            fac_nro: ENTERO
+            nro_cliente: ENTERO
+            zona_cliente: 1..9
+            tipo_merca_entregada: 1..4
+            cant_merca: ENTERO
+            tot_gravado: REAL
+            tot_exento_iva: REAL
+            IVA: REAL
+        FIN_REGISTRO
+        Arch: Archivo de R ordenado por fac_nro
+        Reg: R
+
+        M: ARREGLO de [1..10, 1..5] de R
+        i: 1..10
+        j: 1..5
+
+    PROCESO
+        PARA i:= 1 HASTA 10 HACER
+            PARA j:= 1 HASTA 5 HACER
+                M[i,j].tot_gravado:= 0
+                M[i,j].tot_exento_iva:= 0
+                M[i,j].IVA:= 0
+            FIN_PARA
+        FIN_PARA
+
+        ABRIR E/(Arch)
+        LEER(Arch, Reg)
+
+        MIENTRAS NFDA(Arch) HACER
+            i:= Reg.zona_cliente
+            j:= Reg.tipo_merca_entregada
+
+            M[i,j].tot_gravado:= M[i,j].tot_gravado + Reg.tot_gravado
+            M[i,j].tot_exento_iva:= M[i,j].tot_exento_iva + Reg.tot_exento_iva
+            M[i,j].IVA:= M[i,j].IVA + Reg.IVA
+            M[10,j].tot_gravado:= M[10,j].tot_gravado + Reg.tot_gravado
+            M[10,j].tot_exento_iva:= M[10,j].tot_exento_iva + Reg.tot_exento_iva
+            M[10,j].IVA:= M[10,j].IVA + Reg.IVA
+            M[i,5].tot_gravado:= M[i,5].tot_gravado + Reg.tot_gravado
+            M[i,5].tot_exento_iva:= M[i,5].tot_exento_iva + Reg.tot_exento_iva
+            M[i,5].IVA:= M[i,5].IVA + Reg.IVA
+            M[10,5].tot_gravado:= M[10,5].tot_gravado + Reg.tot_gravado
+            M[10,5].tot_exento_iva:= M[10,5].tot_exento_iva + Reg.tot_exento_iva
+            M[10,5].IVA:= M[10,5].IVA + Reg.IVA
+
+            LEER(Arch, Reg)
+        FIN_MIENTRAS
+
+        ESC("   Mercaderia1     Mercaderia2     Mercaderia3     Mercaderia4     Total por Zona")
+        PARA i:= 1 HASTA 10 HACER
+            SI i = 10 ENTONCES
+                ESC("Total por Mercaderia: ")
+            SINO
+                ESC("Zona ",i)
+            FIN_SI
+            PARA j:= 1 HASTA 5 HACER
+                ESC("total gravado: ",M[i,j].tot_gravado)
+                ESC("total exento iva: ",M[i,j].tot_exento_iva)
+                ESC("total iva: ",M[i,j].IVA)
+            FIN_PARA
+        FIN_PARA
+FIN_ACCION

@@ -71,7 +71,7 @@ ACCION 2.3.7 ES
 
         PROCEDIMIENTO corte_os() ES
             corte_cli()
-            ESC("Total Obra Social: ",tot_os)
+            ESC("Total Obra Social: $",tot_os)
 
             tot_os:= 0
 
@@ -117,9 +117,9 @@ ACCION 2.3.7 ES
             neto:= RegLiq.bruto – (RegLiq.desc_afip + RegLiq.desc_dgr)
             tot_cli:= tot_cli + neto
 
-            RegMed:= RegLiq.nro_legajo
+            RegMed.nro_leg:= RegLiq.nro_leg
             LEER(ArchMed, RegMed)
-            ESC(RegLiq.nro_legajo, RegMed.nombre, "$",neto)
+            ESC(RegLiq.nro_leg, RegMed.nombre, "$",neto)
 
             #LEER_REGISTRO
             LEER(ArchLiq, RegLiq)

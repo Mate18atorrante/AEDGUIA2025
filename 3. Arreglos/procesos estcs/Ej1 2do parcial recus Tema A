@@ -24,7 +24,7 @@ ACCION EJ1 ES
                 id_suc: entero
                 id_cli: entero
             FIN_REGISTRO
-            cod_mov: 1..99
+            cod_mov: 0..99
             NomyApe: AN(50)
             fecha_mov: FECHA
             monto: real
@@ -73,7 +73,11 @@ ACCION EJ1 ES
                             0:
                                 ESC("Error, no se admite alta a un cliente que ya está registrado")
                             < 99:
-                                Aux.saldo_fecha:= Aux.saldo_fecha + Mov.monto
+                                SI RegMov.tipo = "I" ENTONCES
+                                    Aux.saldo_fecha:= Aux.saldo_fecha + Mov.monto
+                                SINO
+                                    Aux.saldo_fecha:= Aux.saldo_fecha - Mov.monto
+                                FIN_SI
                             99:
                                 Aux.fecha_baja:= Mov.fecha_mov
                         FIN_SEGUN
@@ -85,30 +89,35 @@ ACCION EJ1 ES
                     ESC(ActMae, ActRegMae)
                     LEER_mae()
                 SINO
-                    cant_nuevos:= cant_nuevos + 1
+                    SI RegMov.cod_mov = 0 ENTONCES
+                        cant_nuevos:= cant_nuevos + 1
 
-                    Aux.clave:= RegMov.clave
-                    Aux.NomyApe := RegMov.NomyApe
-                    Aux.saldo_fecha := RegMov.monto
-                    Aux.fecha_alta := RegMov.fecha_mov
-                    Aux.fecha_baja := ""
-
-                    LEER_mov()
-                    MIENTRAS Aux.clave = RegMov.clave HACER
-                        SEGUN RegMov.cod_mov HACER
-                            1:
-                                ESC("Error, no se admite alta a un cliente que ya está registrado")
-                            < 99:
-                                Aux.saldo_fecha:= Aux.saldo_fecha + Mov.monto
-                            99:
-                                Aux.fecha_baja:= Mov.fecha_mov
-                        FIN_SEGUN
+                        Aux.clave:= RegMov.clave
+                        Aux.NomyApe := RegMov.NomyApe
+                        Aux.saldo_fecha := RegMov.monto
+                        Aux.fecha_alta := RegMov.fecha_mov
+                        Aux.fecha_baja := ""
 
                         LEER_mov()
-                    FIN_MIENTRAS
+                        MIENTRAS Aux.clave = RegMov.clave HACER
+                            SEGUN RegMov.cod_mov HACER
+                                1:
+                                    ESC("Error, no se admite alta a un cliente que ya está registrado")
+                                < 99:
+                                    Aux.saldo_fecha:= Aux.saldo_fecha + Mov.monto
+                                99:
+                                    Aux.fecha_baja:= Mov.fecha_mov
+                            FIN_SEGUN
 
-                    ActRegMae:= Aux
-                    ESC(ActMae, ActRegMae)
+                            LEER_mov()
+                        FIN_MIENTRAS
+
+                        ActRegMae:= Aux
+                        ESC(ActMae, ActRegMae)
+                    SINO
+                        ESC("Error, no se admite baja o modificación a un cliente que no está registrado aún")
+                        LEER_mov()
+                    FIN_SI
                 FIN_SI
             FIN_SI
         FIN_MIENTRAS
@@ -133,7 +142,7 @@ ACCION EJ2 ES
             id_suc: entero
             id_cli: entero
             ApeyNom: AN(50)
-            saldo_fecha: FECHA
+            saldo_fecha: real
             fecha_alta: FECHA
             fecha_baja: FECHA
         FIN_REGISTRO
