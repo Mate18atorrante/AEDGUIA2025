@@ -1,0 +1,199 @@
+ACCION EJ1 ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        clientes = REGISTRO
+            clave = REGISTRO
+                id_suc: entero
+                id_cli: entero
+            FIN_REGISTRO
+            NomyApe: AN(50)
+            saldo_fecha: real
+            fecha_alta: FECHA
+            fecha_baja: FECHA
+        FIN_REGISTRO
+        OldMae, ActMae: Archivo de clientes ordenado por clave
+        OldRegMae, ActRegMae, Aux: clientes
+
+        Movimientos = REGISTRO
+            clave = REGISTRO
+                id_suc: entero
+                id_cli: entero
+            FIN_REGISTRO
+            cod_mov: 1..99
+            NomyApe: AN(50)
+            fecha_mov: FECHA
+            monto: real
+            detalle: AN(100)
+            categoría: 1..6
+            tipo: ("I","E")
+        FIN_REGISTRO
+        Mov: Archivo de Movimientos ordenado por clave y cod_mov
+        RegMov: Movimientos
+
+        cant_nuevos: entero
+
+        PROCEDIMIENTO LEER_mae() ES
+            LEER(Mae, RegMae)
+            SI FDA(MAE) ENTONCES
+                RegMae.clave := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_mov() ES
+            LEER(Mov, RegMov)
+            SI FDA(Mov) ENTONCES
+                RegMov.clave := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ABRIR E/(Mov); ABRIR E/(OldMae)
+        ABRIR /S(ActMae)
+
+        LEER_mov()
+        LEER_mae()
+
+        cant_nuevos:= 0
+
+        MIENTRAS (RegMov.clave <> HV) o (OldRegMae.clave <> HV) HACER
+            SI OldRegMae.clave < RegMov.clave ENTONCES
+                ActRegMae:= OldRegMae
+                ESC(ActMae, ActRegMae)
+                LEER_mae()
+            SINO
+                SI OldRegMae.clave = RegMov.clave ENTONCES
+                    Aux:= OldRegMae
+                    MIENTRAS OldRegMae.clave = RegMov.clave HACER
+                        SEGUN RegMov.cod_mov HACER
+                            0:
+                                ESC("Error, no se admite alta a un cliente que ya está registrado")
+                            < 99:
+                                Aux.saldo_fecha:= Aux.saldo_fecha + Mov.monto
+                            99:
+                                Aux.fecha_baja:= Mov.fecha_mov
+                        FIN_SEGUN
+
+                        LEER_mov()
+                    FIN_MIENTRAS
+
+                    ActRegMae:= Aux
+                    ESC(ActMae, ActRegMae)
+                    LEER_mae()
+                SINO
+                    cant_nuevos:= cant_nuevos + 1
+
+                    Aux.clave:= RegMov.clave
+                    Aux.NomyApe := RegMov.NomyApe
+                    Aux.saldo_fecha := RegMov.monto
+                    Aux.fecha_alta := RegMov.fecha_mov
+                    Aux.fecha_baja := ""
+
+                    LEER_mov()
+                    MIENTRAS Aux.clave = RegMov.clave HACER
+                        SEGUN RegMov.cod_mov HACER
+                            1:
+                                ESC("Error, no se admite alta a un cliente que ya está registrado")
+                            < 99:
+                                Aux.saldo_fecha:= Aux.saldo_fecha + Mov.monto
+                            99:
+                                Aux.fecha_baja:= Mov.fecha_mov
+                        FIN_SEGUN
+
+                        LEER_mov()
+                    FIN_MIENTRAS
+
+                    ActRegMae:= Aux
+                    ESC(ActMae, ActRegMae)
+                FIN_SI
+            FIN_SI
+        FIN_MIENTRAS
+
+        ESC("Cantidad de clientes nuevos: ",cant_nuevos)
+
+        CERRAR(OldMae)
+        CERRAR(ActMae)
+        CERRAR(Mov)
+FIN_ACCION
+
+#
+ACCION EJ2 ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        CLIENTES = REGISTRO
+            id_suc: entero
+            id_cli: entero
+            ApeyNom: AN(50)
+            saldo_fecha: FECHA
+            fecha_alta: FECHA
+            fecha_baja: FECHA
+        FIN_REGISTRO
+        ArchCli: Archivo de CLIENTES ordenado por id_suc y id_cli
+        RegCli: CLIENTES
+
+        SUCURSALES = REGISTRO
+            id_suc: entero
+            nombre_suc: AN(50)
+            direccion: AN(50)
+            localidad: AN(50)
+        FIN_REGISTRO
+        ArchSuc: Archivo de SUCURSALES indexado por id_suc
+        RegSuc: SUCURSALES
+
+        M: ARREGLO DE [1..16, 1..4] DE ENTERO
+        i: 1..16
+        j: 1..4
+    PROCESO
+        PARA i:= 1 HASTA 16 HACER
+            PARA j:= 1 HASTA 4 HACER
+                M[i,j]:= 0
+            FIN_PARA
+        FIN_PARA
+
+        ABRIR E/(ArchCli)
+        ABRIR E/(ArchSuc)
+        LEER(ArchCli)
+
+        MIENTRAS NFDA(ArchCli) HACER
+            i:= RegCli.id_suc
+            SEGUN RegCli.saldo_fecha HACER
+                < 100000: j:= 3
+                < 1500000: j:= 2
+                OTRO: j:= 1
+            FIN_SEGUN
+
+            M[i,j]:= M[i,j] + 1
+            M[16,j]:= M[16,j] + 1
+            M[i,4]:= M[i,4] + 1
+            M[16,4]:= M[16,4] + 1
+
+            LEER(ArchCli,RegCli)
+        FIN_MIENTRAS
+
+        ESC("   Categoria_Diamante  Categoria_Oro   Categoria_Estandar  Totales x Sucursal")
+        PARA i:= 1 HASTA 16 HACER
+            SI i = 16 ENTONCES
+                ESC("Totales x Categoria")
+            SINO
+                RegSuc.id_suc:= RegCli.id_suc
+                LEER(ArchSuc, RegSuc)
+                ESC(RegSuc.nombre_suc)
+            FIN_SI
+
+            PARA j:= 1 HASTA 4 HACER
+                ESC(M[i,j])
+            FIN_PARA
+        FIN_PARA
+
+        CERRAR(ArchCli)
+        CERRAR(ArchSuc)
+FIN_ACCION

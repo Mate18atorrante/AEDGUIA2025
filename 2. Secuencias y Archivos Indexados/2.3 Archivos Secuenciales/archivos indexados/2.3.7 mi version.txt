@@ -1,0 +1,133 @@
+Crear un algoritmo que imprima un reporte como el que se indica, incluyendo totales por Obra Social y Clínica de
+liquidaciones a médicos. Los archivos que intervienen son:
+
+LIQUIDACIONES Ordenado por O.S. y Clinica
+|O.S.|Clinica|Nro_Leg|Mes|Anio|Bruto|Descuento_AFIP|Descuento_DGR|
+*Neto = Bruto – (Desc_AFIP + Desc_DGR)
+
+OBRAS_SOCIALES Indexado por Cod_Os
+|Cod_OS|Nombre|
+
+CLÍNICAS Indexado por Cod_Cli
+|Cod_Cli|Nombre|
+
+MÉDICOS Indexado por Nro_Leg
+|Nro_Leg|ApyNom|Especialidad|DNI|
+
+ACCION 2.3.7 ES
+    AMBIENTE
+        LIQUI = REGISTRO
+            os: entero
+            cli: entero
+            nro_leg: entero
+            mes: 1..12
+            anio: N(4)
+            bruto: real
+            desc_afip: real
+            desc_dgr: real
+        FIN_REGISTRO
+        ArchLiq: ARCHIVO de LIQUI ordenado por o.s y cli
+        RegLiq: LIQUI
+
+        ObrasSociales: REGISTRO
+            cod_os: entero
+            nombre: AN(50)
+        FIN_REGISTRO
+        ArchOs: ARCHIVO de ObrasSociales INDEXADO por cod_os
+        RegOs: ObrasSociales
+
+        Clinicas: REGISTRO
+            cod_cli: entero
+            nombre: AN(50)
+        FIN_REGISTRO
+        ArchCli: ARCHIVO de Clinicas INDEXADO por cod_cli
+        RegCli: Clinicas
+
+        Medicos = REGISTRO
+            nro_leg: entero
+            ApyNom: AN(50)
+            especialidad: AN(50)
+            DNI: N(8)
+        FIN_REGISTRO
+        ArchMed: ARCHIVO de Medicos INDEXADO por nro_leg
+        RegMed: Medicos
+
+        resg_cli, resg_os: entero
+        neto, tot_os, tot_cli: real
+
+        PROCEDIMIENTO corte_cli() ES
+            ESC("   Total Clínica: $",tot_cli)
+            tot_os:= tot_os + tot_cli
+
+            tot_cli:= 0
+
+            resg_cli:= RegLiq.cli
+
+            RegCli.cod_cli:= RegLiq.cli
+            LEER(ArchCli, RegCli)
+            ESC("   Clínica: ",RegCli.nombre)
+            ESC("       Médicos")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO corte_os() ES
+            corte_cli()
+            ESC("Total Obra Social: ",tot_os)
+
+            tot_os:= 0
+
+            resg_os:= RegLiq.os
+
+            RegOs.cod_os:= RegLiq.os
+            LEER(ArchOs, RegOs)
+            ESC("Obra Social: ",RegOs.nombre)
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ABRIR E/(ArchLiq)
+        LEER(ArchLiq, RegLiq)
+
+        ABRIR E/(ArchOs)
+        ABRIR E/(ArchCli)
+        ABRIR E/(ArchMed)
+
+        tot_cli:= 0
+        tot_os:= 0
+        resg_cli:= RegLiq.cli
+        resg_os:= RegLiq.os
+
+        RegOs.cod_os:= RegLiq.os
+        LEER(ArchOs, RegOs)
+        ESC("Obra Social: ",RegOs.nombre)
+        RegCli.cod_cli:= RegLiq.cli
+        LEER(ArchCli, RegCli)
+        ESC("   Clínica: ",RegCli.nombre)
+        ESC("       Médicos")
+
+        MIENTRAS NFDA(ArchLiq) HACER
+            #TRATAR_CORTE
+            SI RegLiq.os <> resg_os ENTONCES
+                corte_os()
+            SINO
+                SI RegLiq.cli <> resg_cli ENTONCES
+                    corte_cli()
+                FIN_SI
+            FIN_SI
+
+            #TRATAR_REGISTRO
+            neto:= RegLiq.bruto – (RegLiq.desc_afip + RegLiq.desc_dgr)
+            tot_cli:= tot_cli + neto
+
+            RegMed:= RegLiq.nro_legajo
+            LEER(ArchMed, RegMed)
+            ESC(RegLiq.nro_legajo, RegMed.nombre, "$",neto)
+
+            #LEER_REGISTRO
+            LEER(ArchLiq, RegLiq)
+        FIN_MIENTRAS
+        corte_os()
+
+        CERRAR(ArchLiq)
+        CERRAR(ArchOs)
+        CERRAR(ArchCli)
+        CERRAR(ArchMed)
+FIN_ACCION
