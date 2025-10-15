@@ -1,18 +1,30 @@
+Enunciado:
 Crear un algoritmo que imprima un reporte como el que se indica, incluyendo totales por Obra Social y Clínica de
 liquidaciones a médicos. Los archivos que intervienen son:
 
 LIQUIDACIONES Ordenado por O.S. y Clinica
-|O.S.|Clinica|Nro_Leg|Mes|Anio|Bruto|Descuento_AFIP|Descuento_DGR|
-*Neto = Bruto – (Desc_AFIP + Desc_DGR)
+| O.S. | Clinica | Nro_Leg | Mes | Anio | Bruto | Descuento_AFIP | Descuento_DGR |
+Neto = Bruto – (Desc_AFIP + Desc_DGR)
 
 OBRAS_SOCIALES Indexado por Cod_Os
-|Cod_OS|Nombre|
+| Cod_OS | Nombre |
 
 CLÍNICAS Indexado por Cod_Cli
-|Cod_Cli|Nombre|
+| Cod_Cli | Nombre |
 
 MÉDICOS Indexado por Nro_Leg
-|Nro_Leg|ApyNom|Especialidad|DNI|
+| Nro_Leg | ApyNom | Especialidad | DNI |
+
+Reporte:
+
+Obra Social:
+                Clinica:
+                                Médicos
+                Nro Legajo      Nombre      Neto
+                ..........	   ........	   ......
+                ..........	   ........	   ......
+                Total Clínica		       ......
+Total Obra Social			               ......
 
 ACCION 2.3.7 ES
     AMBIENTE
@@ -54,6 +66,7 @@ ACCION 2.3.7 ES
 
         resg_cli, resg_os: entero
         neto, tot_os, tot_cli: real
+        CORTE_OBRA_SOCIAL: lógico
 
         PROCEDIMIENTO corte_cli() ES
             ESC("   Total Clínica: $",tot_cli)
@@ -63,13 +76,18 @@ ACCION 2.3.7 ES
 
             resg_cli:= RegLiq.cli
 
-            RegCli.cod_cli:= RegLiq.cli
-            LEER(ArchCli, RegCli)
-            ESC("   Clínica: ",RegCli.nombre)
-            ESC("       Médicos")
+            SI NFDA(ArchLiq) y NO CORTE_OBRA_SOCIAL ENTONCES
+                RegCli.cod_cli:= RegLiq.cli
+                LEER(ArchCli, RegCli)
+                ESC("   Clínica: ",RegCli.nombre)
+                ESC("       Médicos")
+                ESC("Nro Legajo      Nombre      Neto")
+            FIN_SI
         FIN_PROCEDIMIENTO
 
         PROCEDIMIENTO corte_os() ES
+            CORTE_OBRA_SOCIAL:= VERDADERO
+
             corte_cli()
             ESC("Total Obra Social: $",tot_os)
 
@@ -77,9 +95,11 @@ ACCION 2.3.7 ES
 
             resg_os:= RegLiq.os
 
-            RegOs.cod_os:= RegLiq.os
-            LEER(ArchOs, RegOs)
-            ESC("Obra Social: ",RegOs.nombre)
+            SI NFDA(ArchLiq) ENTONCES
+                RegOs.cod_os:= RegLiq.os
+                LEER(ArchOs, RegOs)
+                ESC("Obra Social: ",RegOs.nombre)
+            FIN_SI
         FIN_PROCEDIMIENTO
 
     PROCESO
@@ -97,13 +117,17 @@ ACCION 2.3.7 ES
 
         RegOs.cod_os:= RegLiq.os
         LEER(ArchOs, RegOs)
-        ESC("Obra Social: ",RegOs.nombre)
         RegCli.cod_cli:= RegLiq.cli
         LEER(ArchCli, RegCli)
+
+        ESC("Obra Social: ",RegOs.nombre)
         ESC("   Clínica: ",RegCli.nombre)
         ESC("       Médicos")
+        ESC("Nro Legajo      Nombre      Neto")
 
         MIENTRAS NFDA(ArchLiq) HACER
+            CORTE_OBRA_SOCIAL:= FALSO
+
             #TRATAR_CORTE
             SI RegLiq.os <> resg_os ENTONCES
                 corte_os()

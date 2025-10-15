@@ -193,7 +193,7 @@ ACCION EJ2 ES
             SI i = 16 ENTONCES
                 ESC("Totales x Categoria")
             SINO
-                RegSuc.id_suc:= RegCli.id_suc
+                RegSuc.id_suc:= i
                 LEER(ArchSuc, RegSuc)
                 ESC(RegSuc.nombre_suc)
             FIN_SI
