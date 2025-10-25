@@ -1,0 +1,54 @@
+
+ACCION 4.5(PRIM: puntero a Pcia): ES
+    AMBIENTE
+        Pcia = REGISTRO
+            nombre: AN(50)
+            capital: AN(50)
+            hab: entero
+            analf: entero
+            prox: puntero a Pcia
+        FIN_REGISTRO
+        p: puntero a Pcia
+
+        Salida = REGISTRO
+            nombre: AN(50)
+            capital: AN(50)
+            porc_analf: real
+            prox: puntero a Salida
+        FIN_REGISTRO
+        L1,L2,L3,q: puntero a Salida
+
+    PROCESO
+        p:= PRIM
+        L1:= Null
+        L2:= Null
+        L3:= Null
+        MIENTRAS p <> Null HACER
+            Nuevo(q)
+            *q.nom:= *p.nombre
+            *q.capital:= *p.capital
+            *q.porc_analf:= (*p.hab/*p.hab) * 100
+
+            SI *q.porc_analf <= 10 ENTONCES
+                *q.prox := L1
+                L1 := q
+            SINO
+                SI *q.porc_analf >= 16 y *q.porc_analf <= 25
+                    *q.prox := L2
+                    L2:= q
+                SINO
+                    SI *q.porc_analf >= 26 ENTONCES
+                        *q.prox := L3
+                        L3:= q
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            p:= *p.prox
+        FIN_MIENTRAS
+FIN_ACCION
+
+#TAREA HACER CON COLA
+
+#hacer ej 4.1 a 4.7
+complementarios: 4.1, 4.2, 4.5, 4.9

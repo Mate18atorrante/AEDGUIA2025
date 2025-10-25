@@ -1,0 +1,62 @@
+estructura de datos lineal y dinámica
+
+#estructura si la lista no está cargada
+Nodo = REGISTRO
+    dato: [tipo de dato]
+    prox: puntero a Nodo
+FIN_REGISTRO
+P: puntero a Nodo
+PRIM: puntero a Nodo
+
+#si la lista está cargada el PRIM es un parámetro que se da en el inicio del proceso
+
+*p.dato := [dato]
+ESC(*p.dato)
+LEER(*p.dato)
+
+Si hago p := q ambos punteros indicaran a la misma direccion de memoria (al mismo nodo)
+
+PARA recorrer una lista enlazada
+    p := PRIM
+    MIENTRAS (p<> NIL) HACER
+        esc(*p.dato)
+        p := *p.prox
+    FIN_M
+
+ACCION ...(PRIM: puntero a Nodo): entero ES
+    AMBIENTE
+        Nodo = REGISTRO
+            legajo: entero
+            nombre: AN(50)
+            prox: puntero a Nodo
+        FIN_R
+        p: puntero a Nodo
+        leg: entero
+    PROCESO
+        ESC("Ingrese el legajo buscado: ")
+        LEER(leg)
+
+        p:= PRIM
+        MIENTRAS p <> Null y *p.legajo <> Leg HACER
+            p:= *p.prox
+        FIN_M
+
+        SI p <> Null ENTONCES
+            ESC("El estudiante se llama", *p.nombre")
+        SINO
+            ESC("No se encontró el legajo")
+        FIN_SI
+FIN_ACCION
+
+#para crear un nodo
+
+NUEVO(Q ) #nuevo verbo con argumento de puntero externo o auxiliar
+LEER(*Q.DATO)
+...ó
+*Q.DATO:= ALGO
+
+#insertar un elemento
+carga apilada: se insertan los elementos antes del primero
+
+cargada encolada: se insertan los elementos después del último
+

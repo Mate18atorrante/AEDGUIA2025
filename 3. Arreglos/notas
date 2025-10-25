@@ -30,5 +30,6 @@ busqueda lineal por centinela:
     para arreglos ordenados y con pocos elementos es mejor este método
 
 busqueda lineal:
+    solo cuando el arreglo está ordenado
     conviene cuando se repiten ciertos elementos o registros
     único método para búsquedas múltiples
