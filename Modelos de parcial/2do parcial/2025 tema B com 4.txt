@@ -1,0 +1,273 @@
+ACCION ej1 ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        EJEMPLARES = REGISTRO
+            clave = REGISTRO
+                cod_lib: N(8)
+                cod_ejem: N(10)
+            FIN_REGISTRO
+            desc: AN(255)
+            tipo_lib: caracter
+            disponible: ("Si","No")
+            estado: AN(10)
+            Fecha = FECHA
+        FIN_REGISTRO
+        EjemOld, EjemAct: Archivo de EJEMPLARES ordenado por clave
+        RegEOld, RegEAct, Aux: EJEMPLARES
+
+        NOVEDADES = REGISTRO
+            clave = REGISTRO
+                cod_lib: N(8)
+                cod_ejem: N(10)
+            FIN_REGISTRO
+            tipo_nov: 1..5
+            fecha_nov: FECHA
+            id_usu: entero
+        FIN_REGISTRO
+        ArchNov: Archivo de NOVEDADES ordenado por clave, tipo_nov y fecha_nov
+        RegNov: NOVEDADES
+
+        USUARIOS = REGISTRO
+            id_usu: entero
+            nombre: AN(50)
+            Edad: N(10)
+            tipo_usu: ("E","D","P")
+        FIN_REGISTRO
+        ArchUsu: Archivo de USUARIOS indexado por id_usu
+        RegUsu: USUARIOS
+
+        cant_prestados: entero
+
+        PROCEDIMIENTO leer_mae() ES
+            LEER(EjemOld, RegEOld)
+            SI FDA(EjemOld) ENTONCES
+                RegEOld.clave:= HV
+            FIN_SI
+        F_P
+
+        PROCEDIMIENTO leer_mov() ES
+            LEER(ArchNov, RegNov)
+            SI FDA(ArchNov) ENTONCES
+                RegNov.clave:= HV
+            FIN_SI
+        F_P
+
+        FUNCION dias_usu(x: caracter): entero ES
+            SEGUN x HACER
+                "E": dias_usu:= 10
+                "D": dias_usu:= 15
+                "P": dias_usu:= 7
+            FIN_SEGUN
+        FIN_FUNCION
+
+    PROCESO
+        ABRIR E/(ArchNov)
+        ABRIR E/(EjemOld)
+        ABRIR E/(ArchUsu)
+        ABRIR /S(EjemAct)
+
+        LEER_mae()
+        LEER_mov()
+
+        cant_prestados:= 0
+        MIENTRAS (RegNov.clave <> HV) o (RegEOld.clave <> HV) HACER
+            SI RegEOld.clave < RegNov.clave ENTONCES
+                //maestro sin mov
+                SI Aux.disponible = "No" y Aux.estado = "Bien" ENTONCES
+                        cant_prestados:= cant_prestados + 1
+                FIN_SI
+
+                RegEAct:= RegEOld
+                ESC(EjemAct, RegEAct)
+                LEER_mae()
+            SINO
+                SI RegEOld.clave = RegNov.clave ENTONCES
+                    //procesos iguales
+                    Aux:= RegEOld.clave
+                    MIENTRAS RegEOld.clave = RegNov.clave HACER
+                        SEGUN RegNov.tipo_nov HACER
+                            1:
+                                ESC("No se admite ingreso de un ejemplar que ya ha sido registrado anteriormente")
+                            2:
+                                Aux.disponible := "No"
+                                RegUsu.id_usu := RegNov.id_usu
+                                LEER(ArchUsu, RegUsu)
+                                Aux.fecha := sumar_dias(RegNov.fecha_nov, dias_usu(RegUsu.tipo_usu))
+                            3:
+                                Aux.disponible:= "Si"
+                                Aux.fecha:= ""
+                            4:
+                                Aux.disponible:= "No"
+                                Aux.estado:= "Reparación"
+                                Aux.fecha:= RegNov.fecha_nov
+                            5:
+                                Aux.disponible:= "No"
+                                Aux.estado:= "Baja"
+                                Aux.fecha:= RegNov.fecha_nov
+                        FIN_SEGUN
+
+                        LEER_mov()
+                    FIN_MIENTRAS
+
+                    SI Aux.disponible = "No" y Aux.estado = "Bien" ENTONCES
+                        cant_prestados:= cant_prestados + 1
+                    FIN_SI
+
+                    RegEAct:= Aux
+                    ESC(EjemAct, RegEAct)
+                    LEER_mae()
+                SINO
+                    //movimiento sin maestro
+                    SI RegNov.tipo_nov = 1 ENTONCES
+                        Aux.clave = RegNov.clave
+                        Aux.desc:= ""
+                        Aux.tipo_lib:= ""
+                        Aux.disponible:= "Si"
+                        Aux.Estado:= "Bien"
+                        Aux.Fecha:= ""
+
+                        LEER_mov()
+                        MIENTRAS RegEOld.clave = RegNov.clave HACER
+                            SEGUN RegNov.tipo_nov HACER
+                                1:
+                                    ESC("No se admite ingreso de un ejemplar que ya ha sido registrado anteriormente")
+                                2:
+                                    Aux.disponible := "No"
+                                    RegUsu.id_usu := RegNov.id_usu
+                                    LEER(ArchUsu, RegUsu)
+                                    Aux.fecha := sumar_dias(RegNov.fecha_nov, dias_usu(RegUsu.tipo_usu))
+                                3:
+                                    Aux.disponible:= "Si"
+                                    Aux.fecha:= ""
+                                4:
+                                    Aux.disponible:= "No"
+                                    Aux.estado:= "Reparación"
+                                    Aux.fecha:= RegNov.fecha_nov
+                                5:
+                                    Aux.disponible:= "No"
+                                    Aux.estado:= "Baja"
+                                    Aux.fecha:= RegNov.fecha_nov
+                            FIN_SEGUN
+
+                            LEER_mov()
+                        FIN_MIENTRAS
+
+                        SI Aux.disponible = "No" y Aux.estado = "Bien" ENTONCES
+                            cant_prestados:= cant_prestados + 1
+                        FIN_SI
+
+                        RegEAct:= Aux
+                        ESC(EjemAct, RegEAct)
+                        LEER_mae()
+                    SINO
+                        ESC("Error, no se admite préstamo, devolución, mantenimiento ni Baja a un ejemplar que no ha sido registrado aun")
+                        LEER_mov()
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+        FIN_MIENTRAS
+        ESC("Total ejemplares prestados: ",cant_prestados)
+
+        CERRAR(ArchNov)
+        CERRAR(EjemOld)
+        CERRAR(ArchUsu)
+        CERRAR(EjemAct)
+FIN_ACCION
+
+ACCION ej2 ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        EJEMPLARES = REGISTRO
+            cod_lib: N(8)
+            cod_ejem: N(10)
+            desc: AN(255)
+            tipo_lib: caracter
+            disponible: ("Si","No")
+            estado: AN(10)
+            Fecha = FECHA
+        FIN_REGISTRO
+        Ejem: Archivo de EJEMPLARES ordenado por cod_lib y cod_ejem
+        RegEjem: EJEMPLARES
+
+        M: Arreglo de [1..13, 1..5] de Entero
+        i, j, mes_ingresado, menor_cant, tipo_lib: entero
+
+
+    PROCESO
+        PARA i:= 1 HASTA 13 HACER
+            PARA j:= 1 HASTA 5 HACER
+                M[i,j]:= 0
+            FIN_PARA
+        FIN_PARA
+
+        ABRIR E/(Ejem)
+        LEER(Ejem, RegEjem)
+
+        MIENTRAS NFDA(Ejem) HACER
+            SI RegEjem.estado <> "Bien" ENTONCES
+                i:= RegEjem.fecha.mes
+                SEGUN RegEjem.tipo_lib HACER
+                    "A": j:= 1
+                    "D": j:= 2
+                    "L": j:= 3
+                    "N": j:= 4
+                FIN_SEGUN
+
+                M[i,j] := M[i,j] + 1
+                M[13,j] := M[13,j] + 1
+                M[i,5] := M[i,5] + 1
+                M[13,5] := M[13,5] + 1
+            FIN_SI
+
+            LEER(Ejem, RegEjem)
+        FIN_MIENTRAS
+
+        ESC("Autoayuda  Didácticos  Literatura  No ficción  Total x Mes")
+        PARA i:= 1 HASTA 13 HACER
+            SI i = 13 ENTONCES
+                ESC("Total x tipo de libro")
+            SINO
+                SEGUN tipo_lib HACER
+                    1: ESC("Autoayuda")
+                    2: ESC("Didácticos")
+                    3: ESC("Literatura")
+                    4: ESC("No ficción")
+                FIN_SEGUN
+            FIN_SI
+
+            PARA j:= 1 HASTA 5 HACER
+                ESC(M[i,j])
+            FIN_PARA
+        FIN_PARA
+
+        menor_cant:= HV
+        PARA i:= 1 HASTA 12 HACER
+            PARA j:= 1 HASTA 4 HACER
+                SI M[i,j] < menor_cant ENTONCES
+                    menor_cant:= M[i,j]
+                    tipo_lib:= j
+                FIN_SI
+            FIN_PARA
+        FIN_PARA
+
+        ESC("El tipo de libro :")
+        SEGUN tipo_lib HACER
+            1: ESC("Autoayuda")
+            2: ESC("Didácticos")
+            3: ESC("Literatura")
+            4: ESC("No ficción")
+        FIN_SEGUN
+        ESC("es el que tuvo menor cantidad de ejemplares en reparación o baja en el mes ",mes_ingresado)
+
+        CERRAR(Ejem)
+FIN_ACCION
