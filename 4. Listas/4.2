@@ -1,0 +1,51 @@
+Se dispone de una lista simplemente encadenada de números enteros, diseñar un algoritmo que a partir de ella genere otra
+lista conteniendo los nodos cuyos datos terminan en cero; dichos elementos, deberán ser eliminados de la lista original.
+Se asume que la lista está cargada, y que el algoritmo recibe como parámetro de entrada la dirección del primer elemento.
+
+ACCION 4.2(PRIM1: puntero a NODO) ES
+    AMBIENTE
+        NODO = REGISTRO
+            num: entero
+            prox: puntero a NODO
+        FIN_REGISTRO
+        P, Q, ANT1, ANT2, PRIM2: puntero a NODO
+
+    PROCESO
+        P:= PRIM1
+        AuxP:= P
+        PRIM2:= NIL
+
+        MIENTRAS P <> NIL HACER
+            SI *P.num mod 10 = 0 ENTONCES
+                //copio en salida
+                Q:= P
+                SI *P.prox = NIL ENTONCES
+                    *AuxP.prox:= NIL
+                    P:= *P.prox
+                SINO
+                    SI PRIM2 = NIL ENTONCES
+                        //se cambia la dirección del primer nodo de la lista de entrada
+                        SI P = PRIM1 ENTONCES
+                            PRIM1:= *P.prox
+                        FIN_SI
+
+                        AuxQ:= Q
+                        P:= *P.prox
+                        *Q.prox:= NIL
+
+                        //se guarda la dirección del primer nodo de la lista salida
+                        PRIM2:= Q
+                    SINO
+                        *Q.prox:= P
+                        P:= *P.prox
+                        PRIM1:= P
+                        *Q.prox:= NIL
+                    FIN_SI
+                FIN_SI
+            SINO
+                //si el numero no termina en 0, guardo la dirección del nodo actual y paso a otro nodo
+                AuxP:= P
+                P:= *P.prox
+            FIN_SI
+        FIN_MIENTRAS
+FIN_ACCION

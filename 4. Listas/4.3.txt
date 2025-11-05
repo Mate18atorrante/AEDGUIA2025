@@ -1,0 +1,61 @@
+Dada una lista simplemente encadenada de números diseñar un algoritmo que calcule en forma independiente: La suma de los
+ números impares, y la suma de los números pares.
+
+ACCION EJ4.3(Prim: puntero a Num) es
+    AMBIENTE
+        Num = REGISTRO
+            Nro: entero
+            prox: puntero a Num
+        FIN_REGISTRO
+        p: puntero a Num
+        sumpar, sumimpar: entero
+    PROCESO
+        sumpar:= 0
+        sumimpar:= 0
+
+        p:= Prim
+        MIENTRAS (p <> Nil) HACER
+            SI *p.num mod 2 = 0 ENTONCES
+                sumpar:= sumpar + *p.num
+            SINO
+                sumimpar:= sumimpar + *p.num
+            FIN_SI
+            p:= *p.prox
+        FIN_MIENTRAS
+
+        ESC("suma de pares: ",sumpar)
+        ESC("suma de impares: ",sumimpar)
+FIN_ACCION
+
+#mi version
+ACCION 4.3(Prim: puntero a Num) ES
+    AMBIENTE
+        Num = REGISTRO
+            nro: entero
+            prox: puntero a Num
+        FIN_REGISTRO
+        P: puntero a Num
+        impares, pares: entero
+
+    PROCESO
+        P:= PRIM
+        pares:= 0
+        impares:= 0
+
+        MIENTRAS P <> NIL HACER
+            SI *P.nro mod 2 = 0 ENTONCES
+                pares:= pares + 1
+            FIN_SI
+            P:= *P.prox
+        FIN_MIENTRAS
+
+        P:= PRIM
+        MIENTRAS P <> NIL HACER
+            SI *P.nro mod 2 <> 0 ENTONCES
+                impares:= impares + 1
+            FIN_SI
+            P:= *P.prox
+        FIN_MIENTRAS
+        ESC("Cantidad de nros pares: ",pares)
+        ESC("Cantidad de nros impares: ",impares)
+FIN_ACCION

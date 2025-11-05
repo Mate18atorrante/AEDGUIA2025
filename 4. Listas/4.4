@@ -1,0 +1,21 @@
+Se dispone de una lista simplemente encadenada cuyos registros están ordenados en forma ascendente por una clave de tipo
+entero; diseñar un algoritmo que invierta el orden de la lista.
+
+ACCION 4.4(PRIM: puntero a NODO) ES
+    AMBIENTE
+        NODO = REGISTRO
+            num: entero
+            prox: puntero a NODO
+        FIN_REGISTRO
+        ANT,ACTUAL,SIG,: puntero a NODO
+
+        ACTUAL:= PRIM
+        ANT:= NIL
+        MIENTRAS ACTUAL <> NIL HACER
+            SIG:= *ACTUAL.prox
+            *ACTUAL.prox:= ANT
+            ANT:= ACTUAL
+            ACTUAL:= SIG
+        FIN_MIENTRAS
+        PRIM:= ANT
+FIN_ACCION
