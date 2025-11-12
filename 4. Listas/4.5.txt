@@ -1,3 +1,11 @@
+Dada una lista simplemente encadenada que contiene datos de todas las provincias de la República Argentina: nombre,
+capital, cantidad total de habitantes y cantidad de analfabetos, y está ordenada en forma decreciente por número de
+habitantes analfabetos, generar otras tres listas que contengan el nombre, la capital y el porcentaje de analfabetos
+de las Provincias que respondan a las siguientes restricciones.
+
+L1: <= 10 % analfabetos
+L2: 16 a 25 % analfabetos
+L3: => 26 % analfabetos
 
 ACCION 4.5(PRIM: puntero a Pcia): ES
     AMBIENTE
@@ -52,3 +60,98 @@ FIN_ACCION
 
 #hacer ej 4.1 a 4.7
 complementarios: 4.1, 4.2, 4.5, 4.9
+
+//mi intento:
+ACCION 4.5(PRIM: puntero a Prov) ES
+    AMBIENTE
+        Prov = REGISTRO
+            nombre: AN(50)
+            capital: AN(50)
+            tot_hab: entero
+            tot_alf: entero
+            prox: puntero a Prov
+        FIN_REGISTRO
+
+        salida = REGISTRO
+            nombre: AN(50)
+            capital: AN(50)
+            porc_alf: real
+            prox: puntero a salida
+        FIN_REGISTRO
+
+        S1, S2, S3, Q: puntero a salida
+        P: puntero a Prov
+
+    PROCESO
+        //inicializo lista de entrada en su primer elemento para recorrerla
+        P:= PRIM
+
+        //inicializo las listas de salida como vacías para cargarlas
+        L1:= NIL
+        L2:= NIL
+        L3:= NIL
+
+        MIENTRAS P <> NIL HACER
+            NUEVO(Q)
+            *Q.nombre := *P.nombre
+            *Q.capital := *P.capital
+            *Q.porc_alf := *P.tot_alf/*P.tot_hab * 100
+
+            SI *Q.porc_alf <= 10 ENTONCES
+                *Q.prox:= L1
+                L1:= Q
+            SINO
+                SI *Q.porc_alf > 16 y *Q.porc_alf <= 25 ENTONCES
+                    *Q.prox:= L2
+                    L2:= Q
+                SINO
+                    SI *Q.porc_alf >= 26 ENTONCES
+                        *Q.prox:= L3
+                        L3:= Q
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            P:= *P.prox
+        FIN_MIENTRAS
+FIN_ACCION
+
+//con cola UWU
+
+PROCESO
+    P:= PRIM
+    L1:= NIL
+    L2:= NIL
+    L3:= NIL
+
+    MIENTRAS P <> NIL HACER
+        NUEVO(Q)
+        *Q.nombre := *P.nombre
+        *Q.capital := *P.capital
+        *Q.porc_alf := *P.tot_alf/*P.tot_hab * 100
+        *Q.prox := NIL
+
+        SI *Q.porc_alf <= 10 ENTONCES
+            SI L1 <> NIL ENTONCES
+                *L1.prox := Q
+            FIN_SI
+            L1:= Q
+        SINO
+            SI *Q.porc_alf > 16 y *Q.porc_alf <= 25 ENTONCES
+                SI L2 <> NIL ENTONCES
+                    *L2.prox := Q
+                FIN_SI
+                L2:= Q
+            SINO
+                SI *Q.porc_alf >= 26 ENTONCES
+                    SI L3 <> NIL ENTONCES
+                        *L3.prox := Q
+                    FIN_SI
+                    L3:= Q
+                FIN_SI
+            FIN_SI
+        FIN_SI
+
+        P:= *P.prox
+    FIN_MIENTRAS
+FIN_ACCION

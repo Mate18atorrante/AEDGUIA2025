@@ -1,1 +1,121 @@
-ACCION 4.2
+Diseñar un algoritmo para acceder, eliminar o insertar el k-ésimo elemento de una lista (siendo k una posición dada).
+Si la lista está vacía o si el valor de k esta fuera del rango del índice de la lista, invocar al procedimiento de
+ERROR. En cualquier otro caso, efectuar el procedimiento solicitado.
+
+ACCION 4.1(PRIM: puntero a NODO, k: entero) ES
+    AMBIENTE
+        NODO = REGISTRO
+            dato
+            prox: puntero a NODO
+        FIN_REGISTRO
+        P, ANT, Q: puntero a NODO
+        posic: entero
+
+        PROCEDIMIENTO ACCEDER() ES
+            SI PRIM = NIL ENTONCES
+                ESC("ERROR, lista vacía")
+            SINO
+                P:= PRIM
+
+                posic:= 1
+                MIENTRAS (P <> NIL) y (posic <> k) HACER
+                    posic:= posic + 1
+                    P:= *P.prox
+                FIN_MIENTRAS
+
+                SI P <> NIL ENTONCES
+                    ESC("El elemento de la posición ",k," tiene la siguiente información: ",*P.dato)
+                SINO
+                    ESC("No se encontró el elemento en la lista)
+                FIN_SI
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ELIMINAR() ES
+            SI PRIM = NIL ENTONCES
+                ESC("ERROR, lista vacía")
+            SINO
+                P:= PRIM
+                ANT:= NIL
+
+                posic:= 1
+                MIENTRAS (P <> NIL) y (posic <> k) HACER
+                    posic:= posic + 1
+
+                    ANT:= P
+                    P:= *P.prox
+                FIN_MIENTRAS
+
+                SI P <> NIL ENTONCES
+                    SI ANT = NIL
+                        PRIM:= *P.prox
+                    SINO
+                        *ANT.prox := *P.prox
+                    FIN_SI
+                    DISPONER(P)
+                SINO
+                    ESC("No se encontró el elemento en la lista")
+                FIN_SI
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO INSERTAR() ES
+            SI PRIM = NIL ENTONCES
+                SI k = 1 ENTONCES
+                    NUEVO(Q)
+                    ESC("Ingrese dato a cargar en el nodo")
+                    LEER(dato)
+                    *Q.dato:= dato
+                    PRIM:= Q
+                    *Q.prox:= NIL
+                SINO
+                    ESC("Error, ingrese posicion 1 para cargar el primer nodo a la lista vacía")
+                FIN_SI
+            SINO
+                P:= PRIM
+                ANT:= NIL
+                posic:= 1
+
+                MIENTRAS (P <> NIL) y (posic <> k) HACER
+                    posic:= posic + 1
+
+                    ANT:= P
+                    P:= *P.prox
+                FIN_MIENTRAS
+
+                SI P <> NIL ENTONCES
+                    NUEVO(Q)
+                    ESC("Ingrese dato a cargar en el nodo")
+                    LEER(dato)
+                    *Q.dato:= dato
+
+                    SI ANT = NIL ENTONCES
+                        *Q.prox:= PRIM
+                        PRIM:= Q
+                    SINO
+                        *ANT.prox:= Q
+                        *Q.prox:= P
+                    FIN_SI
+                SINO
+                    ESC("No se encontró el elemento en la lista")
+                FIN_SI
+            FIN_SI
+        FIN_PROCEDIMIENTO
+    PROCESO
+        REPETIR
+            REPETIR
+                ESC("Lista simplemente enlazada")
+                ESC("1- ACCEDER")
+                ESC("2- ELIMINAR")
+                ESC("3- INSERTAR")
+                ESC("4- SALIR")
+                ESC("Ingrese opción 1..4: ")
+            HASTA QUE opcion EN [1..4]
+
+            SEGUN opcion HACER
+                1: ACCEDER()
+                2: ELIMINAR()
+                3: INSERTAR()
+            FIN_SEGUN
+        HASTA QUE opcion = 4
+FIN_ACCION

@@ -1,0 +1,94 @@
+Genere un algoritmo que recorra una secuencia texto y genere una lista simplemente encadenada con la frecuencia de
+utilización de cada letra. La lista debe mantenerse ordenada alfabéticamente y al final informar cual fue la frecuencia
+de cada letra y cuáles fueron la de mayor y menor frecuencia.
+
+ACCION 4.7 ES
+    AMBIENTE
+        NODO = REGISTRO
+            letra: caracter
+            frecuencia: entero
+            prox: puntero a NODO
+        FIN_REGISTRO
+        PRIM, P, Q, ANT: puntero a NODO
+
+        sec: secuencia de caracter
+        letraMayorF, letraMenorF, v: caracter
+        mayorF, menorF: entero
+
+    PROCESO
+        PRIM:= NIL
+
+        ARR(sec)
+        AVZ(sec,v)
+
+        MIENTRAS NFDS(sec) HACER
+            SI v EN [A..Z] ENTONCES
+                //si la lista está vacía
+                SI PRIM = NIL ENTONCES
+                    NUEVO(Q)
+                    *Q.letra:= v
+                    *Q.frecuencia:= 1
+                    *Q.prox:= NIL
+                    PRIM:= Q
+                SINO
+                    P:= PRIM
+                    //si la lista no está vacía, se busca la letra en los nodos recorriendo la lista
+                    MIENTRAS (P <> NIL) y (*P.letra <> v) HACER
+                        P:= *P.prox
+                    FIN_MIENTRAS
+
+                    //si se encuentra, se suma +1 en la frecuencia de la aparición
+                    SI P <> NIL ENTONCES
+                        *P.frecuencia:= *P.frecuencia + 1
+                    SINO
+                        //si no se encuentra, se crea un nodo y se carga en orden alfabético en la lista
+                        NUEVO(Q)
+                        *Q.letra:= v
+                        *Q.frecuencia:= 1
+
+                        P:= PRIM
+                        ANT:= NIL
+                        MIENTRAS (P <> NIL) y (*P.letra < *Q.letra) HACER
+                            ANT:= P
+                            P:= *P.prox
+                        FIN_MIENTRAS
+
+                        SI ANT = NIL ENTONCES
+                            *Q.prox:= PRIM
+                            PRIM:= Q
+                        SINO
+                            *ANT.prox:= Q
+                            *Q.prox:= P
+                        FIN_SI
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            AVZ(sec,v)
+        FIN_MIENTRAS
+
+        CERRAR(sec)
+
+        mayorF:= 0
+        menorF:= 999999
+
+        P:= PRIM
+        MIENTRAS P <> NIL HACER
+            ESC("La frecuencia de la letra ",*P.letra, "es de ",*P.frecuencia," apariciones")
+
+            SI *P.frecuencia > mayorF ENTONCES
+                letraMayorF:= *P.letra
+                mayorF:= *P.frecuencia
+            FIN_SI
+
+            SI *P.frecuencia < menorF ENTONCES
+                letraMenorF:= *P.letra
+                menorF:= *P.frecuencia
+            FIN_SI
+
+            P:= *P.prox
+        FIN_MIENTRAS
+
+        ESC("La letra con mayor fecuencia fue: ",letraMayorF, "con una aparición de ",mayorF," veces")
+        ESC("La letra con menor fecuencia fue: ",letraMenorF, "con una aparición de ",menorF," veces")
+FIN_PROCESO
