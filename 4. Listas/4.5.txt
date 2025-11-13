@@ -52,3 +52,49 @@ FIN_ACCION
 
 #hacer ej 4.1 a 4.7
 complementarios: 4.1, 4.2, 4.5, 4.9
+
+//mi version
+Dada una lista simplemente encadenada que contiene datos de todas las provincias de la República Argentina: nombre,
+capital, cantidad total de habitantes y cantidad de analfabetos, y está ordenada en forma decreciente por número de
+habitantes analfabetos, generar otras tres listas que contengan el nombre, la capital y el porcentaje de analfabetos
+de las Provincias que respondan a las siguientes restricciones.
+
+L1: <= 10 % analfabetos
+L2: 16 a 25 % analfabetos
+L3: => 26 % analfabetos
+
+ACCION 4.5(PRIM: puntero a NODO) ES
+    AMBIENTE
+        Prov = REGISTRO
+            nombre: AN(50)
+            capital: AN(50)
+            tot_hab: entero
+            cant_alf: entero
+            prox: puntero a Prov
+        FIN_REGISTRO
+        Pprov: puntero a Prov
+
+        format2 = REGISTRO
+            nombre: AN(50)
+            capital: AN(50)
+            porc_alf: real
+        FIN_REGISTRO
+        Psal1, Psal2, Psal3: puntero a format2
+
+    PROCESO
+        Pprov:= PRIM
+        Psal1:= Nil
+        Psal2:= Nil
+        Psal3:= Nil
+
+        MIENTRAS Pprov <> Nil HACER
+
+
+        FIN_MIENTRAS
+
+        4.6 4.8 complementarios
+
+        4.11 a 4.13 l dobles
+
+        l. circ 4.9 y 4.10
+        compl 4.4
