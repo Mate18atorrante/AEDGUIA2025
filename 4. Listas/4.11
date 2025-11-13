@@ -1,0 +1,47 @@
+En una empresa de servicios motorizados que NO posee una cantidad fija de integrantes, pero siempre es mayor que 1
+(uno). Los datos de las personas está almacenados en un archivo (DNI, Nombre, Antigüedad) ordenado por DNI. Realizar
+un algoritmo que permita generar una lista de asignación (usando una estructura de lista doblemente encadenada),
+ordenada al principio por antigüedad, y un proceso que realice dicha asignación, en cada solicitud, por turno según
+orden en la lista. Una vez asignado dicha persona se va al final de la lista para esperar su nueva asignación.
+Al final del día informar cuantas asignaciones tuvo cada integrante.
+
+PERSONAL
+|Nro_Personal N(5)| Nombre AN(50)| Asignaciones N(5)| Antigüedad N(2)|
+
+ACCION 4.11 ES
+    AMBIENTE
+        Integs = REGISTRO
+            dni: N(8)
+            nombre: AN(50)
+            antiguedad: N(5)
+        FIN_REGISTRO
+        Arch: ARCHIVO de Integs ordenado por dni
+        Reg: Integs
+
+        PERSONAL = REGISTRO
+            ant: puntero a PERSONAL
+            nro_personal: N(5)
+            nombre: AN(50)
+            asignaciones: N(5)
+            antiguedad: N(2)
+            prox: puntero a PERSONAL
+        FIN_REGISTRO
+        P, Q, PRIM, ULT: puntero a PERSONAL
+
+    PROCESO
+        ABRIR E/(Arch)
+        LEER(Arch,Reg)
+
+        ULT:= NIL
+        PRIM:= NIL
+
+        nro_personal:= 0
+        MIENTRAS NFDA(Arch) HACER
+            NUEVO(P)
+            nro_personal:= nro_personal + 1
+            *P.nro_personal:= nro_personal
+            *P.nombre := Reg.nombre
+            *P.asignaciones := Reg.asignaciones //no existe tal campo en la estructura, error del enunciado
+
+            LEER(Arch,Reg)
+        FIN_MIENTRAS

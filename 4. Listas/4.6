@@ -1,0 +1,110 @@
+En el restaurante ÑOQUIS se está pensando en una solución informática para el soporte de datos del nuevo sistema de
+atención a clientes. Se han decidido por LISTAS por su dinamismo en cuanto a la cantidad de elementos. Diseñe un
+algoritmo que realice las siguientes funciones:
+
+*Añadir cliente al ser atendido (lista simple ordenada por Nombre del Cliente).
+*Registrar su consumo (Acumular el Total Consumido en valores de montos).
+*Realizar el cobro (emitir ticket con Nombre, Fecha, Número de Mesa y Total).
+*Eliminar del listado de atención.
+La información almacenada debe mantenerse ordenada por Nombre del cliente.
+
+ACCION 4.6(PRIM: puntero a CLIENTE) ES
+    AMBIENTE
+        FECHA = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        CLIENTE = REGISTRO
+            nombre: AN(50)
+            consumo: real
+            mesa: N(2)
+            prox: puntero a CLIENTE
+        FIN_REGISTRO
+        P, Q, ANT: puntero a CLIENTE
+        nombre: AN(50)
+        monto: real
+        fecha_hoy: FECHA
+
+        PROCEDIMIENTO añadir_cliente() ES
+            NUEVO(Q)
+            ESC("Ingrese el nombre del cliente: ")
+            LEER(*Q.nombre)
+            ESC("Ingrese el nro de mesa del cliente: ")
+            LEER(*Q.mesa)
+            *Q.consumo:= 0
+
+            ANT:= NIL
+            P:= PRIM
+
+            MIENTRAS P <> NIL y *P.nombre < *Q.nombre HACER
+                ANT:= P
+                P:= *P.prox
+            FIN_MIENTRAS
+
+            SI ANT = NIL ENTONCES
+                *Q.prox:= PRIM
+                PRIM:= Q
+            SINO
+                *ANT.prox:= Q
+                *Q.prox:= P
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Registrar_consumo() ES
+            P:= PRIM
+
+            ESC("Ingrese nombre del cliente: ")
+            LEER(nombre)
+
+            MIENTRAS P <> NIL y P <> nombre HACER
+                P:= *P.prox
+            FIN_MIENTRAS
+
+            SI P = nombre ENTONCES
+                ESC("Ingrese el monto a sumar del cliente: ")
+                LEER(monto)
+                *P.consumo:= *P.consumo + monto
+            SINO
+                ESC("El cliente no está registrado")
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Cobro() ES
+            ESC("Ingrese nombre del cliente: ")
+            LEER(nombre)
+
+            P:= PRIM
+            MIENTRAS P <> NIL y *P.nombre <> nombre HACER
+                P:= *P.prox
+            FIN_MIENTRAS
+
+            SI PRIM = NIL ENTONCES
+                ESC("ERROR. Lista vacía")
+            SINO
+                SI *P.nombre = nombre ENTONCES
+                    ESC("Fecha: "fecha_hoy.dia,fecha_hoy.mes,fecha_hoy.año)
+                    ESC("Nombre: ",*P.nombre)
+                    ESC("Nro de mesa: "*P.mesa)
+                    ESC("Total: $",*P.consumo)
+                    DISPONER(P)
+                SINO
+            FIN_SI
+
+        FIN_PROCEDIMENTO
+
+
+    PROCESO
+        ESC("Ingrese la fecha de hoy: ")
+        LEER(fecha_hoy.dia, fecha_hoy.mes, fecha_hoy.año)
+
+        Añadir_cliente()
+        Registrar_consumo()
+        Cobro()
+        Eliminar_cli()
+FIN_PROCESO
+
+
+
+

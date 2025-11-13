@@ -1,0 +1,118 @@
+Escribir un algoritmo que permita buscar, insertar o borrar un elemento identificado con una clave determinada en una
+lista circular simplemente encadenada.
+
+ACCION 4.8(PRIM: puntero a nodo, clave: entero) ES
+    AMBIENTE
+        NODO = REGISTRO
+            dato: entero
+            prox: puntero a NODO
+        FIN_REGISTRO
+        P, Q, S, ANT: puntero a NODO
+        dato: entero
+
+        PROCEDIMIENTO BUSCAR() ES
+            P:= PRIM
+            MIENTRAS *P.prox <> PRIM y *P.dato <> clave HACER
+                P:= *P.prox
+            FIN_MIENTRAS
+
+            SI *P.dato <> clave ENTONCES
+                ESC("No se encontró el elemento con dicha clave")
+            SINO
+                ESC("Elemento encontrado")
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO INSERTAR() ES
+            ESC("Ingrese el dato a insertar: ")
+            LEER(dato)
+
+            SI
+                ANT:= NIL
+                P:= PRIM
+                MIENTRAS *P.prox <> PRIM y *P.dato <> clave HACER
+                    ANT:= P
+                    P:= *P.prox
+                FIN_MIENTRAS
+
+                SI *P.dato <> clave ENTONCES
+                    ESC("No se encontró el elemento con dicha clave")
+                SINO
+                    NUEVO(Q)
+                    *Q.dato:= dato
+
+                    //si se encuentra en el primero
+                    SI PRIM = P ENTONCES
+                        S:= PRIM
+                        MIENTRAS *S.prox <> PRIM HACER
+                            S:= *S.prox
+                        FIN_MIENTRAS
+                        *S.prox:= Q
+                        *Q.prox:= P
+                        PRIM:= Q
+                    SINO
+                        //si se encuentra en el último
+                        SI *P.prox = PRIM ENTONCES
+                            *P.prox:= Q
+                            *Q.prox:= PRIM
+                        SINO
+                            //si se encuentra en el medio
+                            *ANT.prox:= Q
+                            *Q.prox:= P
+                        FIN_SI
+                    FIN_SI
+                FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ELIMINAR() ES
+            P:= PRIM
+            ANT:= NIL
+            MIENTRAS *P.prox <> PRIM y *P.dato <> clave HACER
+                ANT:= P
+                P:= *P.prox
+            FIN_MIENTRAS
+
+            SI *P.dato <> clave HACER
+                ESC("No se encontró el elemento con dicha clave")
+            SINO
+                //si es el único elemento
+                SI *P.prox = P ENTONCES
+                    PRIM:= NIL
+                SINO
+                    P:= P
+                    SI PRIM = P ENTONCES
+                        S:= PRIM
+                        MIENTRAS *S.prox <> PRIM HACER
+                            S:= *S.prox
+                        FIN_MIENTRAS
+
+                        *S.prox:= *P.prox
+                        PRIM:= *P.prox
+                    SINO
+                        *ANT.prox:= *P.prox
+                    FIN_SI
+                FIN_SI
+
+                DISPONER(P)
+            FIN_SI
+        FIN_PROCEDIMIENTO
+    PROCESO
+        REPETIR
+            REPETIR
+                ESC("1-BUSCAR")
+                ESC("2-INSERTAR")
+                ESC("3-ELIMINAR")
+                ESC("4-SALIR")
+                ESC("Ingrese un valor [1..4]: ")
+                LEER(opcion)
+            HASTA QUE opcion EN [1..4]
+
+            SI opcion <> 4 ENTONCES
+                SEGUN opcion HACER
+                    1: BUSCAR()
+                    2: INSERTAR()
+                    3: ELIMINAR()
+                FIN_SEGUN
+            FIN_SI
+        HASTA QUE opcion = 4
+FIN_ACCION

@@ -1,0 +1,52 @@
+Dada una lista doblemente encadenada de enteros, ordenada en forma creciente, escriba un algoritmo que elimine las
+entradas repetidas. El algoritmo debe verificar al inicio que la lista que se pasa como argumento está ordenada;
+en caso afirmativo realizar la depuración y emitir un mensaje de 'ÉXITO'; en caso contrario, emitir un mensaje de
+'ERROR'.
+
+ACCION 4.13(PRIM, ULT: puntero a nodo) ES
+    AMBIENTE
+        NODO = REGISTRO
+            ant: puntero a NODO
+            dato: entero
+            prox: puntero a NODO
+        FIN_REGISTRO
+        P, ANT: puntero a NODO
+        ordenada: Lógico
+
+    PROCESO
+        ordenada:= Verdadero
+
+        P:= PRIM
+        MIENTRAS *P.prox <> NIL HACER
+            SI *P.dato > *(*P.prox).dato ENTONCES
+                ordenada:= Falso
+            FIN_SI
+            P:= *P.prox
+        FIN_MIENTRAS
+
+        SI ordenada = FALSO ENTONCES
+            ESC("Error, lista desordenada")
+        SINO
+            P:= PRIM
+            ANT:= NIL
+            MIENTRAS P <> ULT HACER
+                SI *P.dato = *P.prox.dato ENTONCES
+                    SI ANT = PRIM ENTONCES
+                        *(*P.prox).ant:= NIL
+                        PRIM:= *P.prox
+                    SINO
+                        *(*P.prox).ant:= *P.ant
+                        *(*P.ant).prox:= *P.prox
+                    FIN_SI
+
+                    Q:= P
+                    P:= *P.prox
+                    DISPONER(Q)
+                SINO
+                    P:= *P.prox
+                FIN_SI
+            FIN_MIENTRAS
+
+            ESC("ÉXITO!")
+        FIN_SI
+FIN_ACCION
