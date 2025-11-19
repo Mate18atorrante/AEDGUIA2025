@@ -28,10 +28,9 @@ ACCION 4.13(PRIM, ULT: puntero a nodo) ES
             ESC("Error, lista desordenada")
         SINO
             P:= PRIM
-            ANT:= NIL
             MIENTRAS P <> ULT HACER
-                SI *P.dato = *P.prox.dato ENTONCES
-                    SI ANT = PRIM ENTONCES
+                SI *P.dato = *(*P.prox).dato ENTONCES
+                    SI P = PRIM ENTONCES
                         *(*P.prox).ant:= NIL
                         PRIM:= *P.prox
                     SINO

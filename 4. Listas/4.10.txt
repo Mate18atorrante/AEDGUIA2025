@@ -1,0 +1,74 @@
+Se dispone de una lista circular con un conjunto de números naturales. Este conjunto está dividido en 6 grupos. En cada
+grupo el primer elemento indica la cantidad de números subsiguientes a él que integran dicho grupo. Se desea generar una
+nueva lista doblemente encadenada en la cual cada nodo contendrá el promedio de cada grupo. Dicha lista debe quedar
+ordenada en forma ascendente y, al final se debe informar cuál fue el máximo y el mínimo promedio de todo el conjunto
+de números.
+
+ACCION 4.10(PRIM1: puntero a listcirc) ES
+    AMBIENTE
+        listcirc = REGISTRO
+            nro: entero
+            prox: puntero a listcirc
+        FIN_REGISTRO
+        P: puntero a listcirc
+
+        listdob = REGISTRO
+            ant: puntero a listdob
+            prom: real
+            prox: puntero a listdob
+        FIN_REGISTRO
+        PRIM2, ULT, S, Q: puntero a listdob
+
+        suma, cant_eltos: entero
+    PROCESO
+        P:= PRIM1
+        PRIM2 := NIL
+        ULT:= NIL
+        MIENTRAS *P.prox <> PRIM1 HACER
+            suma:= 0
+            cant_eltos:= *P.nro
+            PARA i:= 1 HASTA cant_eltos HACER
+                suma:= suma + *P.nro
+                P:= *P.prox
+            FIN_PARA
+
+            NUEVO(Q)
+            *Q.prom:= suma/cant_eltos
+
+            SI PRIM2 = NIL ENTONCES
+                *Q.ant:= NIL
+                *Q.prox:= NIL
+                PRIM2:= Q
+                ULT:= Q
+            SINO
+                S:= PRIM2
+                MIENTRAS *S.prox <> NIL y *S.prom < *Q.prom HACER
+                    S:= *S.prox
+                FIN_MIENTRAS
+
+                SI S = PRIM2 ENTONCES
+                    *S.ant:= Q
+                    *Q.prox:= S
+                    *Q.ant:= NIL
+                    PRIM2:= Q
+                SINO
+                    SI S = ULT ENTONCES
+                        *S.prox:= Q
+                        *Q.ant:= S
+                        *Q.prox:= NIL
+                        ULT:= Q
+                    SINO
+                        *(*S.ant).prox:= Q
+                        *Q.ant:= *S.ant
+                        *Q.prox:= S
+                        *S.ant:= Q
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            P:= *P.prox
+        FIN_MIENTRAS
+
+        ESC("El promedio máximo fue ",*ULT.prom)
+        ESC("El promedio mínimo fue ",*PRIM2.prom)
+FIN_ACCION
