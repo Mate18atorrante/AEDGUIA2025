@@ -1,0 +1,23 @@
+Supongamos que tenemos una función valor tal que dado un valor de tipo char (una letra del alfabeto) devuelve un valor
+entero asociado a dicho identificador. Supongamos también la existencia de un árbol de expresión T cuyos nodos hoja son
+ letras del alfabeto y cuyos nodos interiores son los caracteres *, +, -, /. Diseñar una función que tome como
+  parámetros un nodo y un árbol binario y devuelva el resultado entero de la evaluación de la expresión representada.
+
+FUNCION operaciones(T: puntero a nodo, *T.dato): real ES
+    SI T <> NIL ENTONCES
+        operaciones(*T.izq, *T.dato)
+        operaciones(*T.der, *T.dato)
+        SI (*T.izq = NIL) y (*T.der = NIL) ENTONCES
+            operaciones:= valor(*T.dato) + operaciones(T, *T.dato)
+        SINO
+            SEGUN *T.dato HACER
+                "*": operaciones:= operaciones * operaciones(T, *T.dato)
+                "+": operaciones:= operaciones + operaciones(T, *T.dato)
+                "-": operaciones:= operaciones - operaciones(T, *T.dato)
+                "/": operaciones:= operaciones / operaciones(T, *T.dato)
+            FIN_SEGUN
+        FIN_SI
+    FIN_SI
+FIN_FUNCION
+
+funcion

@@ -1,0 +1,7 @@
+FUNCION contar(p: puntero a nodo): entero es
+    SI P = NIL ENTONCES
+        contar:= 0
+    SINO
+        contar:= 1 + contar(*p.izq) + contar(*p.der)
+    FIN_SI
+FIN_FUNCION

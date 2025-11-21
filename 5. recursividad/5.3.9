@@ -1,0 +1,24 @@
+Se dispone de un árbol binario de enteros. Escribir funciones que calculen:
+
+La suma de sus elementos.
+La suma de sus elementos que son múltiplos de 3.
+
+FUNCION suma_eltos(P: puntero a nodo): entero
+    SI P = NIL ENTONCES
+        suma_eltos:= 0
+    SINO
+        suma_eltos:= *P.dato + suma_eltos(*P.izq) + suma_eltos(*P.der)
+    FIN_SI
+FIN_FUNCION
+
+FUNCION suma_mult3(P: puntero a nodo): entero
+    SI P = NIL ENTONCES
+        suma_mult3:= 0
+    SINO
+        SI *P.dato mod 3 = 0 ENTONCES
+            suma_mult3:= *P.dato + suma_mult3(*P.izq) + suma_mult(*P.der)
+        SINO
+            sumar_mult3:= suma_mult3(*P.izq) + suma_mult3(*P.der)
+        FIN_SI
+    FIN_SI
+FIN_FUNCION

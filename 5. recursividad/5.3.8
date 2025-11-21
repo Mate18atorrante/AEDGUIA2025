@@ -1,0 +1,42 @@
+escribir una funcion recursiva que encuentre la altura de un arbol binario
+
+FUNCION altura(p: puntero a nodo): entero
+    AMBIENTE
+        Aizq, Ader: entero
+
+    PROCESO
+        SI P <> NIL ENTONCES
+            SI (*P.izq = NIL) y (*P.der = NIL) ENTONCES
+                altura:= 1
+            SINO
+                Aizq:= Altura(*P.izq)
+                Ader:= Altura(*P.der)
+                SI (Aizq > Ader) ENTONES
+                    altura:= Aizq + 1
+                SIN
+                    altura:= Ader + 1
+                FIN_sI
+            FIN_SI
+        SINO
+            altura:= 0
+        FIN_sI
+FIN_FUNCION
+
+//otra manera
+
+
+FUNCION altura(p: puntero a nodo): entero
+    SI P <> NIL ENTONCES
+        SI (*P.izq = NIL) y (*P.der = NIL) ENTONCES
+            altura:= 1
+        SINO
+            SI altura(*P.izq) > altura(*P.der) ENTONCES
+                altura:= altura(*P.izq) + 1
+            SINO
+                altura:= altura(*P.der) + 1
+            FIN_sI
+        FIN_sI
+    SINO
+        altura:= 0
+    FIN_sI
+FIN_FUNCION

@@ -1,0 +1,7 @@
+Suponiendo que un árbol está definido como la estructura recursiva de datos:
+arbol = registro
+    x: entero
+    izq, der: puntero a arbol
+fin registro
+Escribir un algoritmo que encuentre un elemento con una clave dada C, y realice una operación P con él.
+
