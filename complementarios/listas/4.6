@@ -14,3 +14,30 @@ L = {13,12,13,10,10}.
 
 En la lista final NO deben quedar elementos menores que A, salvo, eventualmente, el último.
 
+PROCEDIMIENTO AGRUPA(PRIM, ULT: puntero a nodo; A: entero) ES
+    Sig:= PRIM
+
+    MIENTRAS Sig <> ULT HACER
+        Act:= Sig
+        Sig:= *Sig.prox
+
+        SI *Act.dato < A ENTONCES
+            SI Sig <> NIL ENTONCES
+                *Sig.dato:= *Sig.dato + *Act.dato
+            FIN_SI
+
+            //si se encuentra en el primer nodo
+            SI Act = PRIM ENTONCES
+                *Sig.ant:= Nil
+                PRIM:= Sig
+            SINO
+                //si se encuentra en el medio (los casos en el que esté en el
+                //último o sea el único nodo se omiten por la condición del bucle)
+                *(*Act.ant).prox:= Sig
+                *Sig.ant:= *Act.ant
+            FIN_SI
+
+            DISPONER(Act)
+        FIN_SI
+    FIN_MIENTRAS
+FIN_PROCEDIMIENTO

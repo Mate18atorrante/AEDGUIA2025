@@ -4,3 +4,62 @@ Se desea generar una nueva lista circular, simplemente encadenada, en la cual ca
 de cada grupo. Dicha lista debe quedar ordenada en forma ascendente y, al final se debe informar cuál es el promedio
 de todos los máximos.
 
+ACCION 4.8(PRIM1, ULT1: puntero a list_dob) ES
+    AMBIENTE
+        list_circ = REGISTRO
+            max_grupo: entero
+            prox: puntero a list_circ
+        FIN_REGISTRO
+        Q, PRIM2, ULT2, AuxQ: puntero a list_circ
+        P: puntero a list_dob
+
+        i1, i2, val_max, fin_sub_interv: entero
+        suma: real
+    PROCESO
+        PRIM2:= NIL
+        P:= PRIM1
+        suma:= 0
+
+        PARA i1:= 1 HASTA 10 HACER
+            NUEVO(Q)
+            val_max:= LV
+            fin_sub_interv:= *P.dato
+            P:= *P.prox
+            PARA i2:= 1 HASTA fin_sub_interv HACER
+                SI *P.dato > val_max ENTONCES
+                    val_max:= *P.dato
+                FIN_SI
+
+                P:= *P.prox
+            FIN_PARA
+
+            suma:= suma + val_max
+            *Q.max_grupo:= val_max
+
+            SI PRIM2 = NIL ENTONCES
+                *Q.prox:= Q
+                PRIM2:= Q
+            SINO
+                SI *Q.max_grupo < *PRIM2.max_grupo ENTONCES
+                    ULT2:= PRIM2
+                    MIENTRAS *ULT2.prox <> PRIM2 HACER
+                        ULT2:= *ULT2.prox
+                    FIN_MIENTRAS
+
+                    *ULT2.prox:= Q
+                    *Q.prox:= PRIM2
+                    PRIM2:= Q
+                SINO
+                    AuxQ:= PRIM2
+                    MIENTRAS (*AuxQ.prox <> PRIM2) y (*(*AuxQ.prox).max_grupo < *Q.max_grupo) HACER
+                        AuxQ:= *AuxQ.prox
+                    FIN_MIENTRAS
+
+                    *Q.prox:= *AuxQ.prox
+                    *AuxQ.prox:= Q
+                FIN_SI
+            FIN_SI
+        FIN_PARA
+
+        ESC("El promedio de todos los máximos es: ",suma/10)
+FIN_ACCION

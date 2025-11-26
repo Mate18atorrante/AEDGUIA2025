@@ -24,7 +24,7 @@ ACCION 4.10(PRIM1: puntero a listcirc) ES
         P:= PRIM1
         PRIM2 := NIL
         ULT:= NIL
-        MIENTRAS *P.prox <> PRIM1 HACER
+        PARA i:= 1 HASTA 6 HACER
             suma:= 0
             cant_eltos:= *P.nro
             PARA i:= 1 HASTA cant_eltos HACER
@@ -67,7 +67,7 @@ ACCION 4.10(PRIM1: puntero a listcirc) ES
             FIN_SI
 
             P:= *P.prox
-        FIN_MIENTRAS
+        FIN_PARA
 
         ESC("El promedio máximo fue ",*ULT.prom)
         ESC("El promedio mínimo fue ",*PRIM2.prom)
