@@ -1,0 +1,168 @@
+ACCION ej1(PRIM1: puntero a list) ES
+    AMBIENTE
+        list = REGISTRO
+            legajo: N(5)
+            ApyNom: AN(50)
+            comision: 1..4
+            notas: Arreglo de [1..5] de entero
+            prox: puntero a list
+        FIN_REGISTRO
+        R, ANT, AuxR: puntero a list
+
+        listdob = REGISTRO
+            ant: puntero a listdob
+            curso_nro: entero
+            cantidad: entero
+            legajo: N(5)
+            prox: puntero a listdob
+        FIN_REGISTRO
+        P, Q, PRIM2, ULT: puntero a listdob
+
+        M: ARREGLO de [1..6] de entero
+
+        cantMayor, i: entero
+        PromAlum: real
+        AulaMayor: 1..6
+    PROCESO
+
+        R:= PRIM1
+        PRIM2:= NIL
+        ULT:= NIL
+        ANT:= NIL
+
+        PARA i:= 1 HASTA 6 HACER
+            NUEVO(Q)
+            *Q.curso_nro:= i
+            *Q.cantidad:= 0
+            *Q.legajo:= 0
+
+            SI PRIM2 = NIL ENTONCES
+                PRIM2:= Q
+                ULT:= Q
+                *Q.prox:= NIL
+                *Q.ant:= NIL
+            SINO
+                *ULT.prox:= Q
+                *Q.ant:= ULT
+                *Q.prox:= NIL
+                ULT:= Q
+            FIN_SI
+
+            M[i]:= 0
+        FIN_PARA
+
+        MIENTRAS R <> NIL HACER
+            SI NO EsAlumnoLibre(*R.legajo) ENTONCES
+                NUEVO(Q)
+                *Q.legajo:= *R.legajo
+                *Q.curso_nro := AsignarAula()
+                *Q.cantidad:= 1
+
+                P:= PRIM2
+                MIENTRAS (*P.curso_nro <> *Q.curso_nro) HACER
+                    P:= *P.prox
+                FIN_MIENTRAS
+
+                SI P = ULT ENTONCES
+                    *Q.prox:= NIL
+                    ULT:= Q
+                SINO
+                    *Q.prox:= *P.prox
+                    *(*P.prox).ant:= Q
+                FIN_SI
+                *Q.ant:= P
+                *P.prox:= Q
+                *P.cantidad:= *P.cantidad + 1
+
+                M[*P.curso_nro]:= M[*P.curso_nro] + 1
+
+                SI R = PRIM1
+                    PRIM1:= *PRIM1.prox
+                SINO
+                    *ANT.prox:= *R.prox
+                FIN_SI
+
+                AuxR:= R
+                R:= *R.prox
+                DISPONER(AuxR)
+            SINO
+                ANT:= R
+                R:= *R.prox
+            FIN_SI
+        FIN_MIENTRAS
+
+        PromAlum:= 0
+        CantMayor:= 0
+
+        PARA i:= 1 HASTA 6 HACER
+            SI M[i] > CantMayor ENTONCES
+                CantMayor:= M[i]
+                AulaMayor:= i
+            FIN_SI
+            PromAlum:= PromAlum + M[i]
+        FIN_PARA
+
+        PromAlum:= PromAlum/6
+
+        ESC("El aula con mayor alumnos es la nro ",AulaMayor," con una cantidad de ",CantMayor," alumnos")
+        ESC("El promedio de alumnos por aula es: ",PromAlum)
+FIN_ACCION
+
+ACCION ej2(PRIM1: puntero a list) ES
+    AMBIENTE
+        lista = REGISTRO
+            legajo: N(5)
+            ApeyNom: AN(50)
+            comision: 1..4
+            notas: Arreglo de [1..5] de entero
+            prox: puntero a list
+        FIN_REGISTRO
+        P, S, R, PRIM2, ANT: puntero a list
+
+        FUNCION alumno_apto(M: Arreglo de [1..5] de entero; i, cont: entero): lógico ES
+            SI i > 5 ENTONCES
+                SI cont >= 3 ENTONCES
+                    alumno_apto:= VERDADERO
+                SINO
+                    alumno_apto:= FALSO
+                FIN_SI
+            SINO
+                SI M[i] >= 6 ENTONCES
+                    alumno_apto:= alumno_apto(M, i+1, cont+1)
+                SINO
+                    alumno_apto:= alumno_apto(M, i+1, cont)
+                FIN_SI
+            FIN_SI
+        FIN_FUNCION
+
+    PROCESO
+        P:= PRIM1
+        PRIM2:= NIL
+
+        MIENTRAS P <> NIL HACER
+            SI alumno_apto(*P.notas, 1, 0) ENTONCES
+                NUEVO(S)
+                *S.legajo:= *P.legajo
+                *S.ApeyNom:= *P.ApeyNom
+                *S.comision:= *P.comision
+                *S.notas:= *P.notas
+
+                R:= PRIM2
+                ANT:= NIL
+                MIENTRAS (R <> NIL) y (*R.legajo < *S.legajo) HACER
+                    ANT:= R
+                    R:= *R.prox
+                FIN_MIENTRAS
+
+                SI ANT = NIL ENTONCES
+                    *S.prox:= PRIM2
+                    PRIM2:= S
+                SINO
+                    *ANT.prox:= S
+                    *S.prox:= R
+                FIN_SI
+            FIN_SI
+
+            P:= *P.prox
+        FIN_MIENTRAS
+FIN_ACCION
