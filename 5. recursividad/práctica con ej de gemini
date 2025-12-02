@@ -1,0 +1,169 @@
+//Dado un vector de 10 números enteros, encontrar el elemento de máximo valor
+
+FUNCION máximo(vect: ARREGLO de entero de [1..10] de entero, i: entero): entero ES
+    AMBIENTE
+        Aux: entero
+    PROCESO
+        SI i = 10 ENTONCES
+            máximo:= vect[i]
+        SINO
+            Aux:= máximo(vect, i+1)
+            SI Aux < vect[i] ENTONCES
+                máximo:= vect[i]
+            SINO
+                máximo:= Aux
+            FIN_SI
+        FIN_SI
+FIN_FUNCION
+
+//Dado un vector de 10 números enteros, encontrar el elemento A y retornar verdadero, de lo contrario retornar falso
+
+FUNCION Busqueda(vect: ARREGLO de entero de [1..10] de entero, i, A: entero): lógico ES
+    SI i = 10 ENTONCES
+        SI vect[10] = A ENTONCES
+            Busqueda:= Verdadero
+        SINO
+            Busqueda:= Falso
+        FIN_SI
+    SINO
+        SI vect[i] = A ENTONCES
+            Busqueda:= Verdadero
+        SINO
+            Busqueda:= Busqueda(vect, i+1, A)
+        FIN_SI
+    FIN_SI
+FIN_FUNCION
+
+//Dado un vector de 10 números enteros, encontrar cuantas veces aparece el elemento A en el mismo
+
+FUNCION Busqueda2(vect: ARREGLO de [1..10] de entero; i, A: entero): entero ES
+    SI i = 10 ENTONCES
+        SI vect[10] = A ENTONCES
+            Busqueda2:= 1
+        SINO
+            Busqueda2:= 0
+        FIN_SI
+    SINO
+        SI vect[i] = A ENTONCES
+            Busqueda2:= 1 + Busqueda2(vect, i+1, A)
+        SINO
+            Busqueda2:= Busqueda2(vect, i+1, A)
+        FIN_SI
+    FIN_SI
+FIN_FUNCION
+
+//Dado un vector de 10 números enteros, revisar si es capicúa
+
+FUNCION Capicúa(vect: ARREGLO de [1..10] de entero, i, j): lógico ES
+    SI i >= j ENTONCES
+        SI vect[i] = vect[j] ENTONCES
+            Capicúa:= Verdadero
+        SINO
+            Capicúa:= Falso
+        FIN_SI
+    SINO
+        SI vect[i] = vect[j] ENTONCES
+            Capicúa:= Capicúa(vect, i+1, j-1)
+        SINO
+            Capicúa:= Falso
+        FIN_SI
+    FIN_SI
+FIN_FUNCION
+
+//Dada una lista de números enteros, calcular la suma de sus elementos
+
+FUNCION suma_lista(PRIM: puntero a Nodo): Entero ES
+    SI PRIM = NIL ENTONCES
+        suma_lista:= 0
+    SINO
+        suma_lista:= *PRIM.dato + suma_lista(*PRIM.prox)
+    FIN_SI
+FIN_FUNCION
+
+//Dada una lista simplemente enlazada, calcular la longitud de la misma
+
+FUNCION long_list(PRIM: puntero a Nodo): Entero ES
+    SI PRIM = NIL ENTONCES
+        long_list:= 0
+    SINO
+        long_list:= 1 + long_list(*PRIM.prox)
+    FIN_SI
+FIN_FUNCION
+
+//Dada una lista simplemente enlazada de enteros, buscar el elemento A
+
+FUNCION BuscarAList(PRIM: puntero a NODO, A: entero): lógico ES
+    SI PRIM = NIL ENTONCES
+        BuscarAList:= Falso
+    SINO
+        SI *PRIM.dato = A ENTONCES
+            BuscarAList:= Verdadero
+        SINO
+            BuscarAList:= BuscarAList(*PRIM.prox, A)
+        FIN_SI
+    FIN_SI
+FIN_FUNCION
+
+//Dada una lista simplemente enlazada de enteros, verificar que esté ordenada de manera ascendente
+
+FUNCION VerifOrdenAscList(PRIM: puntero a NODO): Lógico ES
+    SI PRIM = NIL o *PRIM.prox = NIL ENTONCES
+        VerifOrdenAscList:= Verdadero
+    SINO
+        SI *PRIM.dato <= *(*PRIM.prox).dato ENTONCES
+            VerifOrdenAscList:= VerifOrdenAscList(*PRIM.prox)
+        SINO
+            VerifOrdenAscList:= Falso
+        FIN_SI
+    FIN_SI
+FIN_FUNCION
+
+//Dada una lista simplemente enlazada de enteros, eliminar los elementos que sean igual a un número A
+
+FUNCION list_sin_A(PRIM: puntero a NODO, A: entero): puntero a NODO ES
+    SI PRIM = NIL ENTONCES
+        list_sin_A:= NIL
+    SINO
+        SI *PRIM.dato = A ENTONCES
+            list_sin_A:= list_sin_A(*PRIM.prox, A)
+        SINO
+            *PRIM.prox:= list_sin_A(*PRIM.prox, A)
+            list_sin_A:= PRIM
+        FIN_SI
+    FIN_SI
+FIN_FUNCION
+
+//Dada una lista simplemente enlazada de enteros, insertar de manera ordenada un Nodo Q
+
+FUNCION insertar_Q(PRIM,Q: puntero a NODO): Puntero a NODO ES
+    SI PRIM = NIL ENTONCES
+        Q.prox:= NIL
+        insertar_Q:= Q
+    SINO
+        SI *Q.dato <= *PRIM.dato ENTONCES
+            *Q.prox:= PRIM
+            insertar_Q:= Q
+        SINO
+            *PRIM.prox:= insertar_Q(*PRIM.prox, Q)
+            insertar_Q:= PRIM
+        FIN_SI
+    FIN_SI
+FIN_FUNCION
+
+//Dada una lista DOBLEMENTE enlazada de enteros, borrar los elementos que contengan el numero A
+
+FUNCION borrar_doble(L: puntero a NODO, A: entero): puntero a NODO ES
+    SI L = NIL ENTONCES
+        borrar_doble:= NIL
+    SINO
+        SI *L.dato = A ENTONCES
+            
+            SI *L.prox <> NIL ENTONCES
+
+            FIN_SI
+            borrar_doble(*L.prox,A)
+        SINO
+
+        FIN_SI
+    FIN_SI
+FIN_FUNCION

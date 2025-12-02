@@ -1,0 +1,153 @@
+ACCION parcial3tipo1tema1ej1(PRIMcirc: puntero a list_circ) ES
+    AMBIENTE
+        fecha = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        compra = REGISTRO
+            fecha_compra: fecha
+            dni_cli: N(8)
+            cant_arts: entero
+            importe_tot: real
+        FIN_REGISTRO
+        ArchComp: Archivo de compra ordenado por fecha_compra
+        RegComp: compra
+
+        clientes = REGISTRO
+            dni_cli: N(8)
+            ApyNom: AN(50)
+            fecha_adi: fecha
+            categ: AN(50)
+        FIN_REGISTRO
+        ArchCli: Archivo de clientes indexado por dni_cli
+        RegCli: clientes
+
+        list_dob = REGISTRO
+            ant: puntero a list_dob
+            ApyNom: AN(50)
+            chances_tot: entero
+            prox: puntero a list_dob
+        FIN_REGISTRO
+        P, PRIMdob, Ult, Q: puntero a list_dob
+
+        R: puntero a list_circ
+        chances, vueltas: entero
+    PROCESO
+        ABRIR E/(ArchComp)
+        LEER(ArchComp, RegComp)
+        ABRIR E/(ArchCli)
+        PRIMdob:= NIL
+        Ult:= NIL
+        R:= PRIMcirc
+
+        MIENTRAS NFDA(ArchComp) HACER
+            RegCli.dni_cli:= RegComp.dni_cli
+            LEER(ArchCli, RegCli)
+
+            SI EXISTE ENTONCES
+                chances:= RegComp.importe_tot DIV 100
+
+                SI RegCli.categ = "BLACK" ENTONCES
+                    vueltas:= Tirar()
+                    PARA i:= 1 HASTA vueltas HACER
+                        R:= *R.prox
+                    FIN_PARA
+                    chances:= chances + *R.dato
+                FIN_SI
+
+                //la lista está vacía
+                SI PRIMdob = NIL ENTONCES
+                    NUEVO(Q)
+                    *Q.ApyNom:= RegCli.ApyNom
+                    *Q.chances_tot:= chances + 5
+                    *Q.prox:= NIL
+                    *Q.ant:= NIL
+                    PRIMdob:= Q
+                    Ult:= Q
+                SINO
+                    P:= PRIMdob
+                    MIENTRAS (*P.prox <> NIL) y (*P.ApyNom < RegCli.ApyNom) HACER
+                        P:= *P.prox
+                    FIN_MIENTRAS
+
+                    SI *P.ApyNom = RegCli.ApyNom ENTONCES
+
+                        *P.chances_tot:= *P.chances_tot + chances
+                    SINO
+                        NUEVO(Q)
+                        *Q.ApyNom:= RegCli.ApyNom
+                        *Q.chances_tot:= chances + 5
+
+                        SI *Q.ApyNom < *P.ApyNom ENTONCES
+                            SI P = PRIMdob ENTONCES
+                                *Q.prox:= PRIMdob
+                                *P.ant:= Q
+                                *Q.ant:= NIL
+                                PRIMdob:= Q
+                            SINO
+                                *(*P.ant).prox:= Q
+                                *Q.ant:= *P.ant
+                                *Q.prox:= P
+                                *P.ant:= Q
+                            FIN_SI
+                        SINO
+                            *ULT.prox:= Q
+                            *Q.ant:= ULT
+                            *Q.prox:= NIL
+                            ULT:= Q
+                        FIN_SI
+                    FIN_SI
+                FIN_SI
+            SINO
+                ESC("Error, No se encontró al cliente")
+            FIN_SI
+
+            LEER(ArchComp, RegComp)
+        FIN_MIENTRAS
+
+        CERRAR(ArchComp)
+        CERRAR(ArchCli)
+FIN_ACCION
+
+ACCION parcial3tipo1tema1ej2(PRIM: puntero a list) ES
+    AMBIENTE
+        list = REGISTRO
+            dni: N(8)
+            ApNom: AN(50)
+            nro_cama: entero
+            nro_hab: entero
+            pa_sisto: ARREGLO de [1..4] de real
+            pa_diasto: ARREGLO de [1..4] de real
+            prox:= puntero a list
+        FIN_REGISTRO
+        Act, ANT, Aux: puntero a list
+        prom_diasto, prom_sisto: real
+
+        FUNCION presion_prom(M: arreglo de [1..4] de real, i, suma): real ES
+            SI i > 4 ENTONCES
+                presion_prom:= suma/4
+            SINO
+                presion_prom:= presion_prom(M, i+1, suma + M[i])
+            FIN_SI
+        FIN_FUNCION
+    PROCESO
+        Act:= PRIM
+        ANT:= NIL
+        MIENTRAS Act <> NIL HACER
+            SI (presion_prom(*Act.pa_sisto, 1, 0) <= 120) y (presion_prom(*Act.pa_diasto, 1,0) <= 80) ENTONCES
+                SI ANT = NIL ENTONCES
+                    PRIM:= *PRIM.prox
+                SINO
+                    *ANT.prox:= Act.prox
+                FIN_SI
+                Aux:= Act
+                Act:= *Act.prox
+                DISPONER(Aux)
+            SINO
+                ANT:= Act
+                Act:= *Act.prox
+            FIN_SI
+        FIN_MIENTRAS
+FIN_ACCION

@@ -1,0 +1,33 @@
+Determine recursivamente si un número dado es par o impar, usando sólo la operación resta.
+
+caso base:
+    Si n = 0 ENTONCES par
+    SI n = 1 ENTONCES impar
+caso recursivo
+    si n > 1 ENTONCESS par_impar(n-2)
+
+//como procedimiento
+PROCEDIMIENTO par_impar(n: entero) ES
+    SI n = 0 ENTONCES
+        ESC("El número es par")
+    SINO
+        SI n = 1 ENTONCES
+            ESC("El número es impar")
+        SINO
+            par_impar(n-2)
+        FIN_SI
+    FIN_SI
+FIN_PROCEDIMIENTO
+
+//como una funcion
+FUNCION par(n: entero): lógico ES
+    SI n = 0 ENTONCES
+        par:= verdadero
+    SINO
+        SI n = 1 ENTONCES
+            par:= falso
+        SINO
+            par:= par(n-2)
+        FIN_SI
+    FIN_SI
+FIN_FUNCION

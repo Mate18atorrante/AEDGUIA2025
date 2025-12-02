@@ -10,7 +10,7 @@ ACCION 4.4(PRIM1: puntero a SOCIO) ES
             condicion: ("A","B")
             prox: puntero a SOCIO
         FIN_REGISTRO
-        P, AuxP, ANT, ULT: puntero a SOCIO
+        P, AuxP, ANT: puntero a SOCIO
 
         SALIDA = REGISTRO
             número: entero
@@ -18,51 +18,58 @@ ACCION 4.4(PRIM1: puntero a SOCIO) ES
             prox: puntero a SALIDA
         FIN_REGISTRO
         S, PRIM2: puntero a SALIDA
+
+        PROCEDIMIENTO ELIMINAR_B() ES
+            SI AuxP = PRIM1 ENTONCES
+                SI AuxP.prox = AuxP ENTONCES
+                    PRIM1:= NIL
+                SINO
+                    SI ANT = NIL ENTONCES
+                        ANT:= PRIM1
+                        MIENTRAS *ANT.prox <> PRIM1 HACER
+                            ANT:= *ANT.prox
+                        FIN_MIENTRAS
+                    FIN_SI
+                    *ANT.prox:= *PRIM1.prox
+                    PRIM1:= *PRIM1.prox
+                FIN_SI
+            SINO
+                *ANT.prox:= P
+            FIN_SI
+            DISPONER(AuxP)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO NodoAltaMult100() ES
+            NUEVO(S)
+            *S.nombre:= *AuxP.nombre
+            *S.num:= *AuxP.num
+            *S.prox:= PRIM2
+            PRIM2:= S
+        FIN_PROCEDIMIENTO
     PROCESO
-        P:= PRIM1
         PRIM2:= NIL
         ANT:= NIL
-        ULT:= NIL
+        AuxP:= PRIM1
+        P:= AuxP.prox
 
-        SI PRIM1 <> NIL ENTONCES
-            REPETIR
-                SI *P.condición = "A" y *P.num mod 100 = 0 ENTONCES
-                    NUEVO(S)
-                    *S.nombre:= *P.nombre
-                    *S.num:= *P.num
-                    *S.prox:= PRIM2
-                    PRIM2:= S
+        MIENTRAS P <> PRIM1 HACER
+            SI *AuxP.condicion = "B" ENTONCES
+                ELIMINAR_B()
+            SINO
+                ANT:= AuxP
+                SI *AuxP.num mod 100 = 0 ENTONCES
+                    NodoAltaMult100()
                 FIN_SI
+            FIN_SI
+            AuxP:= P
+            P:= P.prox
+        FIN_MIENTRAS
 
-                P:= *P.prox
-            HASTA P = PRIM1
-
-            //vuelvo a recorrer la lista de entrada para eliminar los nodos con condicion = "B"
-            //ANT en este caso apunta al nodo anterior, AuxP al nodo actual, y P al siguiente
-            REPETIR
-                AuxP:= P
-                P:= *P.prox
-
-                SI *AuxP.condicion = "B" ENTONCES
-                    SI AuxP = PRIM1 ENTONCES
-                        SI AuxP.prox = AuxP ENTONCES
-                            PRIM1:= NIL
-                        SINO
-                            ULT:= PRIM1
-                            MIENTRAS *ULT.prox <> PRIM1 HACER
-                                ULT:= *ULT.prox
-                            FIN_MIENTRAS
-                            *ULT.prox:= *PRIM1.prox
-                            PRIM1:= *PRIM1.prox
-                            ANT:= ULT
-                        FIN_SI
-                    SINO
-                        *ANT.prox:= P
-                    FIN_SI
-                    DISPONER(AuxP)
-                SINO
-                    ANT:= AuxP
-                FIN_SI
-            HASTA (P = PRIM1) o (PRIM1 = NIL)
+        SI *AuxP.condicion = "B" ENTONCES
+            ELIMINAR_B()
+        SINO
+            SI *AuxP.num mod 100 = 0 ENTONCES
+                NodoAltaMult100()
+            FIN_SI
         FIN_SI
 FIN_ACCION

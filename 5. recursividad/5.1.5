@@ -1,0 +1,28 @@
+Dados dos números enteros, divídalos (división entera) y muestre el resultado, usando sólo la operación resta.
+
+caso base
+    SI A = B ENTONCES div(A,B) = 1
+    SI B = 1 ENTONCES div(A,B) = A
+    SI A < B ENTONCES div(A,B) = 0
+caso recursivo
+    SI A > B ENTONCES div(A,B):= 1 + div(A-B,B)
+
+FUNCION division_ent(A,B: entero): entero ES
+    SI B <> 0 ENTONCES
+        SI A = B ENTONCES
+            division_ent:= 1
+        SINO
+            SI B = 1 ENTONCES
+                division_ent:= A
+            SINO
+                SI A < B ENTONCES
+                    division_ent:= 0
+                SINO
+                    division_ent:= 1 + division_ent(A-B,B)
+                FIN_SI
+            FIN_SI
+        FIN_SI
+    SINO
+        ESC("Error, no se admite division por 0.")
+    FIN_SI
+FIN_FUNCION

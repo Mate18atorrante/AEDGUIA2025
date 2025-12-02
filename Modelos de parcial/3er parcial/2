@@ -1,0 +1,156 @@
+ACCION parcial3ejerciciotipo1tema2ej1(PRIM1: puntero a listdob) ES
+    AMBIENTE
+        fecha = REGISTRO
+            año: N(4)
+            mes: 1..12
+            dia: 1..31
+        FIN_REGISTRO
+
+        C = REGISTRO
+            fecha_c: fecha
+            dni_cli: N(8)
+            cant_arts: entero
+            importe_tot: real
+        FIN_REGISTRO
+        ArchC: Archivo de C ordenado por fecha_c
+        RegC
+
+        Cli = REGISTRO
+            dni_cli: N(8)
+            ApyN: AN(50)
+            fecha_adhesion: fecha
+            categ: AN(50)
+        FIN_REGISTRO
+        ArchCli: Archivo de Cli indexado por dni_cli
+        RegCli: Cli
+
+        ListDob = REGISTRO
+            ant: puntero a ListDob
+
+            import_min: real
+            import_max: real
+            desc: 0,01..0,99
+            cupo_disp: entero
+            rubro_desc: 1..9
+
+            prox: puntero a ListDob
+        FIN_REGISTRO
+        R: puntero a ListDob
+
+        ListSal = REGISTRO
+            dni_cli: N(8)
+            cant_compras: entero
+            importe_tot: real
+
+            prox: puntero a ListSal
+        FIN_REGISTRO
+        ACT, Q, PRIM2, ANT: puntero a ListSal
+
+        desc_encontrado: lógico
+    PROCESO
+        ABRIR E/(ArchC)
+        ABRIR E/(ArchCli)
+        LEER(ArchC, RegC)
+        PRIM2:= NIL
+
+        MIENTRAS NFDA(ArchC) HACER
+            RegCli.dni_cli:= RegC.dni_cli
+            LEER(ArchCli, RegCli)
+
+            R:= PRIM1
+            desc_encontrado:= FALSO
+            MIENTRAS R <> NIL y NO desc_encontrado HACER
+                SI (RegC.importe_tot >= *R.import_min) y (RegC.importe_tot <= *R.importe_max) y (*R.cupo_disp > 0) ENTONCES
+                    desc_encontrado:= Verdadero
+                SINO
+                    R:= *R.prox
+                FIN_SI
+            FIN_MIENTRAS
+
+            SI desc_encontrado ENTONCES
+                *R.cupo_disp:= *R.cupo_disp - 1
+
+                ESC("Compra con Descuento del ",*R.desc * 100,"%, del rubro ",*R.rubro_desc)
+            FIN_SI
+
+            SI NO EXISTE ENTONCES
+                ANT:= NIL
+                ACT:= PRIM2
+                MIENTRAS ACT <> NIL y *ACT.dni_cli < RegC.dni_cli HACER
+                    ANT:= ACT
+                    ACT:= *ACT.prox
+                FIN_MIENTRAS
+
+                SI (ACT <> NIL) y (*ACT.dni_cli = RegC.dni_cli) ENTONCES
+                    *ACT.cant_compras:= *ACT.cant_compras + RegC.cant_arts
+                    *ACT.importe_tot:= *ACT.importe_tot + RegC.importe_tot
+                SINO
+                    NUEVO(Q)
+                    *Q.dni_cli:= RegC.dni_cli
+                    *Q.cant_compras:= RegC.cant_arts
+                    *Q.importe_tot:= RegC.importe_tot
+
+                    SI ANT = NIL ENTONCES
+                        *Q.prox:= PRIM2
+                        PRIM2:= Q
+                    SINO
+                        *ANT.prox:= Q
+                        *Q.prox:= ACT
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            LEER(ArchC, RegC)
+        FIN_MIENTRAS
+
+        CERRAR(ArchC)
+        CERRAR(ArchCli)
+FIN_ACCION
+
+ACCION parcial3ejerciciotipo1tema2ej2(PRIM: puntero a list) ES
+    AMBIENTE
+        list = REGISTRO
+            dni: N(8)
+            ApyNom: AN(50)
+            edad: entero
+            nro_cama: entero
+            nro_hab: entero
+            temper: ARREGLO de [1..4] de real
+            prox: puntero a list
+        FIN_REGISTRO
+        P, ANT, AuxP: puntero a list
+
+        FUNCION temp_menor35(M: Arreglo de [1..4] de real, i: entero): lógico
+            SI i > 4 ENTONCES
+                temp_menor35:= Verdadero
+            SINO
+                SI M[i] <= 36,5 ENTONCES
+                    temp_menor35:= temp_menor35(M, i+1)
+                SINO
+                    temp_menor35:= Falso
+                FIN_SI
+            FIN_SI
+        FIN_FUNCION
+
+    PROCESO
+        P:= PRIM
+        ANT:= NIL
+        MIENTRAS P <> NIL HACER
+            SI temp_menor35(*P.temper, 1) ENTONCES
+                ESC("Nombre y Apellido de paciente: ",*P.ApyNom)
+
+                SI ANT = NIL ENTONCES
+                    PRIM:= *PRIM.prox
+                SINO
+                    *ANT.prox:= *P.prox
+                FIN_SI
+
+                AuxP:= P
+                P:= *P.prox
+                DISPONER(AuxP)
+            SINO
+                ANT:= P
+                P:= *P.prox
+            FIN_SI
+        FIN_MIENTRAS
+FIN_ACCION

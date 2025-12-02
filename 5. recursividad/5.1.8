@@ -1,0 +1,9 @@
+Dado un vector de 10 números enteros, calcular la suma de sus elementos
+
+FUNCION suma_vector(vect: Arreglo de [1..10] de entero, i: entero): entero ES
+    SI i = 10 ENTONCES
+        suma_vector:= vect[i]
+    SINO
+        suma_vector:= vect[i] + suma_vector[vect, i+1]
+    FIN_SI
+FIN_FUNCION
